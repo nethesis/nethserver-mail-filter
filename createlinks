@@ -4,3 +4,36 @@ use strict;
 use esmith::Build::CreateLinks qw(:all);
 
 
+my @templates = qw(
+   /etc/amavisd.conf
+   /etc/postfix/main.cf
+   /etc/postfix/master.cf
+);
+
+#
+# nethserver-mail-filter-UPDATE event
+#
+
+event_templates('nethserver-mail-filter-update', @templates);
+
+event_actions('nethserver-mail-filter-update',
+	      'initialize-default-databases' => '00',
+	      'nethserver-mail-filter-conf' => '20',
+	      'firewall-adjust' => '30',
+	      'runlevel-adjust' => '40');
+
+event_services('nethserver-mail-filter-update',
+	       'amavisd' => 'restart',
+	       'postfix' => 'restart');
+
+
+#
+# nethserver-mail-filter-SAVE event
+#
+
+event_templates('nethserver-mail-filter-save', 
+		'/etc/amavisd.conf',
+		'/etc/cron.d/sa-update');
+
+event_services('nethserver-mail-filter-update',
+	       'amavisd' => 'reload');
