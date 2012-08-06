@@ -131,4 +131,3 @@ $defang_by_ccat\{+CC_BADH.",6"\} = 1;  # header field syntax error
 );
 
 
-1;  # insure a defined return value
