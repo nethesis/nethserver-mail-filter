@@ -5,9 +5,10 @@ use esmith::Build::CreateLinks qw(:all);
 
 
 my @templates = qw(
-   /etc/amavisd.conf
-   /etc/postfix/main.cf
-   /etc/postfix/master.cf
+    /etc/amavisd.conf
+    /etc/postfix/main.cf
+    /etc/postfix/master.cf
+    /etc/dovecot/sieve-scripts/before.sieve
 );
 
 #

@@ -1,0 +1,8 @@
+#
+# 10junkmail -- move marked SPAM messages into junkmail folder
+#
+require ["fileinto", "mailbox"];
+if header :contains "X-Spam-Flag" "YES" \{
+    fileinto :create "junkmail";
+\}
+
