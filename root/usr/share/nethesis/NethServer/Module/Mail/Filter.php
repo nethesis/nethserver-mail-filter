@@ -35,8 +35,13 @@ class Filter extends \Nethgui\Controller\AbstractController
     public function initialize()
     {
         $this->declareParameter('VirusCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'VirusCheckStatus'));
-        $this->declareParameter('SpamCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'SpamCheckStatus'));        
+        $this->declareParameter('SpamCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'SpamCheckStatus'));
         $this->declareParameter('BlockAttachmentStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'BlockAttachmentStatus'));
+    }
+
+    protected function onParametersSaved($changedParameters)
+    {
+        $this->getPlatform()->signalEvent('nethserver-mail-filter-save@post-process');
     }
 
 }

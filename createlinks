@@ -9,7 +9,6 @@ my @templates = qw(
     /etc/postfix/main.cf
     /etc/postfix/master.cf
     /etc/cron.d/sa-update
-    /etc/dovecot/sieve-scripts/before.sieve
 );
 
 #
@@ -27,9 +26,7 @@ event_actions('nethserver-mail-filter-update',
 
 event_services('nethserver-mail-filter-update',
 	       'amavisd' => 'restart',
-	       'postfix' => 'restart',
-               'dovecot' => 'restart');
-
+	       'postfix' => 'restart');
 
 #
 # nethserver-mail-filter-SAVE event
@@ -37,9 +34,7 @@ event_services('nethserver-mail-filter-update',
 
 event_templates('nethserver-mail-filter-save', qw(
     /etc/amavisd.conf
-    /etc/dovecot/sieve-scripts/before.sieve
 ));
 
 event_services('nethserver-mail-filter-save',
-	       'amavisd' => 'reload',
-               'dovecot' => 'reload');
+	       'amavisd' => 'reload');
