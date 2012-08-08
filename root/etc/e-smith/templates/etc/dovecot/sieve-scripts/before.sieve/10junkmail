@@ -1,8 +1,18 @@
+
 #
-# 10junkmail -- move marked SPAM messages into junkmail folder
+# 10junkmail 
 #
+{
+     if($amavisd{SpamFolder} ne '') {
+        $OUT = <<EOF
+# -- enabled (move marked SPAM messages into junkmail folder)
 require ["fileinto", "mailbox"];
-if header :contains "X-Spam-Flag" "YES" \{
-    fileinto :create "junkmail";
-\}
+if header :contains "X-Spam-Flag" "YES" {
+    fileinto :create "$amavisd{SpamFolder}";
+}
+EOF
+     } else {
+        $OUT = "# -- disabled (Spam is delivered to INBOX)\n";
+     }
+}
 

@@ -35,8 +35,11 @@ event_services('nethserver-mail-filter-update',
 # nethserver-mail-filter-SAVE event
 #
 
-event_templates('nethserver-mail-filter-save', 
-		'/etc/amavisd.conf');
+event_templates('nethserver-mail-filter-save', qw(
+    /etc/amavisd.conf
+    /etc/dovecot/sieve-scripts/before.sieve
+));
 
 event_services('nethserver-mail-filter-save',
-	       'amavisd' => 'reload');
+	       'amavisd' => 'reload',
+               'dovecot' => 'reload');
