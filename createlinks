@@ -8,6 +8,7 @@ my @templates = qw(
     /etc/amavisd.conf
     /etc/postfix/main.cf
     /etc/postfix/master.cf
+    /etc/cron.d/sa-update
     /etc/dovecot/sieve-scripts/before.sieve
 );
 
@@ -20,8 +21,9 @@ event_templates('nethserver-mail-filter-update', @templates);
 event_actions('nethserver-mail-filter-update',
 	      'initialize-default-databases' => '00',
 	      'nethserver-mail-filter-conf' => '20',	      
-	      'firewall-adjust' => '30',
-	      'runlevel-adjust' => '40');
+	      'nethserver-mail-sieve-compile' => '30',
+	      'firewall-adjust' => '40',
+	      'runlevel-adjust' => '50');
 
 event_services('nethserver-mail-filter-update',
 	       'amavisd' => 'restart',
@@ -34,8 +36,7 @@ event_services('nethserver-mail-filter-update',
 #
 
 event_templates('nethserver-mail-filter-save', 
-		'/etc/amavisd.conf',
-		'/etc/cron.d/sa-update');
+		'/etc/amavisd.conf');
 
 event_services('nethserver-mail-filter-save',
 	       'amavisd' => 'reload');
