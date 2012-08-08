@@ -36,5 +36,5 @@ event_templates('nethserver-mail-filter-save',
 		'/etc/amavisd.conf',
 		'/etc/cron.d/sa-update');
 
-event_services('nethserver-mail-filter-update',
+event_services('nethserver-mail-filter-save',
 	       'amavisd' => 'reload');
