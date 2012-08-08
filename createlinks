@@ -19,13 +19,14 @@ event_templates('nethserver-mail-filter-update', @templates);
 
 event_actions('nethserver-mail-filter-update',
 	      'initialize-default-databases' => '00',
-	      'nethserver-mail-filter-conf' => '20',
+	      'nethserver-mail-filter-conf' => '20',	      
 	      'firewall-adjust' => '30',
 	      'runlevel-adjust' => '40');
 
 event_services('nethserver-mail-filter-update',
 	       'amavisd' => 'restart',
-	       'postfix' => 'restart');
+	       'postfix' => 'restart',
+               'dovecot' => 'restart');
 
 
 #
