@@ -5,6 +5,18 @@ echo $view->checkBox('VirusCheckStatus', 'enabled')
 
 echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
+    ->insert($view->slider('SpamTagLevel', $view::LABEL_ABOVE)
+        ->setAttribute('min', 2)
+        ->setAttribute('max', 10)
+        ->setAttribute('step', 0.1)
+        ->setAttribute('label', $T('SpamTagLevel ${0}'))        
+        )
+    ->insert($view->slider('SpamTag2Level', $view::LABEL_ABOVE)
+        ->setAttribute('min', 2)
+        ->setAttribute('max', 10)
+        ->setAttribute('step', 0.1)
+        ->setAttribute('label', $T('SpamTag2Level ${0}'))
+        )    
     ->insert(
         $view->fieldsetSwitch('SpamSubjectPrefixStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
         ->setAttribute('uncheckedValue', 'disabled')
@@ -12,7 +24,7 @@ echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_C
     )
 ;
 
-echo $view->checkBox('BlockAttachmentStatus', 'enabled')
+echo $view->checkBox('BlockAttachmentStatus', 'enabled', $view::STATE_DISABLED)
     ->setAttribute('uncheckedValue', 'disabled');
 
 echo $view->buttonList($view::BUTTON_SUBMIT | $view::BUTTON_HELP);

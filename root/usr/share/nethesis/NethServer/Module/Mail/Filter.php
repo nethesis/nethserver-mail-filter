@@ -39,6 +39,14 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('BlockAttachmentStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'BlockAttachmentStatus'));
         $this->declareParameter('SpamSubjectPrefixStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'SpamSubjectPrefixStatus'));
         $this->declareParameter('SpamSubjectPrefixString', $this->createValidator()->maxLength(16), array('configuration', 'amavisd', 'SpamSubjectPrefixString'));
+        $this->declareParameter('SpamTagLevel', $this->createValidator()->lessThan(10)->greatThan(2), array('configuration', 'amavisd', 'SpamTagLevel'));
+        $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan(10)->greatThan(2), array('configuration', 'amavisd', 'SpamTag2Level'));
+    }
+
+    public function validate(\Nethgui\Controller\ValidationReportInterface $report)
+    {
+        $this->getValidator('SpamTagLevel')->lessThan($this->parameters['SpamTag2Level']);
+        parent::validate($report);
     }
 
     protected function onParametersSaved($changedParameters)
