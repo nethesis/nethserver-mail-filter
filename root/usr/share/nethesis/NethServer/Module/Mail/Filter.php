@@ -31,21 +31,32 @@ use Nethgui\Controller\Table\Modify as Table;
  */
 class Filter extends \Nethgui\Controller\AbstractController
 {
+    public $spamTagLevel;
+    public $spamDsnLevel;
 
     public function initialize()
     {
+        $this->spamTagLevel = $this->getPlatform()
+            ->getDatabase('configuration')
+            ->getProp('amavisd', 'SpamTagLevel')
+        ;
+        $this->spamDsnLevel = $this->getPlatform()
+            ->getDatabase('configuration')
+            ->getProp('amavisd', 'SpamDsnLevel')
+        ;
+
         $this->declareParameter('VirusCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'VirusCheckStatus'));
         $this->declareParameter('SpamCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'SpamCheckStatus'));
         $this->declareParameter('BlockAttachmentStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'BlockAttachmentStatus'));
         $this->declareParameter('SpamSubjectPrefixStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'SpamSubjectPrefixStatus'));
         $this->declareParameter('SpamSubjectPrefixString', $this->createValidator()->maxLength(16), array('configuration', 'amavisd', 'SpamSubjectPrefixString'));
-        $this->declareParameter('SpamTagLevel', $this->createValidator()->lessThan(10)->greatThan(2), array('configuration', 'amavisd', 'SpamTagLevel'));
-        $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan(10)->greatThan(2), array('configuration', 'amavisd', 'SpamTag2Level'));
+        $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamTag2Level'));
+        $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamKillLevel'));
     }
 
     public function validate(\Nethgui\Controller\ValidationReportInterface $report)
     {
-        $this->getValidator('SpamTagLevel')->lessThan($this->parameters['SpamTag2Level']);
+        $this->getValidator('SpamTag2Level')->lessThan($this->parameters['SpamKillLevel']);
         parent::validate($report);
     }
 
