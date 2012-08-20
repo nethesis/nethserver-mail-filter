@@ -3,8 +3,8 @@
 #
 { 
     if($amavisd{status} eq 'enabled') {
-	$OUT = "content_filter=amavisd:[127.0.0.1]:10024\n";
-	$OUT .= "receive_override_options=no_address_mappings";
+	$OUT = "content_filter = amavisd:[127.0.0.1]:10024\n";
+	$OUT .= "receive_override_options = no_address_mappings";
     } else {
 	$OUT = '';
     }
