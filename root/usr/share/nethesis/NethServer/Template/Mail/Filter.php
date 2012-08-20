@@ -13,7 +13,6 @@ if(strlen($view->getModule()->rblServers) > 0) {
 
 echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
-    ->insert($rblCheckbox)
     ->insert($view->slider('SpamTag2Level', $view::LABEL_ABOVE)
         ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
         ->setAttribute('max', $view->getModule()->spamDsnLevel - 0.1)
@@ -31,6 +30,7 @@ echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_C
         ->setAttribute('uncheckedValue', 'disabled')
         ->insert($view->textInput('SpamSubjectPrefixString', $view::LABEL_NONE))
     )
+    ->insert($rblCheckbox)
 ;
 
 echo $view->checkBox('BlockAttachmentStatus', 'enabled', $view::STATE_DISABLED)

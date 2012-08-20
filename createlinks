@@ -34,7 +34,9 @@ event_services('nethserver-mail-filter-update',
 
 event_templates('nethserver-mail-filter-save', qw(
     /etc/amavisd.conf
+    /etc/postfix/main.cf
 ));
 
 event_services('nethserver-mail-filter-save',
+               'postfix' => 'reload',
 	       'amavisd' => 'reload');
