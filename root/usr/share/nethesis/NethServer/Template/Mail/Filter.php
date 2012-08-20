@@ -3,11 +3,17 @@
 echo $view->checkBox('VirusCheckStatus', 'enabled')
     ->setAttribute('uncheckedValue', 'disabled');
 
+if(strlen($view->getModule()->rblServers) > 0) {
+  $rblCheckbox = $view->checkbox('RblStatus', 'enabled')
+    ->setAttribute('uncheckedValue', 'disabled');
+} else {
+  $rblCheckbox = $view->checkbox('RblStatus', 'enabled', $view::STATE_DISABLED)
+    ->setAttribute('value', '');
+}
+
 echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
-    ->insert($view->checkbox('RblStatus', 'enabled')
-        ->setAttribute('uncheckedValue', 'disabled')	 
-	)
+    ->insert($rblCheckbox)
     ->insert($view->slider('SpamTag2Level', $view::LABEL_ABOVE)
         ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
         ->setAttribute('max', $view->getModule()->spamDsnLevel - 0.1)

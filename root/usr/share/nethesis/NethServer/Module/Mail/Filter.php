@@ -33,6 +33,7 @@ class Filter extends \Nethgui\Controller\AbstractController
 {
     public $spamTagLevel;
     public $spamDsnLevel;
+    public $rblServers;
 
     public function initialize()
     {
@@ -43,6 +44,10 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->spamDsnLevel = $this->getPlatform()
             ->getDatabase('configuration')
             ->getProp('amavisd', 'SpamDsnLevel')
+        ;
+	$this->rblServers = $this->getPlatform()
+            ->getDatabase('configuration')
+            ->getProp('postfix', 'RblServers')
         ;
 
         $this->declareParameter('VirusCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'VirusCheckStatus'));
