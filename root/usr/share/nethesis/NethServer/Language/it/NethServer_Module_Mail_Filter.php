@@ -8,3 +8,4 @@ $L['SpamSubjectPrefixStatus_label'] = 'Aggiungi un prefisso all\'oggetto dei mes
 $L['SpamTag2Level ${0}'] = 'Soglia spam ${0}';
 $L['SpamTag2Level_label'] = 'Aggiungi header spam';
 $L['SpamKillLevel ${0}'] = 'Soglia rifiuto messaggio ${0}';
+$L['RblStatus_label'] = 'Abilita Real-time Blackhole List (RBL)';
