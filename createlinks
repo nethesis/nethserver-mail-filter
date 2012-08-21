@@ -26,6 +26,7 @@ event_actions('nethserver-mail-filter-update',
 
 event_services('nethserver-mail-filter-update',
 	       'amavisd' => 'restart',
+	       'spfd' => 'restart',
 	       'postfix' => 'restart');
 
 #
