@@ -1,7 +1,7 @@
 #
-# 60policy-spf
+# 60spfpolicy
 #
-policy-spf  unix  -       n       n       -       0       spawn
+spfpolicy  unix  -       n       n       -       0       spawn
    user=spfd argv=/usr/libexec/nethserver/postfix-policyd-spf-perl
 
 
