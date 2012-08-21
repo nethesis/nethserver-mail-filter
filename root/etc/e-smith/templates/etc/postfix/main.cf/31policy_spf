@@ -1,0 +1,12 @@
+{
+    #
+    # 31policy_spf -- Sender Policy Framework (SPF)
+    #
+
+    @smtpd_recipient_restrictions = map {
+	$_ eq 'reject_unauth_destination' ?
+	    ($_, 'check_policy_service unix:private/policy-spf') :
+	    $_
+    } @smtpd_recipient_restrictions; 
+    '';
+}
