@@ -7,6 +7,21 @@
      use esmith::util;
      $Data::Dumper::Terse = 1;
      $Data::Dumper::Indent = 0;
+     use esmith::DomainsDB;
+     my $domainsDb = esmith::DomainsDB->open() || die('Could not open DomainsDB');
+
+     @testDomains = ();
+
+     # Extract the SmtpSink domains for testing purposes:
+     foreach my $domainRecord ($domainsDb->get_all_by_prop(type => 'domain')) {
+	 if ( $domainRecord->prop('TransportType') eq 'SmtpSink' ) {
+	     push @testDomains, $domainRecord->key;
+	 }
+     }
+
+     # The list of virtual + test domains to check:
+     @domainList = (NethServer::MailServer->new()->getDeliveryDomains(), @testDomains);
+     
      '';
 }
 
@@ -43,7 +58,6 @@ $enable_global_cache = 1;    # enable use of libdb-based cache if $enable_db=1
 $nanny_details_level = 2;    # nanny verbosity: 1: traditional, 2: detailed
 
 @local_domains_maps = ( {
-   @domainList = NethServer::MailServer->new()->getDeliveryDomains();
    Dumper([@domainList]);
 } );  # list of all local domains
 
@@ -94,7 +108,11 @@ $sa_local_tests_only = 0;    # only tests which do not require internet access?
 } );
 
 @newvirus_admin_maps = @virus_admin_maps;
-@spam_admin_maps = @virus_admin_maps;
+
+@spam_admin_maps = ( {
+    %spam_admin_maps = map { $_ => 'spamalert@' . $_ } @domainList;
+    Dumper(\%spam_admin_maps);
+} );
 
 @addr_extension_virus_maps      = ('virus');
 @addr_extension_banned_maps     = ('banned');
