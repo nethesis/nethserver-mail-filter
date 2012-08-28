@@ -1,11 +1,8 @@
-#!/bin/bash
+#!/usr/bin/perl
 
-for MIRROR in `sed -n '/^DatabaseMirror/ s/DatabaseMirror // p' /etc/freshclam.conf`; do
-    if nc -z $MIRROR 80; then
-	echo Update virus signature database..
-	/usr/bin/freshclam --quiet
-	break;
-    fi
-done
+use NethServer::Service;
+use strict;
 
-exit 0
+NethServer::Service::manage_add('nethserver-mail-filter',
+				'postgrey',  'postfix', 'amavisd');
+

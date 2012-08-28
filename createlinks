@@ -21,6 +21,7 @@ event_templates('nethserver-mail-filter-update', @templates);
 event_actions('nethserver-mail-filter-update',
 	      'initialize-default-databases' => '00',
 	      'nethserver-mail-filter-conf' => '20',	      
+	      'nethserver-mail-clamd-conf' => '30',
 	      'firewall-adjust' => '40',
 	      'runlevel-adjust' => '50');
 
@@ -47,3 +48,12 @@ event_services('nethserver-mail-filter-save',
 	       'amavisd' => 'restart',
 
 ); 
+
+#
+# nethserver-mail-filter-UNINSTALL event
+#
+event_actions('nethserver-mail-filter-uninstall',
+	      'nethserver-mail-filter-uninstall' => '02',
+	      'firewall-adjust' => '40',
+	      'runlevel-adjust' => '50');
+

@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+use NethServer::Service;
+use strict;
+
+my @services = ('postgrey', 'postfix', 'amavisd');
+
+NethServer::Service::manage_remove('nethserver-mail-filter',
+				   @services);
+
