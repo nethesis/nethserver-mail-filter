@@ -42,4 +42,8 @@ event_templates('nethserver-mail-filter-save', qw(
 
 event_services('nethserver-mail-filter-save',
                'postfix' => 'reload',
-	       'amavisd' => 'reload');
+
+               # FIXME: reload support is added in amavisd-new >= 2.7. Check for updates
+	       'amavisd' => 'restart',
+
+); 
