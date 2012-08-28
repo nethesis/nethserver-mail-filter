@@ -1,7 +1,5 @@
 <?php
 
-echo $view->checkBox('VirusCheckStatus', 'enabled')
-    ->setAttribute('uncheckedValue', 'disabled');
 
 if(strlen($view->getModule()->rblServers) > 0) {
   $rblCheckbox = $view->checkbox('RblStatus', 'enabled')
@@ -11,7 +9,18 @@ if(strlen($view->getModule()->rblServers) > 0) {
     ->setAttribute('value', '');
 }
 
-echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
+$greylistingCheckbox = $view->fieldsetSwitch('GreylistingStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
+    ->setAttribute('uncheckedValue', 'disabled')
+    // TODO: Add a whitelist to bypass greylisting (?)
+;
+
+$spfCheckbox = $view->checkBox('SpfStatus', 'enabled')
+    ->setAttribute('uncheckedValue', 'disabled');
+
+$virusCheckbox = $view->checkBox('VirusCheckStatus', 'enabled')
+    ->setAttribute('uncheckedValue', 'disabled');
+
+$spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
     ->insert($view->slider('SpamTag2Level', $view::LABEL_ABOVE)
         ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
@@ -29,11 +38,23 @@ echo $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_C
         $view->fieldsetSwitch('SpamSubjectPrefixStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
         ->setAttribute('uncheckedValue', 'disabled')
         ->insert($view->textInput('SpamSubjectPrefixString', $view::LABEL_NONE))
-    )
-    ->insert($rblCheckbox)
+    )    
 ;
 
-echo $view->checkBox('BlockAttachmentStatus', 'enabled', $view::STATE_DISABLED)
+$fileTypesCheckbox = $view->checkBox('BlockAttachmentStatus', 'enabled', $view::STATE_DISABLED)
     ->setAttribute('uncheckedValue', 'disabled');
+
+
+echo $view->fieldset()->setAttribute('template', $T('SMTP session checks'))
+    ->insert($rblCheckbox)
+    ->insert($spfCheckbox)
+    ->insert($greylistingCheckbox)
+    ->insert($fileTypesCheckbox)
+;
+
+echo $view->fieldset()->setAttribute('template', $T('Message content checks'))
+    ->insert($virusCheckbox)
+    ->insert($spamCheckbox)
+;
 
 echo $view->buttonList($view::BUTTON_SUBMIT | $view::BUTTON_HELP);
