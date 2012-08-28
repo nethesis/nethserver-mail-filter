@@ -1,0 +1,29 @@
+#
+# 15amavis_accounts
+#
+{
+    use esmith::DomainsDB;
+    my $domainsDb = esmith::DomainsDB->open() || die('Could not open DomainsDB');
+
+    $OUT = '';
+    
+    $hostname = `hostname -f` || 'localhost';
+    chomp($hostname);
+
+    foreach my $domainRecord ($domainsDb->get_all_by_prop(type => 'domain')) {
+	my $destination = '';
+
+	if( $domainRecord->prop('TransportType') eq 'LocalDelivery' ) {
+	    $destination = $domainRecord->key;
+	} elsif ( $domainRecord->prop('TransportType') eq 'SmtpSink' ) {
+	    $destination = $hostname;
+	} else {
+	    next;
+	}
+
+	foreach my $account (qw(virusalert spamalert)) {
+	    $OUT .= sprintf("%-48s postmaster\@%s\n", $account . '@' . $domainRecord->key, $destination);
+	}
+
+    }
+}
