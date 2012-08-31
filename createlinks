@@ -10,6 +10,7 @@ my @templates = qw(
     /etc/postfix/master.cf
     /etc/cron.d/sa-update
     /etc/postfix/virtual
+    /etc/freshclam.conf
 );
 
 #
