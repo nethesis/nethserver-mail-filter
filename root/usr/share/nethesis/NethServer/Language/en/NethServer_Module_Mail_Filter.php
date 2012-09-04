@@ -9,3 +9,4 @@ $L['SpamTag2Level ${0}'] = 'Mark as spam ${0}';
 $L['SpamTag2Level_label'] = 'Mark as spam threshold';
 $L['SpamKillLevel ${0}'] = 'Reject message threshold ${0}';
 $L['RblStatus_label'] = 'Enable Real-time Blackhole List (RBL)';
+$L['AVDB_OBSOLETE'] = 'Antivirus signature database is older than 5 days. See log files for details.';

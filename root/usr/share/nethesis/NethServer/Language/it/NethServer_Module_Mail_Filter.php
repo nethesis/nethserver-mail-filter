@@ -13,3 +13,4 @@ $L['RblStatus_label'] = 'Real-time Blackhole List (RBL)';
 $L['SpfStatus_label'] = 'Sender Policy Framework (SPF)';
 $L['Message content checks'] = 'Controlli sul contenuto del messaggio';
 $L['SMTP session checks'] = 'Controlli sulla sessione SMTP';
+$L['AVDB_OBSOLETE'] = 'Il database dell\'antivirus è più vecchio di 5 giorni. Consultare i log per i dettagli.';

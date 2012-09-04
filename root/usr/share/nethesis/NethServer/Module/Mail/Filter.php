@@ -36,7 +36,7 @@ class Filter extends \Nethgui\Controller\AbstractController
     public $rblServers;
 
     public function initialize()
-    {
+    {               
         $this->spamTagLevel = $this->getPlatform()
             ->getDatabase('configuration')
             ->getProp('amavisd', 'SpamTagLevel')
@@ -45,7 +45,7 @@ class Filter extends \Nethgui\Controller\AbstractController
             ->getDatabase('configuration')
             ->getProp('amavisd', 'SpamDsnLevel')
         ;
-	$this->rblServers = $this->getPlatform()
+        $this->rblServers = $this->getPlatform()
             ->getDatabase('configuration')
             ->getProp('postfix', 'RblServers')
         ;
@@ -57,7 +57,7 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('SpamSubjectPrefixString', $this->createValidator()->maxLength(16), array('configuration', 'amavisd', 'SpamSubjectPrefixString'));
         $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamTag2Level'));
         $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamKillLevel'));
-	$this->declareParameter('RblStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'RblStatus'));
+        $this->declareParameter('RblStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'RblStatus'));
         $this->declareParameter('GreylistingStatus', Validate::SERVICESTATUS, array('configuration', 'postgrey', 'status'));
         $this->declareParameter('SpfStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'SpfStatus'));
     }
@@ -71,6 +71,34 @@ class Filter extends \Nethgui\Controller\AbstractController
     protected function onParametersSaved($changedParameters)
     {
         $this->getPlatform()->signalEvent('nethserver-mail-filter-save@post-process');
+    }
+    
+    public function prepareView(\Nethgui\View\ViewInterface $view)
+    {
+        parent::prepareView($view);
+
+        if($this->parameters['VirusCheckStatus'] === 'enabled' 
+           && $this->antivirusDatabaseIsObsolete()) {
+            $view->getCommandList('/Notification')->showMessage($view->translate('AVDB_OBSOLETE'), \Nethgui\Module\Notification\AbstractNotification::NOTIFY_ERROR);
+        }
+    }
+    
+    private function antivirusDatabaseIsObsolete()
+    {   
+        $max = 0;
+        $fileList = glob('/var/clamav/*.{cvd,cld}', GLOB_BRACE);
+        foreach($fileList as $file) {
+            $changeTime = filemtime($file);
+            if($changeTime > $max) {
+                $max = $changeTime;    
+            }
+        }
+            
+        if(time() - $max > 3600 * 24 * 5) {   
+            return TRUE;
+        }
+        
+        return FALSE;
     }
 
 }
