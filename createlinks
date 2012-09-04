@@ -10,7 +10,6 @@ my @templates = qw(
     /etc/postfix/master.cf
     /etc/cron.d/sa-update
     /etc/postfix/virtual
-    /etc/freshclam.conf
     /etc/sudoers
 );
 
@@ -23,7 +22,6 @@ event_templates('nethserver-mail-filter-update', @templates);
 event_actions('nethserver-mail-filter-update',
 	      'initialize-default-databases' => '00',
 	      'nethserver-mail-filter-conf' => '20',	      
-	      'nethserver-mail-clamd-conf' => '30',
 	      'firewall-adjust' => '40',
 	      'runlevel-adjust' => '50');
 

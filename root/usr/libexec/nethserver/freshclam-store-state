@@ -1,7 +1,0 @@
-#!/bin/bash
-
-TIMESTAMP=`date -u "+%FT%TZ"`
-
-/sbin/e-smith/db configuration setprop clamd FreshclamState $1 FreshclamTimestamp ${TIMESTAMP}
-
-
