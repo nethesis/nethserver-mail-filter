@@ -4,5 +4,5 @@ use NethServer::Service;
 use strict;
 
 NethServer::Service::manage_add('nethserver-mail-filter',
-				'postgrey',  'postfix', 'amavisd', 'clamd');
+				'postfix', 'amavisd', 'clamd');
 

@@ -58,7 +58,6 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamTag2Level'));
         $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamKillLevel'));
         $this->declareParameter('RblStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'RblStatus'));
-        $this->declareParameter('GreylistingStatus', Validate::SERVICESTATUS, array('configuration', 'postgrey', 'status'));
         $this->declareParameter('SpfStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'SpfStatus'));
     }
 

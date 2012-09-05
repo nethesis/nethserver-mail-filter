@@ -26,7 +26,6 @@ event_actions('nethserver-mail-filter-update',
 	      'runlevel-adjust' => '50');
 
 event_services('nethserver-mail-filter-update',
-	       'postgrey' => 'restart',
 	       'amavisd' => 'restart',
 	       'postfix' => 'restart');
 
@@ -46,8 +45,6 @@ event_services('nethserver-mail-filter-save',
 
                # FIXME: reload support is added in amavisd-new >= 2.7. Check for updates
 	       'amavisd' => 'restart',
-
-	       'postgrey' => 'reload',
 ); 
 
 #

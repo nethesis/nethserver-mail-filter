@@ -9,11 +9,6 @@ if(strlen($view->getModule()->rblServers) > 0) {
     ->setAttribute('value', '');
 }
 
-$greylistingCheckbox = $view->fieldsetSwitch('GreylistingStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
-    ->setAttribute('uncheckedValue', 'disabled')
-    // TODO: Add a whitelist to bypass greylisting (?)
-;
-
 $spfCheckbox = $view->checkBox('SpfStatus', 'enabled')
     ->setAttribute('uncheckedValue', 'disabled');
 
@@ -48,7 +43,6 @@ $fileTypesCheckbox = $view->checkBox('BlockAttachmentStatus', 'enabled', $view::
 echo $view->fieldset()->setAttribute('template', $T('SMTP session checks'))
     ->insert($rblCheckbox)
     ->insert($spfCheckbox)
-    ->insert($greylistingCheckbox)
     ->insert($fileTypesCheckbox)
 ;
 
