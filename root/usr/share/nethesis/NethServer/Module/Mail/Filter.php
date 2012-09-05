@@ -33,7 +33,6 @@ class Filter extends \Nethgui\Controller\AbstractController
 {
     public $spamTagLevel;
     public $spamDsnLevel;
-    public $rblServers;
 
     public function initialize()
     {               
@@ -45,10 +44,6 @@ class Filter extends \Nethgui\Controller\AbstractController
             ->getDatabase('configuration')
             ->getProp('amavisd', 'SpamDsnLevel')
         ;
-        $this->rblServers = $this->getPlatform()
-            ->getDatabase('configuration')
-            ->getProp('postfix', 'RblServers')
-        ;
 
         $this->declareParameter('VirusCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'VirusCheckStatus'));
         $this->declareParameter('SpamCheckStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'SpamCheckStatus'));
@@ -57,8 +52,6 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('SpamSubjectPrefixString', $this->createValidator()->maxLength(16), array('configuration', 'amavisd', 'SpamSubjectPrefixString'));
         $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamTag2Level'));
         $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamKillLevel'));
-        $this->declareParameter('RblStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'RblStatus'));
-        $this->declareParameter('SpfStatus', Validate::SERVICESTATUS, array('configuration', 'postfix', 'SpfStatus'));
     }
 
     public function validate(\Nethgui\Controller\ValidationReportInterface $report)
