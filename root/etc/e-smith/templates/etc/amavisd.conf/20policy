@@ -1,0 +1,27 @@
+#
+# 20policy -- what to do under critical conditions
+#
+
+#
+# filter configuration is "{ $amavisd{ContentInspectionType} }"
+#
+
+$final_virus_destiny      = D_REJECT; 
+$final_banned_destiny     = D_REJECT;
+$final_spam_destiny       = D_REJECT;
+$final_bad_header_destiny = D_REJECT;    
+
+$QUARANTINEDIR = undef;
+$MAXLEVELS = 14;
+$MAXFILES = 1500;
+$MIN_EXPANSION_QUOTA =      100*1024;  # bytes  (default undef, not enforced)
+$MAX_EXPANSION_QUOTA = 300*1024*1024;  # bytes  (default undef, not enforced)
+
+$defang_virus  = 1;  # MIME-wrap passed infected mail
+$defang_banned = 1;  # MIME-wrap passed mail containing banned name
+# for defanging bad headers only turn on certain minor contents categories:
+$defang_by_ccat\{+CC_BADH.",3"\} = 1;  # NUL or CR character in header
+$defang_by_ccat\{+CC_BADH.",5"\} = 1;  # header line longer than 998 characters
+$defang_by_ccat\{+CC_BADH.",6"\} = 1;  # header field syntax error
+
+

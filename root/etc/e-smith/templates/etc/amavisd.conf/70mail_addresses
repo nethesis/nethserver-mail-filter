@@ -1,0 +1,24 @@
+#
+# 70mail_addresses
+#
+
+
+@virus_admin_maps = ( {
+    %virus_admin_maps = map { $_ => 'virusalert@' . $_ } @domainList;
+    Dumper(\%virus_admin_maps);
+} );
+
+@newvirus_admin_maps = @virus_admin_maps;
+
+@spam_admin_maps = ( {
+    %spam_admin_maps = map { $_ => 'spamalert@' . $_ } @domainList;
+    Dumper(\%spam_admin_maps);
+} );
+
+@addr_extension_virus_maps      = ('virus');
+@addr_extension_banned_maps     = ('banned');
+@addr_extension_spam_maps       = ('spam');
+@addr_extension_bad_header_maps = ('badh');
+
+$recipient_delimiter = '+';  
+
