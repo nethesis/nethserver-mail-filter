@@ -1,14 +1,12 @@
 #
-# 15amavis_accounts
+# 15amavis_accounts -- recipient aliases to deliver amavis notifications
 #
 {
     use esmith::DomainsDB;
+    use Sys::Hostname;
     my $domainsDb = esmith::DomainsDB->open() || die('Could not open DomainsDB');
 
-    $OUT = '';
-    
-    $hostname = `hostname -f` || 'localhost';
-    chomp($hostname);
+    $OUT = '';   
 
     foreach my $domainRecord ($domainsDb->get_all_by_prop(type => 'domain')) {
 	my $destination = '';
@@ -16,7 +14,7 @@
 	if( $domainRecord->prop('TransportType') eq 'LocalDelivery' ) {
 	    $destination = $domainRecord->key;
 	} elsif ( $domainRecord->prop('TransportType') eq 'SmtpSink' ) {
-	    $destination = $hostname;
+	    $destination = hostname();
 	} else {
 	    next;
 	}
