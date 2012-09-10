@@ -1,5 +1,12 @@
+{
+
+    if($amavisd{ContentInspectionType} ne 'after-queue') {
+	return '';
+    }
+
+$OUT = <<EOF;
 #
-# 50amavisd -- amavisd global content_filter is { $amavisd{status} }
+# 50amavisd-after-queue -- amavisd global content_filter is { $amavisd{status} }
 #
 { 
     if($amavisd{status} eq 'enabled') {
@@ -9,4 +16,5 @@
 	$OUT = '';
     }
 }
-
+EOF
+}

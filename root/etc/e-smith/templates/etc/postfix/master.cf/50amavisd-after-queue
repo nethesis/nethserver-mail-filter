@@ -1,7 +1,17 @@
+{
+
+    if($amavisd{ContentInspectionType} ne 'after-queue') {
+	return '';
+    }
+
+    my $maxProcesses = $amavisd{MaxProcesses} > 2 ? $amavisd{MaxProcesses} : 2;
+
+$OUT = <<EOF;
+
 #
-# 50amavisd -- message transport to amavisd-new filter
+# 50amavisd-after-queue -- message transport to amavisd-new filter
 #
-amavisd   unix  -       -       n        -      { $amavisd{MaxProcesses} < 2 ? $amavisd{MaxProcesses} : 2 }     lmtp
+amavisd   unix  -       -       n        -      $maxProcesses     lmtp
     -o lmtp_data_done_timeout=1200
     -o lmtp_send_xforward_command=yes
     -o disable_dns_lookups=yes
@@ -28,3 +38,7 @@ amavisd   unix  -       -       n        -      { $amavisd{MaxProcesses} < 2 ? $
     -o local_header_rewrite_clients=
     -o smtpd_authorized_xforward_hosts=127.0.0.0/8
 
+EOF
+
+
+}
