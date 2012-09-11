@@ -3,7 +3,7 @@
 use NethServer::Service;
 use strict;
 
-my @services = ('postgrey', 'postfix', 'amavisd', 'clamd');
+my @services = ('postfix', 'amavisd');
 
 NethServer::Service::manage_remove('nethserver-mail-filter',
 				   @services);
