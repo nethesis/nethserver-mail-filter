@@ -13,8 +13,6 @@
 
 	if( $domainRecord->prop('TransportType') eq 'LocalDelivery' ) {
 	    $destination = $domainRecord->key;
-	} elsif ( $domainRecord->prop('TransportType') eq 'SmtpSink' ) {
-	    $destination = hostname();
 	} else {
 	    next;
 	}
