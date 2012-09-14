@@ -1,0 +1,20 @@
+#
+# 50wbl -- Sender WBL, Recipient whitelist
+# 
+
+@score_sender_maps = (\{
+    '.' => [
+      {
+    my %senderWhiteList = map { $_ => '-999' } split(',', $amavisd{SenderWhiteList});
+    Dumper(\%senderWhiteList);
+}
+    ,
+      {
+    my %senderBlackList = map { $_ => '999' } split(',', $amavisd{SenderBlackList});	   
+    Dumper(\%senderBlackList);
+}
+    ]
+\});
+
+
+
