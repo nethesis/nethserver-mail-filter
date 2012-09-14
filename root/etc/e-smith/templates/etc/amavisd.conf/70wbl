@@ -16,5 +16,21 @@
     ]
 \});
 
+@spam_lovers_maps = ({
+    if( ! defined @spam_lovers_maps) {
+        @spam_lovers_maps = ();
+    }
+
+    foreach my $domain (@domainList) {
+        push @spam_lovers_maps, 'postmaster@' . $domain;
+    }
+
+    foreach my $recipient (split(',', $amavisd{RecipientWhiteList})) {
+        push @spam_lovers_maps, $recipient;    
+    }
+
+    Dumper(\@spam_lovers_maps);
+});
+
 
 
