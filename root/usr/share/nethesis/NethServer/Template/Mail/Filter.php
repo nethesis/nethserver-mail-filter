@@ -1,8 +1,7 @@
 <?php
 
-
 $virusCheckbox = $view->checkBox('VirusCheckStatus', 'enabled')
-     ->setAttribute('uncheckedValue', 'disabled');
+    ->setAttribute('uncheckedValue', 'disabled');
 
 $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
@@ -10,19 +9,26 @@ $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELD
         ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
         ->setAttribute('max', $view->getModule()->spamDsnLevel - 0.1)
         ->setAttribute('step', 0.1)
-        ->setAttribute('label', $T('SpamTag2Level ${0}'))        
-        )
+        ->setAttribute('label', $T('SpamTag2Level ${0}'))
+    )
     ->insert($view->slider('SpamKillLevel', $view::LABEL_ABOVE)
         ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
         ->setAttribute('max', $view->getModule()->spamDsnLevel - 0.1)
         ->setAttribute('step', 0.1)
         ->setAttribute('label', $T('SpamKillLevel ${0}'))
-        )    
+    )
     ->insert(
         $view->fieldsetSwitch('SpamSubjectPrefixStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
         ->setAttribute('uncheckedValue', 'disabled')
         ->insert($view->textInput('SpamSubjectPrefixString', $view::LABEL_NONE))
-    )    
+    )
+    ->insert(
+        $view->fieldset('', $view::FIELDSET_EXPANDABLE)->setAttribute('template', $T('Addresses ACL'))
+        ->insert(
+            $view->textArea('AddressAcl', $view::LABEL_NONE)
+            ->setAttribute('dimensions', '10x30')
+        )
+    )
 ;
 
 $fileTypesCheckbox = $view->checkBox('BlockAttachmentStatus', 'enabled', $view::STATE_DISABLED)

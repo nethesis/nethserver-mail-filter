@@ -35,7 +35,7 @@ class Filter extends \Nethgui\Controller\AbstractController
     public $spamDsnLevel;
 
     public function initialize()
-    {               
+    {
         $this->spamTagLevel = $this->getPlatform()
             ->getDatabase('configuration')
             ->getProp('amavisd', 'SpamTagLevel')
@@ -52,6 +52,41 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('SpamSubjectPrefixString', $this->createValidator()->maxLength(16), array('configuration', 'amavisd', 'SpamSubjectPrefixString'));
         $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamTag2Level'));
         $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamKillLevel'));
+
+        $this->declareParameter('AddressAcl', Validate::ANYTHING, array(
+            array('configuration', 'amavisd', 'RecipientWhiteList'),
+            array('configuration', 'amavisd', 'SenderWhiteList'),
+            array('configuration', 'amavisd', 'SenderBlackList'),
+        ));
+    }
+
+    public function readAddressAcl($recipientWhiteList, $senderWhiteList, $senderBlackList)
+    {
+        $addressAcl = '';
+
+        $addressAcl .= implode(":RW\r\n", explode(',', $recipientWhiteList)) . ":RW\r\n";
+        $addressAcl .= implode(":SW\r\n", explode(',', $senderWhiteList)) . ":SW\r\n";
+        $addressAcl .= implode(":SB\r\n", explode(',', $senderBlackList)) . ":SB\r\n";
+
+        return $addressAcl;
+    }
+
+    public function writeAddressAcl($addressAcl)
+    {
+        $acls = array();
+
+        foreach (explode("\n", $addressAcl) as $line) {
+            $parts = array();
+            if (preg_match('/^\s*([^:\s]+):([^\s]+)/', $line, $parts) > 0) {
+                $acls[$parts[2]][] = $parts[1];
+            }
+        }
+        
+        return array(
+            implode(',', array_unique($acls['RW'])), // $recipientWhiteList
+            implode(',', array_unique($acls['SW'])), // $senderWhiteList
+            implode(',', array_unique($acls['SB']))  // $senderBlackList
+        );
     }
 
     public function validate(\Nethgui\Controller\ValidationReportInterface $report)
@@ -64,32 +99,32 @@ class Filter extends \Nethgui\Controller\AbstractController
     {
         $this->getPlatform()->signalEvent('nethserver-mail-filter-save@post-process');
     }
-    
+
     public function prepareView(\Nethgui\View\ViewInterface $view)
     {
         parent::prepareView($view);
 
-        if($this->parameters['VirusCheckStatus'] === 'enabled' 
-           && $this->antivirusDatabaseIsObsolete()) {
+        if ($this->parameters['VirusCheckStatus'] === 'enabled'
+            && $this->antivirusDatabaseIsObsolete()) {
             $view->getCommandList('/Notification')->showMessage($view->translate('AVDB_OBSOLETE'), \Nethgui\Module\Notification\AbstractNotification::NOTIFY_ERROR);
         }
     }
-    
+
     private function antivirusDatabaseIsObsolete()
-    {   
+    {
         $max = 0;
         $fileList = glob('/var/clamav/*.{cvd,cld}', GLOB_BRACE);
-        foreach($fileList as $file) {
+        foreach ($fileList as $file) {
             $changeTime = filemtime($file);
-            if($changeTime > $max) {
-                $max = $changeTime;    
+            if ($changeTime > $max) {
+                $max = $changeTime;
             }
         }
-            
-        if(time() - $max > 3600 * 24 * 5) {   
+
+        if (time() - $max > 3600 * 24 * 5) {
             return TRUE;
         }
-        
+
         return FALSE;
     }
 
