@@ -1,5 +1,5 @@
 #
-# 50wbl -- Sender WBL, Recipient whitelist
+# 70wbl -- Sender WBL, Recipient whitelist
 # 
 
 @score_sender_maps = (\{
