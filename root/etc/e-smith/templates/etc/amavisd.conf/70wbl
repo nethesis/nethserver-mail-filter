@@ -2,20 +2,21 @@
 # 70wbl -- Sender WBL, Recipient whitelist
 # 
 
-@score_sender_maps = (\{
-    '.' => [
-      {
-    my %senderWhiteList = map { $_ => '-999' } split(',', $amavisd{SenderWhiteList});
-    Dumper(\%senderWhiteList);
-}
-    ,
-      {
-    my %senderBlackList = map { $_ => '999' } split(',', $amavisd{SenderBlackList});	   
-    Dumper(\%senderBlackList);
-}
-    ]
-\});
 
+# Sender whitelist:
+@whitelist_sender_maps = ({
+    my @senderWhiteList = split(',', $amavisd{SenderWhiteList});
+    Dumper(\@senderWhiteList);
+});
+   
+
+# Sender blacklist:
+@blacklist_sender_maps = ({
+    my @senderBlackList = split(',', $amavisd{SenderBlackList});	   
+    Dumper(\@senderBlackList);
+});
+
+# The recipient whitelist
 @spam_lovers_maps = ({
     if( ! defined @spam_lovers_maps) {
         @spam_lovers_maps = ();
