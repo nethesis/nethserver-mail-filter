@@ -63,10 +63,13 @@ class Filter extends \Nethgui\Controller\AbstractController
     public function readAddressAcl($recipientWhiteList, $senderWhiteList, $senderBlackList)
     {
         $addressAcl = '';
-
-        $addressAcl .= implode(":RW\r\n", explode(',', $recipientWhiteList)) . ":RW\r\n";
-        $addressAcl .= implode(":SW\r\n", explode(',', $senderWhiteList)) . ":SW\r\n";
-        $addressAcl .= implode(":SB\r\n", explode(',', $senderBlackList)) . ":SB\r\n";
+	
+	// Append ACL suffix to each list:
+	foreach(array('RW' => $recipientWhiteList, 'SW' => $senderWhiteList, 'SB' => $senderBlackList)  as $acl => $list ) {
+	  foreach(explode(',', $list) as $item) {
+	    $addressAcl .= $item ? ($item . ":" . $acl . "\r\n") : '';
+	  }
+	}
 
         return $addressAcl;
     }
@@ -77,15 +80,20 @@ class Filter extends \Nethgui\Controller\AbstractController
 
         foreach (explode("\n", $addressAcl) as $line) {
             $parts = array();
-            if (preg_match('/^\s*([^:\s]+):([^\s]+)/', $line, $parts) > 0) {
+            if (preg_match('/^\s*([^:\s]+)\s*:\s*([^\s]+)\s*$/', $line, $parts) > 0) {
                 $acls[$parts[2]][] = $parts[1];
             }
         }
         
         return array(
-            implode(',', array_unique($acls['RW'])), // $recipientWhiteList
-            implode(',', array_unique($acls['SW'])), // $senderWhiteList
-            implode(',', array_unique($acls['SB']))  // $senderBlackList
+		     // $recipientWhiteList:
+		     isset($acls['RW']) ? implode(',', array_unique($acls['RW'])) : '', 
+
+		     // $senderWhiteList:
+		     isset($acls['SW']) ? implode(',', array_unique($acls['SW'])) : '', 
+
+		     // $senderBlackList:
+		     isset($acls['SB']) ? implode(',', array_unique($acls['SB'])) : ''
         );
     }
 
