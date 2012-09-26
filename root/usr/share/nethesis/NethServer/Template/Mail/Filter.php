@@ -1,7 +1,24 @@
 <?php
 
+/* @var $view Nethgui\Renderer\Xhtml */
+
 $virusCheckbox = $view->checkBox('VirusCheckStatus', 'enabled')
     ->setAttribute('uncheckedValue', 'disabled');
+
+$view->includeTranslations(array(
+    'New SB',
+    'New RW',
+    'New SW',
+    'Delete',
+    'Done',
+    'Update',
+    'allow To',
+    'allow From',
+    'deny To',
+    'deny From',
+));
+$view->includeFile('NethServer/Js/nethserver.collectioneditor.filter.js');
+$view->includeFile('NethServer/Css/nethserver.collectioneditor.filter.css');
 
 $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
@@ -23,11 +40,12 @@ $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELD
         ->insert($view->textInput('SpamSubjectPrefixString', $view::LABEL_NONE))
     )
     ->insert(
-        $view->fieldset('', $view::FIELDSET_EXPANDABLE)->setAttribute('template', $T('Addresses ACL'))
-        ->insert(
-            $view->textArea('AddressAcl', $view::LABEL_NONE)
-            ->setAttribute('dimensions', '10x30')
-        )
+    $view->fieldset('', $view::FIELDSET_EXPANDABLE)->setAttribute('template', $T('Addresses ACL'))
+    ->insert(
+        $view->collectionEditor('AddressAcl', $view::LABEL_NONE)
+        ->setAttribute('class', 'Filter')
+        ->setAttribute('dimensions', '10x30')
+    )
     )
 ;
 
