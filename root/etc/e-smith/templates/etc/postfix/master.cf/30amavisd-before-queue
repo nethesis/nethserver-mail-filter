@@ -10,6 +10,10 @@
     # Enable proxy filter:
     push @smtpd_public_options, 'smtpd_proxy_filter=127.0.0.1:10024';
 
+    if(defined @submission_smtpd_options) {
+	push @submission_smtpd_options, 'smtpd_proxy_filter=127.0.0.1:10024';
+    }
+
 $OUT = <<EOF;
 #
 # 30amavisd-before-queue -- After-filter SMTP server.  Receive mail
