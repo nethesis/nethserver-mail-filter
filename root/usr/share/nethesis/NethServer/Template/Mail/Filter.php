@@ -40,7 +40,7 @@ $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELD
         ->insert($view->textInput('SpamSubjectPrefixString', $view::LABEL_NONE))
     )
     ->insert(
-    $view->fieldset('', $view::FIELDSET_EXPANDABLE)->setAttribute('template', $T('Addresses ACL'))
+    $view->fieldset('', $view::FIELDSET_EXPANDABLE)->setAttribute('template', $T('AddressAcl_label'))
     ->insert(
         $view->collectionEditor('AddressAcl', $view::LABEL_NONE)
         ->setAttribute('class', 'Filter')

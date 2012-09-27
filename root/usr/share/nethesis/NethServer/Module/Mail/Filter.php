@@ -21,7 +21,6 @@ namespace NethServer\Module\Mail;
  */
 
 use Nethgui\System\PlatformInterface as Validate;
-use Nethgui\Controller\Table\Modify as Table;
 
 /**
  * Mail filter properties for Amavis
@@ -63,13 +62,13 @@ class Filter extends \Nethgui\Controller\AbstractController
     public function readAddressAcl($recipientWhiteList, $senderWhiteList, $senderBlackList)
     {
         $addressAcl = '';
-	
-	// Append ACL suffix to each list:
-	foreach(array('RW' => $recipientWhiteList, 'SW' => $senderWhiteList, 'SB' => $senderBlackList)  as $acl => $list ) {
-	  foreach(explode(',', $list) as $item) {
-	    $addressAcl .= $item ? ($item . ":" . $acl . "\r\n") : '';
-	  }
-	}
+
+        // Append ACL suffix to each list:
+        foreach (array('RW' => $recipientWhiteList, 'SW' => $senderWhiteList, 'SB' => $senderBlackList) as $acl => $list) {
+            foreach (explode(',', $list) as $item) {
+                $addressAcl .= $item ? ($item . ":" . $acl . "\r\n") : '';
+            }
+        }
 
         return $addressAcl;
     }
@@ -84,23 +83,58 @@ class Filter extends \Nethgui\Controller\AbstractController
                 $acls[$parts[2]][] = $parts[1];
             }
         }
-        
+
         return array(
-		     // $recipientWhiteList:
-		     isset($acls['RW']) ? implode(',', array_unique($acls['RW'])) : '', 
-
-		     // $senderWhiteList:
-		     isset($acls['SW']) ? implode(',', array_unique($acls['SW'])) : '', 
-
-		     // $senderBlackList:
-		     isset($acls['SB']) ? implode(',', array_unique($acls['SB'])) : ''
+            // $recipientWhiteList:
+            isset($acls['RW']) ? implode(',', array_unique($acls['RW'])) : '',
+            // $senderWhiteList:
+            isset($acls['SW']) ? implode(',', array_unique($acls['SW'])) : '',
+            // $senderBlackList:
+            isset($acls['SB']) ? implode(',', array_unique($acls['SB'])) : ''
         );
     }
 
     public function validate(\Nethgui\Controller\ValidationReportInterface $report)
     {
         $this->getValidator('SpamTag2Level')->lessThan($this->parameters['SpamKillLevel']);
+
+        $message = '';
+        $args = array();
+
+        if ($this->validateAddressAcl($message, $args) === FALSE) {
+            $report->addValidationErrorMessage($this, 'AddressAcl', $message, $args);
+        }
+
         parent::validate($report);
+    }
+
+    private function validateAddressAcl(&$message, &$args)
+    {
+        $lines = explode("\n", $this->parameters['AddressAcl']);
+
+        $addressValidator = $this->createValidator()->orValidator(
+            $this->createValidator(Validate::EMAIL), $this->createValidator(Validate::HOSTNAME)
+        );
+
+        $typeValidator = $this->createValidator()->memberOf('SW', 'SB', 'RW');
+
+        foreach ($lines as $line) {
+            $fields = array_map('trim', explode(":", $line));
+
+            if ( ! $addressValidator->evaluate($fields[0])) {
+                $message = '"${0}" is not an email address or host name';
+                $args[0] = $fields[0];
+                return FALSE;
+            }
+
+            if ( ! $typeValidator->evaluate($fields[1])) {
+                $message = '"${0}" is not a valid record type';
+                $args[0] = $fields[1];
+                return FALSE;
+            }
+        }
+
+        return TRUE;
     }
 
     protected function onParametersSaved($changedParameters)
