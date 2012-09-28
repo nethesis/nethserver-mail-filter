@@ -56,7 +56,7 @@ class Filter extends \Nethgui\Controller\AbstractController
             array('configuration', 'amavisd', 'SenderWhiteList'),
             array('configuration', 'amavisd', 'SenderBlackList'),
         ));
-        $this->declareParameter('BlockAttachmentList', '/^([a-z]+(,[a-z]+)*)?/', array('configuration', 'amavisd', 'BlockAttachmentList'));
+        $this->declareParameter('BlockAttachmentList', '/^[a-z]+(,[a-z]+)*$/', array('configuration', 'amavisd', 'BlockAttachmentList'));
     }
 
     public function readAddressAcl($recipientWhiteList, $senderWhiteList, $senderBlackList)
