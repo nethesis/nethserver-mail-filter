@@ -2,7 +2,7 @@
     #
     # 30banned_files_ui
     # 
-    if($amavisd{BlockAttachmentStatus) eq 'enabled') {
+    if($amavisd{BlockAttachmentStatus} eq 'enabled') {
 	my $extList = join('|', split(',', $amavisd{BlockAttachmentList}));
 
 	#
