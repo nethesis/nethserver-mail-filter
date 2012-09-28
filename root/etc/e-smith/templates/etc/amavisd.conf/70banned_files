@@ -1,0 +1,10 @@
+#
+# 70banned_files
+#
+
+$banned_filename_re = undef;
+$banned_namepath_re = new_RE({
+    join(', ', map {Dumper($_)} @banned_namepath_re);
+});
+
+
