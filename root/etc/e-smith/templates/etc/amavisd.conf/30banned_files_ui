@@ -2,17 +2,19 @@
     #
     # 30banned_files_ui
     # 
-    my $extList = join('|', split(',', $amavisd{BlockAttachmentList}));
+    if($amavisd{BlockAttachmentStatus) eq 'enabled') {
+	my $extList = join('|', split(',', $amavisd{BlockAttachmentList}));
 
-    #
-    # This perl regular expression matches the output of
-    # "check_for_banned".  File extension is compared for file name
-    # and file type as aguessed by file(1).
-    #
-    # To debug this expression set $log_level=4 and search for "lookup
-    # [banned_namepath_re]" in /var/log/messages.
-    #
-    push @banned_namepath_re, qr/(?#BANNED_FILES_UI) ^ (.*\t)? (T=|N=[^\.]+\.)($extList) (\t.*)? $/xmi;
+	#
+	# This perl regular expression matches the output of
+	# "check_for_banned".  File extension is compared for file
+	# name and file type as aguessed by file(1).
+	#
+	# To debug this expression set $log_level=4 and search for
+	# "lookup [banned_namepath_re]" in /var/log/messages.
+	#
+	push @banned_namepath_re, qr/(?#BANNED_FILES_UI) ^ (.*\t)? (T=|N=[^\.]+\.)($extList) (\t.*)? $/xmi;
+    }
 
     '';
 }

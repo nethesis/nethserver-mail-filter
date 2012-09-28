@@ -51,12 +51,12 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('SpamSubjectPrefixString', $this->createValidator()->maxLength(16), array('configuration', 'amavisd', 'SpamSubjectPrefixString'));
         $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamTag2Level'));
         $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'amavisd', 'SpamKillLevel'));
-
         $this->declareParameter('AddressAcl', Validate::ANYTHING, array(
             array('configuration', 'amavisd', 'RecipientWhiteList'),
             array('configuration', 'amavisd', 'SenderWhiteList'),
             array('configuration', 'amavisd', 'SenderBlackList'),
         ));
+        $this->declareParameter('BlockAttachmentList', '/^([a-z]+(,[a-z]+)*)?/', array('configuration', 'amavisd', 'BlockAttachmentList'));
     }
 
     public function readAddressAcl($recipientWhiteList, $senderWhiteList, $senderBlackList)

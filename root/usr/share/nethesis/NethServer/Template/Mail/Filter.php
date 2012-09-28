@@ -49,8 +49,9 @@ $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELD
     )
 ;
 
-$fileTypesCheckbox = $view->checkBox('BlockAttachmentStatus', 'enabled', $view::STATE_DISABLED)
-    ->setAttribute('uncheckedValue', 'disabled');
+$fileTypesCheckbox = $view->fieldsetSwitch('BlockAttachmentStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
+    ->setAttribute('uncheckedValue', 'disabled')
+    ->insert($view->textInput('BlockAttachmentList', $view::LABEL_NONE));
 
 echo $view->panel()
     ->insert($fileTypesCheckbox)
