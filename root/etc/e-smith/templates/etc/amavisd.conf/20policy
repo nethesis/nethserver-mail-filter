@@ -17,7 +17,7 @@ $MAXFILES = 1500;
 $MIN_EXPANSION_QUOTA =      100*1024;  # bytes  (default undef, not enforced)
 $MAX_EXPANSION_QUOTA = 300*1024*1024;  # bytes  (default undef, not enforced)
 
-# Mail from submission listeners skip SA checks (see #1435):
+# Mail passed through submission ports skips SA checks (see #1435):
 $interface_policy\{'10587'\} = 'SUBMISSION';
 $policy_bank\{'SUBMISSION'\} = \{
     bypass_spam_checks_maps   => [1]
