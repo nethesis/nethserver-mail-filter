@@ -20,8 +20,9 @@ $MAX_EXPANSION_QUOTA = 300*1024*1024;  # bytes  (default undef, not enforced)
 # Mail passed through submission ports skips SA checks (see #1435):
 $interface_policy\{'10587'\} = 'SUBMISSION';
 $policy_bank\{'SUBMISSION'\} = \{
-    bypass_spam_checks_maps   => [1]
+    originating => 1,
+    bypass_spam_checks_maps   => [1],
+    allow_disclaimers => 1
 \};
-
 
 
