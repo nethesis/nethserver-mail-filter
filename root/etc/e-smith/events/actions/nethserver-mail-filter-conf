@@ -3,5 +3,7 @@
 use NethServer::Service;
 use strict;
 
-NethServer::Service::manage_add('nethserver-mail-filter',
-				'postfix', 'amavisd');
+my @services = ('clamd');
+
+NethServer::Service::manage_add('nethserver-mail-filter', @services);
+
