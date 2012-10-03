@@ -1,9 +1,48 @@
 #!/usr/bin/perl
 
+#
+# nethserver-mail-filter-conf 
+#
+# Copyright (C) 2012 Nethesis srl
+#
+
 use NethServer::Service;
+use esmith::ConfigDB;
 use strict;
+
+#
+# Announce clamd dependency
+#
 
 my @services = ('clamd');
 
 NethServer::Service::manage_add('nethserver-mail-filter', @services);
+
+#
+# Adjust postfix smtpd connections limit, if it has not already done
+#
+
+my $configDb = esmith::ConfigDB->open() || die('Could not open Config DB');
+
+my $connectionsLimit = $configDb->get_prop('postfix', 'ConnectionsLimit');
+my $connectionsLimitPerIp = $configDb->get_prop('postfix', 'ConnectionsLimitPerIp');
+my $contentInspectionType = $configDb->get_prop('amavisd', 'ContentInspectionType');
+
+
+if( ! defined $connectionsLimit 
+    || $connectionsLimit eq '' 
+    || ! defined $connectionsLimitPerIp 
+    || $connectionsLimitPerIp eq '') {
+    # Configuration has been set up, don't change it again.
+    return; 
+}
+
+
+if($contentInspectionType ne 'before-queue') {
+    # Switch to postfix BEFORE-QUEUE content filtering:
+    $configDb->set_prop('amavisd', 'ContentInspectionType', 'before-queue');
+    $configDb->set_prop('postfix', 'ConnectionsLimit', 20);
+    $configDb->set_prop('postfix', 'ConnectionsLimitPerIp', 10);
+}
+
 

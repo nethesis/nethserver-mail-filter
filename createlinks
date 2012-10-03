@@ -20,11 +20,11 @@ my @templates = qw(
 event_templates('nethserver-mail-filter-update', @templates);
 
 event_actions('nethserver-mail-filter-update',
-	      'initialize-default-databases' => '00',
+	      'initialize-default-databases'   => '00',
+	      'nethserver-mail-filter-conf'    => '02',	      
 	      'nethserver-mail-postmap-update' => '10',
-	      'nethserver-mail-filter-conf' => '20',	      
-	      'firewall-adjust' => '40',
-	      'runlevel-adjust' => '50');
+	      'firewall-adjust'                => '40',
+	      'runlevel-adjust'                => '50');
 
 event_services('nethserver-mail-filter-update',
 	       'amavisd' => 'restart',
