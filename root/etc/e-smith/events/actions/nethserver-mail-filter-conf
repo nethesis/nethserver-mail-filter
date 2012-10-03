@@ -29,14 +29,11 @@ my $connectionsLimitPerIp = $configDb->get_prop('postfix', 'ConnectionsLimitPerI
 my $contentInspectionType = $configDb->get_prop('amavisd', 'ContentInspectionType');
 
 
-if( ! defined $connectionsLimit 
-    || $connectionsLimit eq '' 
-    || ! defined $connectionsLimitPerIp 
-    || $connectionsLimitPerIp eq '') {
+if((defined $connectionsLimit && $connectionsLimit ne '')
+    || (defined $connectionsLimitPerIp && $connectionsLimitPerIp ne '')) {
     # Configuration has been set up, don't change it again.
     exit 0;
 }
-
 
 if($contentInspectionType ne 'before-queue') {
     # Switch to postfix BEFORE-QUEUE content filtering:
