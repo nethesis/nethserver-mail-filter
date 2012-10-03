@@ -1,10 +1,21 @@
 #!/usr/bin/perl
 
 use NethServer::Service;
+use esmith::ConfigDB;
 use strict;
 
 my @services = ('clamd');
 
 NethServer::Service::manage_remove('nethserver-mail-filter',
 				   @services);
+
+my $configDb = esmith::ConfigDB->open() || die('Could not open Config DB');
+my $contentInspectionType = $configDb->get_prop('amavisd', 'ContentInspectionType');
+
+if($contentInspectionType ne 'after-queue') {
+    # Switch back to postfix AFTER-QUEUE content filtering:
+    $configDb->set_prop('amavisd', 'ContentInspectionType', 'after-queue');
+    $configDb->set_prop('postfix', 'ConnectionsLimit', '');
+    $configDb->set_prop('postfix', 'ConnectionsLimitPerIp', '');
+}
 

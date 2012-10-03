@@ -35,14 +35,16 @@ if((defined $connectionsLimit && $connectionsLimit ne '')
     exit 0;
 }
 
+# Enable anti-spam and anti-virus checking:
+$configDb->set_prop('amavisd', 'VirusCheckStatus', 'enabled');
+$configDb->set_prop('amavisd', 'SpamCheckStatus', 'enabled');
+
 if($contentInspectionType ne 'before-queue') {
-    # Switch to postfix BEFORE-QUEUE content filtering, and enable
-    # anti-spam and anti-virus checking
+    # Switch to postfix BEFORE-QUEUE content filtering:
     $configDb->set_prop('amavisd', 'ContentInspectionType', 'before-queue');
-    $configDb->set_prop('amavisd', 'VirusCheckStatus', 'enabled');
-    $configDb->set_prop('amavisd', 'SpamCheckStatus', 'enabled');
     $configDb->set_prop('postfix', 'ConnectionsLimit', 20);
     $configDb->set_prop('postfix', 'ConnectionsLimitPerIp', 10);
 }
+
 
 
