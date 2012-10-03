@@ -9,8 +9,21 @@ my @services = ('clamd');
 NethServer::Service::manage_remove('nethserver-mail-filter',
 				   @services);
 
+
+
 my $configDb = esmith::ConfigDB->open() || die('Could not open Config DB');
+my $autoConfig = $configDb->get_prop('amavisd', 'AutoConfigStatus');
+
+if(defined $autoConfig && $autoConfig ne 'enabled') {
+    # Manual configuration: quit here.
+    exit 0;
+}
+
 my $contentInspectionType = $configDb->get_prop('amavisd', 'ContentInspectionType');
+
+# Disable anti-spam and anti-virus checking:
+$configDb->set_prop('amavisd', 'VirusCheckStatus', 'disabled');
+$configDb->set_prop('amavisd', 'SpamCheckStatus', 'disabled');
 
 if($contentInspectionType ne 'after-queue') {
     # Switch back to postfix AFTER-QUEUE content filtering:

@@ -25,13 +25,10 @@ NethServer::Service::manage_add('nethserver-mail-filter', @services);
 my $configDb = esmith::ConfigDB->open() || die('Could not open Config DB');
 
 my $connectionsLimit = $configDb->get_prop('postfix', 'ConnectionsLimit');
-my $connectionsLimitPerIp = $configDb->get_prop('postfix', 'ConnectionsLimitPerIp');
-my $contentInspectionType = $configDb->get_prop('amavisd', 'ContentInspectionType');
+my $autoConfig = $configDb->get_prop('amavisd', 'AutoConfigStatus');
 
-
-if((defined $connectionsLimit && $connectionsLimit ne '')
-    || (defined $connectionsLimitPerIp && $connectionsLimitPerIp ne '')) {
-    # Configuration has been set up, don't change it again.
+if(defined $autoConfig && $autoConfig ne 'enabled') {
+    # Manual configuration: quit here.
     exit 0;
 }
 
