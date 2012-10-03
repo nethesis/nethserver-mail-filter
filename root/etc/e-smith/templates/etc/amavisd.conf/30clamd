@@ -1,12 +1,18 @@
 #
-# 30clamd
+# 30clamd -- { $amavisd{VirusCheckStatus} }
 #
 
-@av_scanners = (
+@av_scanners = ({
+    if($amavisd{VirusCheckStatus} eq 'enabled') {
+	$OUT = q(
   ['ClamAV-clamd',                   
     \&ask_daemon, ["CONTSCAN \{\}\n", "/var/run/clamav/clamd.sock"],
     qr/\bOK$/, qr/\bFOUND$/,
     qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ]
 );
+    } else {
+	$OUT = '';
+    }
+});
 
 
