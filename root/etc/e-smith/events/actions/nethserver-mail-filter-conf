@@ -34,7 +34,7 @@ if( ! defined $connectionsLimit
     || ! defined $connectionsLimitPerIp 
     || $connectionsLimitPerIp eq '') {
     # Configuration has been set up, don't change it again.
-    return; 
+    exit 0;
 }
 
 
