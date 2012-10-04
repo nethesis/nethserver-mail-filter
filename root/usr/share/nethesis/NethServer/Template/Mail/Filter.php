@@ -5,6 +5,7 @@
 $virusCheckbox = $view->checkBox('VirusCheckStatus', 'enabled')
     ->setAttribute('uncheckedValue', 'disabled');
 
+// send some translated strings to the javascript context:
 $view->includeTranslations(array(
     'New SB',
     'New RW',
@@ -51,7 +52,11 @@ $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELD
 
 $fileTypesCheckbox = $view->fieldsetSwitch('BlockAttachmentStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
-    ->insert($view->textInput('BlockAttachmentList', $view::LABEL_NONE));
+    ->insert($view->selector('BlockAttachmentClassList', $view::SELECTOR_MULTIPLE | $view::LABEL_NONE))
+    ->insert($view->fieldsetSwitch('BlockAttachmentCustomStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
+    ->setAttribute('uncheckedValue', 'disabled')
+    ->insert($view->textInput('BlockAttachmentCustomList', $view::LABEL_NONE))
+);
 
 echo $view->panel()
     ->insert($fileTypesCheckbox)

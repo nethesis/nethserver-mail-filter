@@ -19,4 +19,7 @@ $L['New RW'] = 'Nuovo accetta A';
 $L['AddressAcl_label'] = 'Regole di accesso per indirizzi email';
 $L['"${0}" is not a valid record type'] = '"${0}" è un tipo di record sconosciuto';
 $L['"${0}" is not an email address or host name'] = '"${0}" non è un indirizzo email o un nome host';
-$L['BlockAttachmentList_label'] = 'Tipi di file bloccati';
+$L['Exec_label'] = 'Eseguibili';
+$L['Arch_label'] = 'Archivi';
+$L['BlockAttachmentCustomStatus_label'] = 'Lista personalizzata';
+

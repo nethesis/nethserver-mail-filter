@@ -10,4 +10,6 @@ $L['SpamTag2Level_label'] = 'Mark as spam threshold';
 $L['SpamKillLevel ${0}'] = 'Reject message threshold ${0}';
 $L['AVDB_OBSOLETE'] = 'Antivirus signature database is older than 5 days. See log files for details.';
 $L['AddressesAcl_label'] = 'Email addresses access rules';
-$L['BlockAttachmentList_label'] = 'Blocked file types';
+$L['Exec_label'] = 'Executables';
+$L['Arch_label'] = 'Archives';
+$L['BlockAttachmentCustomStatus_label'] = 'Custom list';

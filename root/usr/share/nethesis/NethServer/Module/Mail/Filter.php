@@ -32,9 +32,17 @@ class Filter extends \Nethgui\Controller\AbstractController
 {
     public $spamTagLevel;
     public $spamDsnLevel;
+    public $attachmentClasses;
 
     public function initialize()
     {
+        $attachmentClasses = array(
+            'Exec',
+            'Arch'
+        );
+
+        $this->attachmentClasses = $attachmentClasses;
+
         $this->spamTagLevel = $this->getPlatform()
             ->getDatabase('configuration')
             ->getProp('amavisd', 'SpamTagLevel')
@@ -56,7 +64,10 @@ class Filter extends \Nethgui\Controller\AbstractController
             array('configuration', 'amavisd', 'SenderWhiteList'),
             array('configuration', 'amavisd', 'SenderBlackList'),
         ));
-        $this->declareParameter('BlockAttachmentList', '/^[a-z]+(,[a-z]+)*$/', array('configuration', 'amavisd', 'BlockAttachmentList'));
+
+        $this->declareParameter('BlockAttachmentCustomStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'BlockAttachmentCustomStatus'));
+        $this->declareParameter('BlockAttachmentCustomList', '/^[a-z]+(,[a-z]+)*$/', array('configuration', 'amavisd', 'BlockAttachmentCustomList'));
+        $this->declareParameter('BlockAttachmentClassList', Validate::ANYTHING_COLLECTION, array('configuration', 'amavisd', 'BlockAttachmentClassList', ','));
     }
 
     public function readAddressAcl($recipientWhiteList, $senderWhiteList, $senderBlackList)
@@ -119,6 +130,10 @@ class Filter extends \Nethgui\Controller\AbstractController
         $typeValidator = $this->createValidator()->memberOf('SW', 'SB', 'RW');
 
         foreach ($lines as $line) {
+            if ($line === '') {
+                continue;
+            }
+
             $fields = array_map('trim', explode(":", $line));
 
             if ( ! $addressValidator->evaluate($fields[0])) {
@@ -146,6 +161,10 @@ class Filter extends \Nethgui\Controller\AbstractController
     {
         parent::prepareView($view);
 
+        $view['BlockAttachmentClassListDatasource'] = array_map(function($ac) use ($view) {
+            return array($ac, $view->translate($ac . '_label'));
+        }, $this->attachmentClasses);                
+        
         if ($this->parameters['VirusCheckStatus'] === 'enabled'
             && $this->antivirusDatabaseIsObsolete()) {
             $view->getCommandList('/Notification')->showMessage($view->translate('AVDB_OBSOLETE'), \Nethgui\Module\Notification\AbstractNotification::NOTIFY_ERROR);
