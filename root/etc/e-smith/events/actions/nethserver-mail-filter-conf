@@ -32,6 +32,8 @@ if(defined $autoConfig && $autoConfig ne 'enabled') {
     exit 0;
 }
 
+my $contentInspectionType = $configDb->get_prop('amavisd', 'ContentInspectionType');
+
 # Enable anti-spam and anti-virus checking:
 $configDb->set_prop('amavisd', 'VirusCheckStatus', 'enabled');
 $configDb->set_prop('amavisd', 'SpamCheckStatus', 'enabled');
