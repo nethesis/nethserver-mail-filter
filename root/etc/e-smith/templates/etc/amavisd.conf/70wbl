@@ -6,14 +6,22 @@
 # Sender whitelist:
 @whitelist_sender_maps = ({
     my @senderWhiteList = split(',', $amavisd{SenderWhiteList});
-    Dumper(\@senderWhiteList);
+    if(@senderWhiteList) {
+        Dumper(\@senderWhiteList);
+    } else {
+	'';
+    }
 });
    
 
 # Sender blacklist:
 @blacklist_sender_maps = ({
     my @senderBlackList = split(',', $amavisd{SenderBlackList});	   
-    Dumper(\@senderBlackList);
+    if(@senderBlackList) {
+	Dumper(\@senderBlackList);
+    } else {
+	'';
+    }
 });
 
 # The recipient whitelist
@@ -30,7 +38,11 @@
         push @spam_lovers_maps, $recipient;    
     }
 
-    Dumper(\@spam_lovers_maps);
+    if(@spam_lovers_maps) {
+	Dumper(\@spam_lovers_maps);
+    } else {
+	'';
+    }
 });
 
 
