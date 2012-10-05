@@ -25,7 +25,7 @@
 		if(defined $extClasses{$class}) {
 		    my $regexpClass = join('|', @{$extClasses{$class}});
 		    my $comment = "(?#CLASS $class)";
-		    push @banned_namepath_re, qr/$comment ^ (.*\t)? (T=|N=)([^\.]+\.)+($regexpClass) (\t.*)? $/xmi;
+		    push @banned_namepath_re, qr/$comment ^ (.*\t)? (T=|N=([^\.]+\.)+)($regexpClass) (\t.*)? $/xmi;
 		}
 	    }
 	}
@@ -44,7 +44,7 @@
 	    if(scalar @extList) {
 		my $regexp = join('|', @extList);
 	    
-		push @banned_namepath_re, qr/(?#CUSTOM) ^ (.*\t)? (T=|N=)([^\.]+\.)+($regexp) (\t.*)? $/xmi;
+		push @banned_namepath_re, qr/(?#CUSTOM) ^ (.*\t)? (T=|N=([^\.]+\.)+)($regexp) (\t.*)? $/xmi;
 	    }
 
 	}
