@@ -5,12 +5,21 @@
 #
 # filter configuration is "{ $amavisd{ContentInspectionType} }"
 #
-
-$final_virus_destiny      = D_REJECT; 
+{
+    if($amavisd{ContentInspectionType} eq 'before-queue') {
+	$OUT = q($final_virus_destiny      = D_REJECT; 
 $final_spam_destiny       = D_DISCARD;
 $final_banned_destiny     = D_REJECT;
-$final_bad_header_destiny = D_PASS;    
-
+$final_bad_header_destiny = D_PASS;
+);
+    } else {
+	$OUT = q($final_virus_destiny      = D_DISCARD; 
+$final_spam_destiny       = D_DISCARD;
+$final_banned_destiny     = D_DISCARD;
+$final_bad_header_destiny = D_PASS;
+);
+    }
+}
 $QUARANTINEDIR = undef;
 $MAXLEVELS = 14;
 $MAXFILES = 1500;
