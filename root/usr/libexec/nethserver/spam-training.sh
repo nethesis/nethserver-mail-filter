@@ -43,8 +43,6 @@ fi
 # Ensure temporary spool file is deleted when the process terminates
 TEMPFILE=`/bin/mktemp /var/tmp/spam-training.XXXXXXXXXXX`
 trap "/bin/rm -f ${TEMPFILE}" EXIT SIGHUP SIGINT SIGTERM
-#trap "logger -p mail.debug SIGINT" SIGINT
-#trap "logger -p mail.debug SIGHUP" SIGHUP
 
 /bin/cat <&0 >>${TEMPFILE} 
 
@@ -58,13 +56,12 @@ if [ $ACTION == 'ham' ]; then
 elif [ $ACTION == 'spam' ]; then
     sa_learn --spam ${TEMPFILE}
 else 
-    log err "Action '${ACTION}' is not recognized " 
+    log err "Action '${ACTION}' is not recognized" 
     exit 3
 fi
 
 if [ $? -ne 0 ]; then
     log err "Message classification failed"
-    log debug `env` `whoami` `id` `pwd`
     exit 1
 fi 
 
