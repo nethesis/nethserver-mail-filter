@@ -16,12 +16,18 @@ function log {
     [ -x /usr/bin/logger ] && /usr/bin/logger -p "mail.${level}" "${PROG} (${USER})" $*;    
 }
 
+# sa_learn wrapper -- change the group id to amavis before executing
+# sa-learn
+function sa_learn {
+   /usr/bin/sg amavis -c "/usr/bin/sa-learn $*"
+}
+
 export LANG=C
 
 PROG=`basename $0`
 USER=$1
 ACTION=$2
-sa_learn=/usr/bin/sa-learn
+
 
 # If defined spamtrainers user group, require that the current user is
 # a member of it before going on.
@@ -36,7 +42,9 @@ fi
 
 # Ensure temporary spool file is deleted when the process terminates
 TEMPFILE=`/bin/mktemp /var/tmp/spam-training.XXXXXXXXXXX`
-trap "/bin/rm -f ${TEMPFILE}" EXIT SIGINT SIGHUP SIGTERM
+trap "/bin/rm -f ${TEMPFILE}" EXIT SIGHUP SIGINT SIGTERM
+#trap "logger -p mail.debug SIGINT" SIGINT
+#trap "logger -p mail.debug SIGHUP" SIGHUP
 
 /bin/cat <&0 >>${TEMPFILE} 
 
@@ -46,16 +54,17 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ $ACTION == 'ham' ]; then
-    $sa_learn --ham ${TEMPFILE}
+    sa_learn --ham ${TEMPFILE}
 elif [ $ACTION == 'spam' ]; then
-    $sa_learn --spam ${TEMPFILE}
+    sa_learn --spam ${TEMPFILE}
 else 
-    log err "Action '${ACTION}' is not recognized"
+    log err "Action '${ACTION}' is not recognized " 
     exit 3
 fi
 
 if [ $? -ne 0 ]; then
     log err "Message classification failed"
+    log debug `env` `whoami` `id` `pwd`
     exit 1
 fi 
 
