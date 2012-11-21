@@ -7,6 +7,7 @@
 #
 
 use NethServer::Service;
+use File::Path;
 use esmith::ConfigDB;
 use strict;
 
@@ -45,5 +46,8 @@ if($contentInspectionType ne 'before-queue') {
     $configDb->set_prop('postfix', 'ConnectionsLimitPerIp', 10);
 }
 
-
-
+# Refs #1516 -- create directory for bayes DB:
+if ( ! -d '/var/lib/nethserver/sa' ) {
+    File::Path::make_path('/var/lib/nethserver/sa', { group => 'amavis' }) || die;
+    chmod 02770, '/var/lib/nethserver/sa' || die;
+}
