@@ -4,6 +4,7 @@
 # NethServer -- spam-training.sh 
 #
 # Read a mail message from standard input and pass it to sa-learn.
+# This script is executed by dovecot as vmail user.
 #
 # Copyright (C) 2012 Nethesis srl
 #
@@ -18,8 +19,8 @@ function log {
 
 # sa_learn wrapper -- change the group id to amavis before executing
 # sa-learn
-function sa_learn {
-   /usr/bin/sg amavis -c "/usr/bin/sa-learn $*"
+function sa_learn {    
+    /usr/bin/sg amavis -c "/usr/bin/sa-learn -p ${PREFS} $*"
 }
 
 export LANG=C
@@ -27,7 +28,7 @@ export LANG=C
 PROG=`basename $0`
 USER=$1
 ACTION=$2
-
+PREFS="~amavis/.spamassassin/user_prefs.cf"
 
 # If defined spamtrainers user group, require that the current user is
 # a member of it before going on.
