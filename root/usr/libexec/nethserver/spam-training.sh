@@ -9,7 +9,12 @@
 # Copyright (C) 2012 Nethesis srl
 #
 
+# Close STDOUT descriptor
 exec >-
+
+PROG=`basename $0`
+USER=$1
+ACTION=$2
 
 function log {
     local level=$1
@@ -17,18 +22,6 @@ function log {
     [ -x /usr/bin/logger ] && /usr/bin/logger -p "mail.${level}" "${PROG} (${USER})" $*;    
 }
 
-# sa_learn wrapper -- change the group id to amavis before executing
-# sa-learn
-function sa_learn {    
-    /usr/bin/sg amavis -c "/usr/bin/sa-learn -p ${PREFS} $*"
-}
-
-export LANG=C
-
-PROG=`basename $0`
-USER=$1
-ACTION=$2
-PREFS="~amavis/.spamassassin/user_prefs.cf"
 
 # If defined spamtrainers user group, require that the current user is
 # a member of it before going on.
@@ -36,35 +29,14 @@ sa_learn_group=`/usr/bin/getent group spamtrainers`
 if [ $? -eq 0 ] && ! echo $sa_learn_group | \
     /bin/cut -d : -f 4 | \
     /bin/grep -q "\<${USER}\>"; then
-
-    log debug "Not a member of 'spamtrainers' group. No sa-learn occurs."
+    log debug "Not a member of 'spamtrainers' group. Nothing to do."
     exit 0;
 fi
 
-# Ensure temporary spool file is deleted when the process terminates
-TEMPFILE=`/bin/mktemp /var/tmp/spam-training.XXXXXXXXXXX`
-trap "/bin/rm -f ${TEMPFILE}" EXIT SIGHUP SIGINT SIGTERM
-
-/bin/cat <&0 >>${TEMPFILE} 
-
-if [ $? -ne 0 ]; then
-    log err "Could not write to ${TEMPFILE}"
-    exit 2 
-fi
-
-if [ $ACTION == 'ham' ]; then
-    sa_learn --ham ${TEMPFILE}
-elif [ $ACTION == 'spam' ]; then
-    sa_learn --spam ${TEMPFILE}
-else 
+if ! [ $ACTION == 'ham' ] && ! [ $ACTION == 'spam' ] ; then
     log err "Action '${ACTION}' is not recognized" 
     exit 3
 fi
 
-if [ $? -ne 0 ]; then
-    log err "Message classification failed"
-    exit 1
-fi 
-
-log info "Message classified as ${ACTION}"
+/usr/sbin/sendmail -F 'spam-training.sh script' -r root@`hostname` ${USER}+${ACTION}@spamtrain.nh && log info "Message enqueued as ${ACTION}"
 
