@@ -1,0 +1,8 @@
+{
+    #
+    # 01relay_spamtrain
+    #
+    push @relay_domains, 'spamtrain.nh';
+    
+    '';
+}
