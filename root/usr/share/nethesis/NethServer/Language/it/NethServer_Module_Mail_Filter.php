@@ -22,4 +22,5 @@ $L['"${0}" is not an email address or host name'] = '"${0}" non è un indirizzo 
 $L['Exec_label'] = 'Eseguibili';
 $L['Arch_label'] = 'Archivi';
 $L['BlockAttachmentCustomStatus_label'] = 'Lista personalizzata';
-
+$L['BlockAttachmentCustomList_label'] = 'Lista personalizzata';
+$L['SpamSubjectPrefixString_label'] = 'Aggiungi un prefisso all\'oggetto dei messaggi spam';
