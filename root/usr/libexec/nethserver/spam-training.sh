@@ -19,7 +19,7 @@ ACTION=$2
 function log {
     local level=$1
     shift
-    [ -x /usr/bin/logger ] && /usr/bin/logger -p "mail.${level}" "${PROG} (${USER})" $*;    
+    [ -x /usr/bin/logger ] && /usr/bin/logger -i -t "${PROG}/${USER}" -p "mail.${level}" $*;    
 }
 
 
