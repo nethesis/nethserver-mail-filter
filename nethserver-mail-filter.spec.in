@@ -1,0 +1,91 @@
+Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
+Name: nethserver-mail-filter
+Version: @@VERSION@@
+Release: @@RELEASE@@%{?dist}
+License: GPL
+URL: http://dev.nethesis.it/projects/%{name}
+Source0: %{name}-%{version}.tar.gz
+BuildArch: noarch
+%define policyd_spf_dir postfix-policyd-spf-perl-2.010
+
+Requires: nethserver-mail-common, nethserver-antivirus
+Requires: perl-Mail-SPF >= 2.007
+Requires: perl-Sys-Hostname-Long
+
+# required by amavis
+Requires: cronie, pax
+
+BuildRequires: perl
+BuildRequires: nethserver-devtools >= 6.103
+
+%description
+Configures postfix to filter SMTP sessions and mail messages through 
+- amavisd-new (spamassassin, clamav)
+- Mail::SPF (optional)
+
+%prep
+%setup
+
+%build
+POLICYD_SPF_DIR=%{policyd_spf_dir}
+perl createlinks
+mkdir -p root/usr/libexec/nethserver
+mv -v $POLICYD_SPF_DIR/postfix-policyd-spf-perl root/usr/libexec/nethserver/
+mkdir -p root${RPM_DOC_DIR}
+mv -v $POLICYD_SPF_DIR root${RPM_DOC_DIR}
+
+%pre
+source /etc/nethserver/rpm_hook_functions
+
+# ensure spfd user exists:
+for FILTER_USER in spfd; do
+    if ! id $FILTER_USER >/dev/null 2>&1 ; then
+       useradd -r $FILTER_USER
+    fi
+done
+
+%install
+POLICYD_SPF_DIR=%{policyd_spf_dir}
+rm -rf $RPM_BUILD_ROOT
+(cd root; find . -depth -print | cpio -dump $RPM_BUILD_ROOT)
+%{genfilelist} $RPM_BUILD_ROOT > %{name}-%{version}-filelist
+echo "%doc COPYING" >> %{name}-%{version}-filelist
+echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
+
+
+
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post
+source /etc/nethserver/rpm_hook_functions
+event_queue add %{name}-update
+
+%preun
+source /etc/nethserver/rpm_hook_functions
+signal_event %{name}-uninstall
+
+%postun
+source /etc/nethserver/rpm_hook_functions
+# Clean up stale templates
+event_queue add nethserver-mail-common-update
+
+
+%files -f %{name}-%{version}-filelist
+%defattr(-,root,root)
+
+
+%changelog
+* Wed Nov 21 2012 Davide Principi <davide.principi@nethesis.it> - 7.105.0-5.nh
+- Fixed %postun scriptlet
+
+* Wed Sep  5 2012 Davide Principi <davide.principi@nethesis.it> - 6.104.4.nh
+- Removed postgrey dependency - moved into nethserver-mail-greylisting.spec
+- Added nethserver-antivirus dependency
+
+* Fri Jul 27 2012 Davide Principi <davide.principi@nethesis.it> - 6.104.1.nh
+- Initial build
+
+
+
