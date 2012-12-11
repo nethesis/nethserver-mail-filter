@@ -76,16 +76,7 @@ event_queue add nethserver-mail-common-update
 %defattr(-,root,root)
 
 
+
+
 %changelog
-* Wed Nov 21 2012 Davide Principi <davide.principi@nethesis.it> - 7.105.0-5.nh
-- Fixed %postun scriptlet
-
-* Wed Sep  5 2012 Davide Principi <davide.principi@nethesis.it> - 6.104.4.nh
-- Removed postgrey dependency - moved into nethserver-mail-greylisting.spec
-- Added nethserver-antivirus dependency
-
-* Fri Jul 27 2012 Davide Principi <davide.principi@nethesis.it> - 6.104.1.nh
-- Initial build
-
-
 
