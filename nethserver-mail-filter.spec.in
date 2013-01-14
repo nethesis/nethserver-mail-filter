@@ -16,7 +16,7 @@ Requires: perl-Sys-Hostname-Long
 Requires: cronie, pax
 
 BuildRequires: perl
-BuildRequires: nethserver-devtools >= 6.103
+BuildRequires: nethserver-devtools
 
 %description
 Configures postfix to filter SMTP sessions and mail messages through 
