@@ -3,7 +3,7 @@ Name: nethserver-mail-filter
 Version: @@VERSION@@
 Release: @@RELEASE@@
 License: GPL
-URL: http://dev.nethesis.it/projects/%{name}
+URL: %{url_prefix}/%{name} 
 Source0: %{name}-%{version}.tar.gz
 BuildArch: noarch
 %define policyd_spf_dir postfix-policyd-spf-perl-2.010
