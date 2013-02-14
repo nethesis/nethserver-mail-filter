@@ -29,7 +29,7 @@
 
 
 # Close STDOUT descriptor
-exec >-
+exec 1>&-
 
 PROG=`basename $0`
 USER=$1
