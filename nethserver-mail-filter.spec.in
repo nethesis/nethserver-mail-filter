@@ -79,4 +79,6 @@ event_queue add nethserver-mail-common-update
 
 
 %changelog
-
+* Tue Mar 19 2013 Davide Principi <davide.principi@nethesis.it> - 1.0.1-1.ns6
+- spam-training.sh: fixed wrong bash syntax to close stdout descriptor. Refs #1656 
+- *.spec: use url_prefix macro in URL tag; removed nethserver-devtools specific version requirement; fixed Release tag expansion. Refs #1654
