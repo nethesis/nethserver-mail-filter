@@ -2,24 +2,14 @@
 # 15amavis_accounts -- recipient aliases to deliver amavis notifications
 #
 {
-    use esmith::DomainsDB;
-    use Sys::Hostname;
-    my $domainsDb = esmith::DomainsDB->open() || die('Could not open DomainsDB');
-
-    $OUT = '';   
-
-    foreach my $domainRecord ($domainsDb->get_all_by_prop(type => 'domain')) {
-	my $destination = '';
-
-	if( $domainRecord->prop('TransportType') eq 'LocalDelivery' ) {
-	    $destination = $domainRecord->key;
-	} else {
-	    next;
+    $OUT = '';
+    
+    foreach $account (qw(
+       virusalert
+       spamalert
+    )) {
+	foreach $domain ($mailServer->getDeliveryDomains()) {
+	    $OUT .= sprintf("%-38s %s\n", $account . '@' . $domain, 'postmaster');
 	}
-
-	foreach my $account (qw(virusalert spamalert)) {
-	    $OUT .= sprintf("%-48s postmaster\@%s\n", $account . '@' . $domainRecord->key, $destination);
-	}
-
     }
 }
