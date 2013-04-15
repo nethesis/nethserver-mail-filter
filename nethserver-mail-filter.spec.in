@@ -35,8 +35,6 @@ mkdir -p root${RPM_DOC_DIR}
 mv -v $POLICYD_SPF_DIR root${RPM_DOC_DIR}
 
 %pre
-source /etc/nethserver/rpm_hook_functions
-
 # ensure spfd user exists:
 for FILTER_USER in spfd; do
     if ! id $FILTER_USER >/dev/null 2>&1 ; then
@@ -52,31 +50,13 @@ rm -rf $RPM_BUILD_ROOT
 echo "%doc COPYING" >> %{name}-%{version}-filelist
 echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 
-
-
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-source /etc/nethserver/rpm_hook_functions
-event_queue add %{name}-update
-
-%preun
-source /etc/nethserver/rpm_hook_functions
-signal_event %{name}-uninstall
-
-%postun
-source /etc/nethserver/rpm_hook_functions
-# Clean up stale templates
-event_queue add nethserver-mail-common-update
-
 
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
-
-
-
 
 %changelog
 * Tue Mar 19 2013 Davide Principi <davide.principi@nethesis.it> - 1.0.1-1.ns6
