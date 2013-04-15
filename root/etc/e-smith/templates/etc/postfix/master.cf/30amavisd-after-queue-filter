@@ -3,7 +3,10 @@
     # 30amavisd-after-queue-filter -- enable public interface
     # anti-virus, anti-spam checks
     #
-    push @smtpd_public_options, 'content_filter=amavisd:[127.0.0.1]:10024';
+
+    if($amavisd{ContentInspectionType} eq 'after-queue') {
+	push @smtpd_public_options, 'content_filter=amavisd:[127.0.0.1]:10024';
+    }
 
     '';
 }
