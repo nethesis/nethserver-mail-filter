@@ -42,9 +42,7 @@ event_templates('nethserver-mail-filter-update', @templates);
 event_actions('nethserver-mail-filter-update',
 	      'initialize-default-databases'   => '00',
 	      'nethserver-mail-filter-conf'    => '02',	      
-	      'nethserver-mail-postmap-update' => '10',
-	      'firewall-adjust'                => '40',
-	      'runlevel-adjust'                => '50');
+	      'nethserver-mail-postmap-update' => '10');
 
 event_services('nethserver-mail-filter-update',
 	       'amavisd' => 'restart',
@@ -71,13 +69,6 @@ event_services('nethserver-mail-filter-save',
 	       'amavisd' => 'restart',
 ); 
 
-#
-# nethserver-mail-filter-UNINSTALL event
-#
-event_actions('nethserver-mail-filter-uninstall',
-	      'nethserver-mail-filter-uninstall' => '02',
-	      'firewall-adjust' => '40',
-	      'runlevel-adjust' => '50');
 
 #
 # migration-import event (refs #1660)
