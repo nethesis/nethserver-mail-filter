@@ -2,17 +2,23 @@
 # 20policy -- what to do when a mail is bad
 #
 
+$QUARANTINEDIR = undef;
+$MAXLEVELS = 14;
+$MAXFILES = 1500;
+$MIN_EXPANSION_QUOTA =      100*1024;  # bytes  (default undef, not enforced)
+$MAX_EXPANSION_QUOTA = 300*1024*1024;  # bytes  (default undef, not enforced)
+
 #
-# filter configuration is "{ $amavisd{ContentInspectionType} }"
+# filter configuration is "{ $content_inspection_type }"
 #
 {
-    if($amavisd{ContentInspectionType} eq 'before-queue') {
+    if($content_inspection_type eq 'before-queue') {
 	$OUT = q($final_virus_destiny      = D_REJECT; 
 $final_spam_destiny       = D_DISCARD;
 $final_banned_destiny     = D_REJECT;
 $final_bad_header_destiny = D_PASS;
 );
-    } else {
+    } elsif($content_inspection_type eq 'after-queue') {
 	$OUT = q($final_virus_destiny      = D_DISCARD; 
 $final_spam_destiny       = D_DISCARD;
 $final_banned_destiny     = D_DISCARD;
@@ -20,11 +26,5 @@ $final_bad_header_destiny = D_PASS;
 );
     }
 }
-$QUARANTINEDIR = undef;
-$MAXLEVELS = 14;
-$MAXFILES = 1500;
-$MIN_EXPANSION_QUOTA =      100*1024;  # bytes  (default undef, not enforced)
-$MAX_EXPANSION_QUOTA = 300*1024*1024;  # bytes  (default undef, not enforced)
-
 
 

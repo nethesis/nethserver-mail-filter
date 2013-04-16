@@ -1,9 +1,9 @@
 #
-# 30clamd -- { $amavisd{VirusCheckStatus} }
+# 30clamd -- virus check is { $virus_check_status ? 'enabled' : 'disabled' }
 #
 
 @av_scanners = ({
-    if($amavisd{VirusCheckStatus} eq 'enabled') {
+    if($virus_check_status) {
 	$OUT = q(
   ['ClamAV-clamd',                   
     \&ask_daemon, ["CONTSCAN \{\}\n", "/var/run/clamav/clamd.sock"],
