@@ -1,0 +1,12 @@
+{
+    #
+    # 10filter_amavisd
+    #
+
+    # Override the default content inspection type:
+    if( ! $postfix{ContentInspectionType} || $postfix{ContentInspectionType} eq 'default') {
+	$content_inspection_type = 'amavisd-before-queue';
+    }
+
+    '';
+}
