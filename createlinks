@@ -41,7 +41,6 @@ event_templates('nethserver-mail-filter-update', @templates);
 
 event_actions('nethserver-mail-filter-update',
 	      'initialize-default-databases'   => '00',
-	      'nethserver-mail-filter-conf'    => '02',	      
 	      'nethserver-mail-postmap-update' => '10');
 
 event_services('nethserver-mail-filter-update',
