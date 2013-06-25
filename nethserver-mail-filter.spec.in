@@ -59,6 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Tue Jun 25 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.1-1.ns6
+- Adjust bayes scores  #1909
+
 * Tue Apr 30 2013 Davide Principi <davide.principi@nethesis.it> - 1.1.0-1.ns6
 - Full automatic package install/upgrade/uninstall support #1870 #1872 #1874
 - Spam settings migration #1820
