@@ -27,4 +27,8 @@ $final_bad_header_destiny = D_PASS;
     }
 }
 
+# Since 2.7.0, choose what to do if all virus scanners fail:
+$final_unchecked_destiny = D_TEMPFAIL;
+
+
 

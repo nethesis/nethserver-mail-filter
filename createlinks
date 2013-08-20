@@ -39,13 +39,17 @@ my @templates = qw(
 
 event_templates('nethserver-mail-filter-update', @templates);
 
-event_actions('nethserver-mail-filter-update',
-	      'initialize-default-databases'   => '00',
-	      'nethserver-mail-postmap-update' => '10');
+event_actions('nethserver-mail-filter-update', qw(
+	      initialize-default-databases 00
+              nethserver-mail-filter-conf 10
+	      nethserver-mail-postmap-update 10
+));
 
-event_services('nethserver-mail-filter-update',
-	       'amavisd' => 'restart',
-	       'postfix' => 'restart');
+event_services('nethserver-mail-filter-update', qw(
+	       amavisd restart
+	       postfix restart
+               clamd restart
+));
 
 #
 # nethserver-mail-filter-SAVE event
@@ -61,12 +65,10 @@ event_templates('nethserver-mail-filter-save', qw(
 event_actions('nethserver-mail-filter-save', 
 	      'nethserver-mail-postmap-update' => '10');
 
-event_services('nethserver-mail-filter-save',
-               'postfix' => 'reload',
-
-               # FIXME: reload support is added in amavisd-new >= 2.7. Check for updates
-	       'amavisd' => 'restart',
-); 
+event_services('nethserver-mail-filter-save', qw(
+               postfix reload
+	       amavisd reload
+)); 
 
 
 #
