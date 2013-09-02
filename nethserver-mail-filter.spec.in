@@ -13,7 +13,7 @@ Requires: perl-Mail-SPF >= 2.007
 Requires: perl-Sys-Hostname-Long
 
 # Additional archive formats support for amavis (EPEL) Refs #2093:
-Requires: lha, unrar, ripole, perl-Convert-TNEF
+# optional packages: lha, unrar, ripole
 
 # required by amavis
 Requires: cronie, pax
