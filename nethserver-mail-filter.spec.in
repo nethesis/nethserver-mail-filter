@@ -62,6 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Mon Sep 02 2013 Davide Principi <davide.principi@nethesis.it> - 1.1.2-1.ns6
+- amavisd-new 2.8.0 from EPEL - Enhancement #2093 [NethServer]
+
 * Tue Jun 25 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.1-1.ns6
 - Adjust bayes scores  #1909
 
