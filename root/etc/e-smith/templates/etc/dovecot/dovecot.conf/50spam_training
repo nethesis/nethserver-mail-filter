@@ -8,6 +8,7 @@ protocol imap \{
 plugin \{
     antispam_backend = MAILTRAIN
     antispam_spam = junkmail
+    antispam_trash = Trash
     antispam_mail_sendmail = /usr/libexec/nethserver/spam-training.sh
     antispam_mail_spam = spam
     antispam_mail_notspam = ham
