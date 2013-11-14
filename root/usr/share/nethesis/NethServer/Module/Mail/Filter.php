@@ -174,7 +174,7 @@ class Filter extends \Nethgui\Controller\AbstractController
     private function antivirusDatabaseIsObsolete()
     {
         $max = 0;
-        $fileList = glob('/var/clamav/*.{cvd,cld}', GLOB_BRACE);
+        $fileList = glob('/var/lib/clamav/*.{cvd,cld}', GLOB_BRACE);
         foreach ($fileList as $file) {
             $changeTime = filemtime($file);
             if ($changeTime > $max) {
