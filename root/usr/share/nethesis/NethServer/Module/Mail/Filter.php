@@ -166,13 +166,22 @@ class Filter extends \Nethgui\Controller\AbstractController
         }, $this->attachmentClasses);                
         
         if ($this->parameters['VirusCheckStatus'] === 'enabled'
-            && $this->antivirusDatabaseIsObsolete()) {
+            && $this->isAntivirusUpdateFailing()) {
             $view->getCommandList('/Notification')->showMessage($view->translate('AVDB_OBSOLETE'), \Nethgui\Module\Notification\AbstractNotification::NOTIFY_ERROR);
         }
     }
 
-    private function antivirusDatabaseIsObsolete()
+    private function isAntivirusUpdateFailing()
     {
+        $fh = $this->getPhpWrapper()->fopen("/var/log/clamav/freshclam-updates.log", "r");
+        if(is_resource($fh)) {
+            list($status, $timestamp) = $this->getPhpWrapper()->fscanf($fh, "%s %s");
+            $this->getPhpWrapper()->fclose($fh);
+        } else {
+            $status = '';
+            $timestamp = '';
+        }
+
         $max = 0;
         $fileList = glob('/var/lib/clamav/*.{cvd,cld}', GLOB_BRACE);
         foreach ($fileList as $file) {
@@ -181,8 +190,11 @@ class Filter extends \Nethgui\Controller\AbstractController
                 $max = $changeTime;
             }
         }
+       
+        $staleSignatures = time() - $max > 3600 * 24 * 5;
+        $runningUpdates = time() - intval(strtotime($timestamp)) < 3600 * 12;
 
-        if (time() - $max > 3600 * 24 * 5) {
+        if ($runningUpdates && $staleSignatures && $status === 'error') {
             return TRUE;
         }
 

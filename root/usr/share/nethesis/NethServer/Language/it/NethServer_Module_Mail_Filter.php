@@ -2,7 +2,7 @@
 
 $L['"${0}" is not a valid record type'] = '"${0}" è un tipo di record sconosciuto'; 
 $L['"${0}" is not an email address or host name'] = '"${0}" non è un indirizzo email o un nome host'; 
-$L['AVDB_OBSOLETE'] = 'Il database dell\'antivirus è più vecchio di 5 giorni. Consultare i log per i dettagli.'; 
+$L['AVDB_OBSOLETE'] = 'L\'aggiornmento delle firme dell\'antivirus fallisce. Consultare i log di sistema per i dettagli.'; 
 $L['AddressAcl_label'] = 'Regole di accesso per indirizzi email'; 
 $L['Arch_label'] = 'Archivi'; 
 $L['BlockAttachmentCustomList_label'] = 'Lista personalizzata'; 
