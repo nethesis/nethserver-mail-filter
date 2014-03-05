@@ -165,40 +165,6 @@ class Filter extends \Nethgui\Controller\AbstractController
             return array($ac, $view->translate($ac . '_label'));
         }, $this->attachmentClasses);                
         
-        if ($this->parameters['VirusCheckStatus'] === 'enabled'
-            && $this->isAntivirusUpdateFailing()) {
-            $view->getCommandList('/Notification')->showMessage($view->translate('AVDB_OBSOLETE'), \Nethgui\Module\Notification\AbstractNotification::NOTIFY_ERROR);
-        }
-    }
-
-    private function isAntivirusUpdateFailing()
-    {
-        $fh = $this->getPhpWrapper()->fopen("/var/log/clamav/freshclam-updates.log", "r");
-        if(is_resource($fh)) {
-            list($status, $timestamp) = $this->getPhpWrapper()->fscanf($fh, "%s %s");
-            $this->getPhpWrapper()->fclose($fh);
-        } else {
-            $status = '';
-            $timestamp = '';
-        }
-
-        $max = 0;
-        $fileList = glob('/var/lib/clamav/*.{cvd,cld}', GLOB_BRACE);
-        foreach ($fileList as $file) {
-            $changeTime = filemtime($file);
-            if ($changeTime > $max) {
-                $max = $changeTime;
-            }
-        }
-       
-        $staleSignatures = time() - $max > 3600 * 24 * 5;
-        $runningUpdates = time() - intval(strtotime($timestamp)) < 3600 * 12;
-
-        if ($runningUpdates && $staleSignatures && $status === 'error') {
-            return TRUE;
-        }
-
-        return FALSE;
     }
 
 }

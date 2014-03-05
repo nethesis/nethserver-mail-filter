@@ -2,7 +2,6 @@
 
 $L['"${0}" is not a valid record type'] = '"${0}" is not a valid record type'; 
 $L['"${0}" is not an email address or host name'] = '"${0}" is not an email address or host name'; 
-$L['AVDB_OBSOLETE'] = 'Updating of antivirus signatures fails. Check system logs for more details.'; 
 $L['AddressAcl_label'] = 'Rules by mail address'; 
 $L['Arch_label'] = 'Archives'; 
 $L['BlockAttachmentCustomList_label'] = 'Custom list'; 
