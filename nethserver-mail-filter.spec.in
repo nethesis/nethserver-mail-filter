@@ -62,6 +62,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Mon Mar 10 2014 Davide Principi <davide.principi@nethesis.it> - 1.1.5-1.ns6
+- Antivirus dashboard widget - Enhancement #2686 [NethServer]
+- Wrong default thresholds for antispam - Enhancement #2681 [NethServer]
+- Mail filter: remove clamav warning - Enhancement #2678 [NethServer]
+
 * Wed Dec 18 2013 Davide Principi <davide.principi@nethesis.it> - 1.1.4-1.ns6
 - Stale ClamAV DB warning - Bug #2351 [NethServer]
 
