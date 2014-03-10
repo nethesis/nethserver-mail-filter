@@ -27,8 +27,12 @@ $final_bad_header_destiny = D_PASS;
     }
 }
 
-# Since 2.7.0, choose what to do if all virus scanners fail:
-$final_unchecked_destiny = D_TEMPFAIL;
+# Send SMTP temporary failure if AV scanner fails:
+$virus_scanners_failure_is_fatal = 1;
+# Apply default PASS policy, if UNCHECKED for any 
+# other reason (i.e. password protected attachments):
+# $final_unchecked_destiny = D_PASS;
+# $undecipherable_subject_tag = '***UNCHECKED*** '; 
 
 
 
