@@ -62,6 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Wed Mar 19 2014 Davide Principi <davide.principi@nethesis.it> - 1.1.6-1.ns6
+- Let amavisd PASS unchecked content - Enhancement #2689 [NethServer]
+
 * Mon Mar 10 2014 Davide Principi <davide.principi@nethesis.it> - 1.1.5-1.ns6
 - Antivirus dashboard widget - Enhancement #2686 [NethServer]
 - Wrong default thresholds for antispam - Enhancement #2681 [NethServer]
