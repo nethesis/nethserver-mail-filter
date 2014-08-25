@@ -30,7 +30,7 @@
     -o smtpd_data_restrictions=
     -o mynetworks=127.0.0.0/8
     -o receive_override_options=no_unknown_recipient_checks
-
+    -o syslog_name=queue
 );
 
     # Filter for public listener:
