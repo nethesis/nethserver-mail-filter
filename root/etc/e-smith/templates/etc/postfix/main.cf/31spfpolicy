@@ -1,6 +1,6 @@
 #
 # 31spfpolicy -- Sender Policy Framework (SPF) is { $postfix{SpfStatus} }
-# {
+# {    
     if($postfix{SpfStatus} eq 'enabled') {
 	@smtpd_recipient_restrictions = map {
 	    $_ eq 'reject_unauth_destination' ?
@@ -10,5 +10,6 @@
     }
     '';
 }
-spfpolicy_time_limit = 3600
+{ $postfix{SpfStatus} eq 'enabled' ? '' : '# ' }spfpolicy_time_limit = 3600
+
 
