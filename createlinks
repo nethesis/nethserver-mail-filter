@@ -28,6 +28,7 @@ my @templates = qw(
     /etc/amavisd.conf
     /etc/postfix/main.cf
     /etc/postfix/master.cf
+    /etc/postfix/sender_access
     /etc/cron.d/sa-update
     /etc/postfix/virtual
     /etc/sudoers
@@ -62,6 +63,7 @@ event_templates('nethserver-mail-filter-save', qw(
     /etc/postfix/main.cf
     /etc/postfix/master.cf
     /etc/postfix/virtual
+    /etc/postfix/sender_access
 ));
 
 event_actions('nethserver-mail-filter-save', 

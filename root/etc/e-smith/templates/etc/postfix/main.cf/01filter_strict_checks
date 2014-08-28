@@ -11,7 +11,8 @@
 
     # append sender restrictions
     push @smtpd_sender_restrictions, 
-    'reject_non_fqdn_sender',
+    'check_sender_access hash:/etc/postfix/sender_access',
+    'reject_non_fqdn_sender',    
     'reject_unknown_sender_domain'
 	;
 
