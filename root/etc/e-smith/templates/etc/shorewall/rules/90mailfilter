@@ -1,8 +1,0 @@
-#
-# 90mailfilter
-#
-?COMMENT block port 25 from green
-REJECT	loc	net	tcp	25
-?COMMENT block port 25 from blue
-REJECT	blue	net	tcp	25
-?COMMENT
