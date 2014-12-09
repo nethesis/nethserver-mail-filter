@@ -62,6 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Tue Dec 09 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.1-1.ns6
+- Support  Sanesecurity Foxhole - Feature #2897 [NethServer]
+
 * Tue Oct 07 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.0-1.ns6
 - Differentiate Postfix syslog_name parameters - Enhancement #2784
 - Relax Postix restrictions for whitelisted senders - Enhancement #2768
