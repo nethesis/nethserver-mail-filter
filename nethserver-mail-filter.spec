@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.2.1
+Version: 1.3.0
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -62,6 +62,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Thu Mar 05 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.0-1
+- Mail filter: block port 25 from LAN to external network - Enhancement #2894 [NethServer]
+
 * Tue Dec 09 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.1-1.ns6
 - Support  Sanesecurity Foxhole - Feature #2897 [NethServer]
 
