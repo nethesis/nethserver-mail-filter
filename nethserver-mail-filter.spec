@@ -1,7 +1,7 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
 Version: 1.2.1
-Release: 1
+Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
 Source0: %{name}-%{version}.tar.gz
