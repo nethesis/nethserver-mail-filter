@@ -34,10 +34,6 @@
         push @spam_lovers_maps, 'postmaster@' . $domain;
     }
 
-    foreach my $recipient (split(',', $amavisd{RecipientWhiteList})) {
-        push @spam_lovers_maps, $recipient;    
-    }
-
     if(@spam_lovers_maps) {
 	Dumper(\@spam_lovers_maps);
     } else {
@@ -45,5 +41,9 @@
     }
 });
 
+# Recipient whitelist:
+unshift @bypass_spam_checks_maps, {
+   Dumper({ map { $_ => 1 } split(',', $amavisd{RecipientWhiteList}) });
+};
 
 
