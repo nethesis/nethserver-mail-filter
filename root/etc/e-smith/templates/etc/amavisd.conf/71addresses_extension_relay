@@ -6,7 +6,7 @@
     my $domainsDb = esmith::DomainsDB->open_ro();
 
     %relay_map = (
-        map { $_->key => undef }
+        map { $_->key => '' }
             grep{ ($_->prop('TransportType') || '') eq 'Relay' }
               $domainsDb->domains());
     '';
