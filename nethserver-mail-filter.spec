@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.3.2
+Version: 1.3.3
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -62,6 +62,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Wed May 20 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.3-1
+- Mail filter bypass - Enhancement #3150 [NethServer]
+- Spam scan of relay domains - Bug #3148 [NethServer]
+
 * Thu Apr 23 2015 Davide Principi <davide.principi@nethesis.it> - 1.3.2-1
 - SMTP proxy: error on email domain creation - Bug #3124 [NethServer]
 
