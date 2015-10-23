@@ -12,7 +12,7 @@ $sa_spam_subject_tag = {
     }
 };
 
-$sa_tag_level_deflt  = { $amavisd{SpamTagLevel} ? $amavisd{SpamTagLevel} : 2.0 };  # add spam info headers if at, or above that level
+$sa_tag_level_deflt  = -1000;  # always add spam info headers
 $sa_tag2_level_deflt = { $amavisd{SpamTag2Level} ? $amavisd{SpamTag2Level} : 6.2 };  # add 'spam detected' headers at that level
 $sa_kill_level_deflt = { $amavisd{SpamKillLevel} ? $amavisd{SpamKillLevel} : 6.9 };  # triggers spam evasive actions (BOUNCE, DISCARD, REJECT...) 
 
