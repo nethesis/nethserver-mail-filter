@@ -9,6 +9,7 @@ BuildArch: noarch
 %define policyd_spf_dir postfix-policyd-spf-perl-2.010
 
 Requires: nethserver-mail-common, nethserver-antivirus
+Requires: nethserver-dnsmasq, nethserver-unbound
 Requires: perl-Mail-SPF >= 2.007
 Requires: perl-Sys-Hostname-Long
 
