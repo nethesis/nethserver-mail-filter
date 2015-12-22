@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.3.3
+Version: 1.3.4
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -9,6 +9,7 @@ BuildArch: noarch
 %define policyd_spf_dir postfix-policyd-spf-perl-2.010
 
 Requires: nethserver-mail-common, nethserver-antivirus
+Requires: nethserver-dnsmasq, nethserver-unbound
 Requires: perl-Mail-SPF >= 2.007
 Requires: perl-Sys-Hostname-Long
 
@@ -58,6 +59,11 @@ echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Tue Nov 10 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.4-1
+- Use DNSBL to fight spam - Feature #3302 [NethServer]
+- Log smtp traffic rejection - Enhancement #3295 [NethServer]
+- amavisd default log_level - Enhancement #3274 [NethServer]
+
 * Wed May 20 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.3-1
 - Mail filter bypass - Enhancement #3150 [NethServer]
 - Spam scan of relay domains - Bug #3148 [NethServer]
