@@ -48,7 +48,6 @@ event_actions('nethserver-mail-filter-update', qw(
 event_services('nethserver-mail-filter-update', qw(
 	       amavisd restart
 	       postfix restart
-               clamd restart
 ));
 
 #
