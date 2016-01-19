@@ -26,7 +26,7 @@
 
 # The recipient whitelist
 @spam_lovers_maps = ({
-    if( ! defined @spam_lovers_maps) {
+    if( ! @spam_lovers_maps) {
         @spam_lovers_maps = ();
     }
 
