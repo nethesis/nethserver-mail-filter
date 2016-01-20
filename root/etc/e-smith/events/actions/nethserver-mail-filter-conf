@@ -21,16 +21,4 @@
 #
 
 use strict;
-use User::pwent;
-
-# Refs #2093 -- Adjust amavis home dir permissions to allow clamd to
-# scan attachments:
-my $amavisPw = getpwnam('amavis') || die("Could not find amavis user");
-chmod(0750, $amavisPw->dir);
-chmod(0750, $amavisPw->dir . '/tmp');
-
-# Refs #2093 -- Add clam user into amavis group (requires clamd
-# restart)
-system(qw(/usr/sbin/usermod -G amavis -a clam));
-
 
