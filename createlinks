@@ -25,12 +25,10 @@ use esmith::Build::CreateLinks qw(:all);
 
 
 my @templates = qw(
-    /etc/amavisd.conf
+    /etc/amavisd/amavisd.conf
     /etc/postfix/main.cf
     /etc/postfix/master.cf
     /etc/postfix/sender_access
-    /etc/cron.d/sa-update
-    /etc/sudoers
 );
 
 #
@@ -48,7 +46,6 @@ event_actions('nethserver-mail-filter-update', qw(
 event_services('nethserver-mail-filter-update', qw(
 	       amavisd restart
 	       postfix restart
-               clamd restart
 ));
 
 #
@@ -56,7 +53,7 @@ event_services('nethserver-mail-filter-update', qw(
 #
 
 event_templates('nethserver-mail-filter-save', qw(
-    /etc/amavisd.conf
+    /etc/amavisd/amavisd.conf
     /etc/postfix/main.cf
     /etc/postfix/master.cf
     /etc/postfix/sender_access
