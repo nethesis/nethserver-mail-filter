@@ -67,8 +67,8 @@ describe        KAM_PHISH1      Test for PHISH that changes the cursor
 score           KAM_PHISH1      0.01
 
 header          __KAM_PHISH4_1 From =~ /host|apple|amazon|microsoft|windows|express|app.serv|goodluck|bank/i
-body            __KAM_PHISH4_2 /dear.{0,50}customer|automated.message|spam.activities|attempted.gaining.access|your.account.expires|authorized.government/i
-body            __KAM_PHISH4_3 /(confirm|verify|update).your.(identity|account)|account.password|credit.(bureau|profile)|identity.theft|accredited.commission|security.concern/i
+body            __KAM_PHISH4_2 /dear.{0,50}customer|automated.message|spam.activities|attempted.gaining.access|your.account.expires|authorized.government|important.message|message.alert/i
+body            __KAM_PHISH4_3 /(confirm|verify|update).your.(identity|account)|account.password|credit.(bureau|profile)|identity.theft|accredited.commission|security.concern|kindly.find.enclosed/i
 
 ifplugin Mail::SpamAssassin::Plugin::MIMEHeader
   mimeheader    __KAM_PHISH4_4 Content-Type =~ /(verification|information|form).htm/i
@@ -163,6 +163,9 @@ body		__KAM_VIAGRA4A	/V (. )?A (. )?L (. )?[I\/t] (. )?U (. )?M/i
 body		__KAM_VIAGRA4B	/V (. )?[I\/t] (. )?A (. )?G (. )?R (. )?A/i
 body		__KAM_VIAGRA4C	/M (. )?E (. )?R (. )?[I\/t] (. )?D (. )?[I\/] (. )?A/i
 
+# FP FOR "Les Iles du Monde Via Gramsci" OR ITALIAN "WE WISH YOU"
+body            __KAM_VIAGRA_FPS /via gra|i augur/i
+
 meta		KAM_VIAGRA4	((__KAM_VIAGRA4A + __KAM_VIAGRA4B + __KAM_VIAGRA4C) >= 2)
 describe	KAM_VIAGRA4	Common Viagra and Medicinal Table Trick
 score		KAM_VIAGRA4	3.1
@@ -178,7 +181,7 @@ body		__KAM_VIAGRA6A	/V[-_\. ]?[IL1][-_\. ]?A.?G.?R.?A/i
 body		__KAM_VIAGRA6B	/(\b|^)A.?M.?B.?[il1].?E.?N/i
 body		__KAM_VIAGRA6C	/V.?A.?L.?[il1].?U.?M/i
 body		__KAM_VIAGRA6D  /(\b|^)C.?[il1].?A.?L.?[Il1].?S($|\b)/i
-header		__KAM_VIAGRA6E	From =~ /Viagra|Cialis/i
+header		__KAM_VIAGRA6E	From =~ /Viagra|Cialis(\b|$)/i
 
 meta		KAM_VIAGRA6	(__KAM_VIAGRA6A + __KAM_VIAGRA6B + __KAM_VIAGRA6C + __KAM_VIAGRA6D + __KAM_VIAGRA6E >= 2)
 describe	KAM_VIAGRA6	Viagra Obfuscation Technique SPAM
@@ -415,7 +418,7 @@ body		__KAM_STOCKTIP139 /Solanex Management|(\b|^)SLNX(\b|$)/is
 body		__KAM_STOCKTIP140 /BIO-SOLUTIONS|(\b|^)BISU(\b|$)/is
 body		__KAM_STOCKTIP141 /(\b|^)FORC(\b|$)/is
 body		__KAM_STOCKTIP142 /Hawk Systems Inc|(\b|^)HWSYD(\b|$)/is
-body            __KAM_STOCKTIP143 /AmeriLithium|(\b|^)AMEL(\b|$)/is
+body            __KAM_STOCKTIP143 /AmeriLithium/is #|(\b|^)AMEL(\b|$)/is # FP 9/10/15
 body		__KAM_STOCKTIP144 /Fleet Management Solutions|(\b|^)FLMG(\b|$)/is
 body		__KAM_STOCKTIP145 /Nuvilex|(\b|^)N.?V.?L.?X.?(\b|$)/is
 body		__KAM_STOCKTIP146 /Plandai|(\b|^)PLPL(\b|$)/is
@@ -507,9 +510,10 @@ meta		KAM_MED2	(__KAM_MED2_1 >= 1)
 score		KAM_MED2	1.0
 
 #TIME PIECE
-header		__KAM_TIME1	Subject =~ /(replica|diamond|designer[-_ ](watch|piece|collection)|(old|replica|style|luxury|trendy|elegant) watch|time[-_ ](keeper|piece)|wrist|chronometer|watches are in fashion|low budget|deliver your watch|(number|amount) of watches)|excellent.watch/i
+#ADDED A FIX FOR REPLICATION  THANKS TO MARK ROLES
+header		__KAM_TIME1	Subject =~ /(replica(\b|$)|diamond|designer[-_ ](watch|piece|collection)|(old|replica|style|luxury|trendy|elegant) watch|time[-_ ](keeper|piece)|wrist|chronometer|watches are in fashion|low budget|deliver your watch|(number|amount) of watches)|excellent.watch/i
 #0.50 WEIGHTED TESTS
-body		__KAM_TIME2	/(replica|diamond|designer[-_ ](piece|collections|watch)|time[-_ ]piece|wrist|time-keeper|\/\/atch)/is
+body		__KAM_TIME2	/(replica(\b|$)|diamond|designer[-_ ](piece|collections|watch)|time[-_ ]piece|wrist|time-keeper|\/\/atch)/is
 header		__KAM_TIME3	Subject =~ /time|watch/i
 body		__KAM_TIME4	/time|watch/i
 body		__KAM_TIME5	/(funny|low) price|treat.yourself/i
@@ -715,11 +719,11 @@ score		KAM_ADV_EMAIL		16.0
 #SEXUALLY EXPLICIT EMAILS - With updates courtesy of Mark Damrose
 header    __KAM_SEX_EXPLICIT1    Subject =~ /SEXUAL{2,3}Y[-_, ]{0,1}EXPL{1,2}I{1,2}CI{1,2}T/i
 #EXPANDED TO INCLUDE HEADERS FOR SPAMS PREVALENT MAR 2007
-header    __KAM_SEX_EXPLICIT2    Subject =~ /(?:fuck .*suck|suck .*fuck|pussy .*cock|cock .*pussy|horny amateur|couch sex|slut fuck|naked celebrity|pissing babes|ass[- ]fuck|animal cock|(^|\b)P.O.R.N |exposes sexy ass|drunk babe nude|masturbate|looking.for.sex|breast.implants|pedophile|child predator|explore.being.bad|double.penetration|hardcore.slut|getting.laid|your.disco.stick|having.sex.*begging|f.ckbook|xxx gay|asian porn|blowjob|anal xxx|huge tits tube|xxx tube|porn tube|porn video|sexy.clip|portal for xxx|3d porn|hard(er)?.erect)|dreaming of f.?cking|(^|\b)sex.in.the.car|horny.virgin/i
+header    __KAM_SEX_EXPLICIT2    Subject =~ /(?:fuck .*suck|suck .*fuck|pussy .*cock|cock .*pussy|horny amateur|couch sex|slut fuck|naked celebrity|pissing babes|ass[- ]fuck|animal cock|(^|\b)P.O.R.N |exposes sexy ass|drunk babe nude|masturbate|looking.for.sex|breast.implants|pedophile|child predator|explore.being.bad|double.penetration|hardcore.slut|getting.laid|your.disco.stick|having.sex.*begging|f.ckbook|xxx gay|asian porn|blowjob|anal xxx|huge tits tube|xxx tube|porn tube|porn video|sexy.clip|portal for xxx|3d porn|hard(er)?.erect)|dreaming of f.?cking|(^|\b)sex.in.the.car|horny.virgin|sex.acts|best.intercourse|sex request|dripping wet and need to get/i
 header	  __KAM_SEX_EXPLICIT3	 From =~ /(?:better sex|sextrick|ashleymadison|booty.call|breast.(aug|surg|redu)|throbing.member|f[\*u]?ckbook|Local MILFs)/i
 #MODIFIED TO FIX FP THANKS TO DOC SCHNEIDER AND MARK MARTINEC - REMOVED castrate|sexual.encounter|casual.sex|discreet.encounter 5/19/15
-body	  __KAM_SEX_EXPLICIT4	 /(?:fucked hardcore|dildoes her tight ass|kinky watersports|schoolgirls? slut|teens? porn|first anal(\b|$)|pussy lips|kinky lesbian|sucks? cock|rub puss|spreads? cunt|fetish babe|kinky pee|muffdived \& fuck|deepthroat on knees|hello.naughty.boy|certain.type.of.guy|girlfriend.trick|sexual.stamina|sex...toy|porn.link|cunt.fuck|c-o-c-k|non.stop.sex|porn.industry|stronger.erection|make.her.moan|extreme.pro.abortion|erection.problem|your.erection|get.an.erection|hardest.erection|get.erect|xxx gay|asian porn|blowjob porn|anal xxx|huge tits tube|xxx tube|porn tube|fuckbook|portal for xxx|3d porn|DrPEnterprise|girlfriends.porn|\bsex.galler|pussy.eaten|shemale|anal.adventure|black.girls.video|gay.porn|pussy.wet|make.her.horny|female libido|crave sex|women.fuck|women.horny|wanting.to.bang|getting.laid.is.simple|woman.on.her.knees|b r e a s t|generic.ed.product|best.s\sex|f[^a-z]cking.you|f[^a-z]ckbuddy|F\#ckFriends|Milf Selfies|need.a.horny.man|cute.sex.lover|horny.as.f.ck|fun.in.the.bedroom|my.tits.are|be.horny|horny.girl|horny.i.am)/i
-header	  __KAM_SEX_EXPLICIT5	 Subject =~ /(?:Babe.*dildo|milk.*pussy|licks.*lesbian.*tits|mud.*wrestling.*sluts|rock.*hard.*cock|working.*pussy|(anal|suck|lick|hot|cock|wife).*f.?u.?c.?k|sneaky.*upskirt.*shots|hairy.*(pussy|cunt)|chicks.*cum|shows.*off.*titties|tits.*milf.*sex|riding.*big.*dick|dildo.*pussy|slut.*sex|suck.*dick|show.*off.*pink.*slit|coed.*pussy|squirt.*pussy|polish.*cock|femdom.*fist|schoolgirl.*(f.?u.?c.?k|blowjob)|mistress.*finger.*slave|cervix.*examined|tits.*vibrator|licks.*lesbian|slut.*anal|slurp.*pecker|master.*hogtie|bitch.*stroke.*guy|huge.*cock.*bang|take.*dick.*ride|milf.*nailed|girl.*in.*panties|Slut.*Doing.*it|barely.*legal.*teen|perverted.*girl.*works.*ass|slut.*milking|caught.*fucking|F.?u.?c.?k.*(dick)|shemale.*strips|chick.*drilled|\bass.*screw|teen.*pussy|fucked.*hard|bimbo.*hooter|cuntbanged|tittyfucked|fuck.*cock|blowing and nailed|lesbians.*masturbat|shaking wet booty|pussy.*lip|lick.*asshole|kinky lesbian|suck.*cock|rub puss|tits.*cunt|kinky pee|fetish babe|exposes sexy ass|drunk babe nude|muff.*fuck|cock.?suck.*blonde|fuck.*vibrator|threeway.*orgy|sex.life.*new.level|your.sex.life|hotsex)/i
+body	  __KAM_SEX_EXPLICIT4	 /(?:fucked hardcore|dildoes her tight ass|kinky watersports|schoolgirls? slut|teens? porn|first anal(\b|$)|pussy lips|kinky lesbian|sucks? cock|rub puss|spreads? cunt|fetish babe|kinky pee|muffdived \& fuck|deepthroat on knees|hello.naughty.boy|certain.type.of.guy|girlfriend.trick|sexual.stamina|sex...toy|porn.link|cunt.fuck|c-o-c-k|non.stop.sex|porn.industry|stronger.erection|make.her.moan|extreme.pro.abortion|erection.problem|your.erection|get.an.erection|hardest.erection|get.erect|xxx gay|asian porn|blowjob porn|anal xxx|huge tits tube|xxx tube|porn tube|fuckbook|portal for xxx|3d porn|DrPEnterprise|girlfriends.porn|\bsex.galler|pussy.eaten|shemale|anal.adventure|black.girls.video|gay.porn|pussy.wet|make.her.horny|crave sex|women.fuck|women.horny|wanting.to.bang|getting.laid.is.simple|woman.on.her.knees|b r e a s t|generic.ed.product|best.sex|f[^a-z]cking.you|f[^a-z]ckbuddy|F\#ckFriends|Milf Selfies|need.a.horny.man|cute.sex.lover|horny.as.f.ck|fun.in.the.bedroom|my.tits.are|be.horny|horny.girl|horny.i.am|horny.latina|huge.dildo|made.me.climax|sex in my office|a.good.f\@ck|married.horny.woman|sucked.your.d\@ck|horny.milf|suck.you.off|horny.stories|all.my.h[o0]les|cum.heavily|sucking.your.c[o0]ck|to.get.f[^a-z]cked)|h00kup|s\*xy|h0rny|ch0ked|pu\$\$y|f\*cked|F\#ck|F\*ck_/i
+header	  __KAM_SEX_EXPLICIT5	 Subject =~ /(?:Babe.*dildo|milk.*pussy|licks.*lesbian.*tits|mud.*wrestling.*sluts|rock.*hard.*cock|working.*pussy|(anal|suck|lick|hot|cock|wife).*f.?u.?c.?k|sneaky.*upskirt.*shots|hairy.*(pussy|cunt)|chicks.*cum|shows.*off.*titties|tits.*milf.*sex|riding.*big.*dick|dildo.*pussy|slut.*sex|suck.*dick|show.*off.*pink.*slit|coed.*pussy|squirt.*pussy|polish.*cock|femdom.*fist|schoolgirl.*(f.?u.?c.?k|blowjob)|mistress.*finger.*slave|cervix.*examined|tits.*vibrator|licks.*lesbian|slut.*anal|slurp.*pecker|master.*hogtie|bitch.*stroke.*guy|huge.*cock.*bang|take.*dick.*ride|milf.*nailed|girl.*in.*panties|Slut.*Doing.*it|barely.*legal.*teen|perverted.*girl.*works.*ass|slut.*milking|caught.*fucking|F.?u.?c.?k.*(dick)|shemale.*strips|chick.*drilled|\bass.*screw|teen.*pussy|fucked.*hard|bimbo.*hooter|cuntbanged|tittyfucked|fuck.*cock|blowing and nailed|lesbians.*masturbat|shaking wet booty|pussy.*lip|lick.*asshole|kinky lesbian|suck.*cock|rub puss|tits.*cunt|kinky pee|fetish babe|exposes sexy ass|drunk babe nude|muff.*fuck|cock.?suck.*blonde|fuck.*vibrator|threeway.*orgy|sex.life.*new.level|your.sex.life|hotsex|f.cktonight|my.?pu[s\$]{1,5}y|InstaSext|SnapHookup|InstaAffair|InstaHookup|SexiSnap|SnapF.ck|snapbangmsg)/i
 
 meta	  KAM_SEX_EXPLICIT	(__KAM_SEX_EXPLICIT1 + __KAM_SEX_EXPLICIT2 + __KAM_SEX_EXPLICIT3 + __KAM_SEX_EXPLICIT4 + __KAM_SEX_EXPLICIT5 >= 1)
 describe  KAM_SEX_EXPLICIT      Subject or body indicates Sexually Explicit material
@@ -1018,7 +1022,7 @@ body		__KAM_GIFT4	/card will be yours free|card on us|buy you the dyson animal|a
 body		__KAM_GIFT5	/member incentive program|complet(e|ing) the survey|your.customer.id|security.code|promotional.points/i
 header		__KAM_GIFT6	From =~ /\$\d+ ?gift ?card|coupon|home.improvement|reward|voucher|starbucks|exclusive|amazon/i
 
-meta		KAM_GIFT	((__KAM_GIFT1 + __KAM_GIFT2 + __KAM_GIFT3 + __KAM_GIFT4 + __KAM_GIFT5 + KAM_LOTSOFHASH + __KAM_SHORT >= 2) && __KAM_GIFT6)
+meta		KAM_GIFT	((__KAM_GIFT1 + __KAM_GIFT2 + __KAM_GIFT3 + __KAM_GIFT4 + __KAM_GIFT5 + KAM_LOTSOFHASH + __KAM_SHORT >= 3) && __KAM_GIFT6)
 describe	KAM_GIFT	Gift Card Scams
 score		KAM_GIFT	3.5
 
@@ -1095,7 +1099,7 @@ describe	KAM_REPLACE	Spams that use obfuscated URLs with instructions
 score		KAM_REPLACE	2.0
 
 #EVEN MORE NIGERIAN SCAMS AND VARIANTS
-body		__KAM_NIGERIAN1	/(?:payment officer|personal treasurer|experienced marketers|Chairman of the Finance Committee|contact my secretary|field of Financial Services|Head of Human Resources|Public Relation Officer|field of Business Services|payment agent|representing partner|vacancy in my company|representative\/book ?keeper|executor|search and selection of both experienced|retired chief economist|foreign partner|diplomatic courier|senior auditor|online book-?keeper)|in.your.country|united.state|states?.citizen|retired.ceo|nigeria|origin.finland|serious.illness|brain.(tumor|cancer)|former.minister|investment.partner|got.mugged|losing.my.(wife|only.son)/is
+body		__KAM_NIGERIAN1	/(?:payment officer|personal treasurer|experienced marketers|Chairman of the Finance Committee|contact my secretary|field of Financial Services|Head of Human Resources|Public Relation Officer|field of Business Services|payment agent|representing partner|vacancy in my company|representative\/book ?keeper|executor|search and selection of both experienced|retired chief economist|foreign partner|diplomatic courier|senior auditor|online book-?keeper)|in.your.country|united.state[^s]|states?.citizen|retired.ceo|nigeria|origin.finland|serious.illness|brain.(tumor|cancer)|former.minister|investment.partner|got.mugged|losing.my.(wife|only.son)/is
 body		__KAM_NIGERIAN2	/(?:looking for dynamic representative|seek your partnership|new online business model|seek to transfer this money|completely legal activity|never ask you to pay or invest|in search of trustworthy representatives|establishing a new liaison network|rec[ei]{2}ving payment on our behalf|assist me in transferring those funds|make money at home|requiring rep to work on a part time|part time job\/full time|organization for the good work of the lord|job search directory|investor willing to invest in lebanon|invest in Real Estate|Your kind assistance|next of kin|gold.exportation|calgary.lotto)|oil.producing|import.firm|oil.and.gas|petroleum|asset.available|urgent.reply|(cash|credit.cards?|cell(.phone)?).(were|was).stolen/is
 body		__KAM_NIGERIAN3	/(?:\d{1,2}\% (?:commission on each transaction|of the total will be set|will be mapped out|is made available to you|of the total sum for your partner|of the money for your effort|for\s+sales)|pay for performance|floating deficit|for your compensation|financial independence|their financial dreams|work from home part\s*-?\s*time|employing your services|get extra income|deduct your weekly salary \d\d%|transfer of the funds|make successful career at us|you will get \d{1,2}% on each|funds can be directed to your account as a grant|reasonable parentage|dormant domiciliary account|share would be \d+\%|pay you \d+%)|invest|have.a.sum|make.a.donation|immense.benefits|transact.a?.?business|company.sponsor|loan me \$/is
 body		__KAM_NIGERIAN4	/(?:American oil merchant|independent contractor|removallink|claim the funds|international corporation|bank draft|becoming our contract staff|contractual employment|customers\s*in Europe,\s*America|new partner from UK|great investment site|money orders|cashiers check|access to the funds|piloting the business|moving the funds|next of kin|syrian.refugees|reply.for.detail)|security.reason|(his|her).account|new.investor|directly.beneficial|business.discussion|promise.to|need.to.spend/is
@@ -1129,7 +1133,7 @@ body		__KAM_SEX4	/(?:bring your girlfriend back|satisfied with their size|penis 
 
 describe	KAM_SEX		Sexually Explicit SPAM / Penis Enlargement Scam
 score		KAM_SEX		7.0
-meta		KAM_SEX		(__KAM_SEX1 + __KAM_SEX2 + __KAM_SEX3 + __KAM_SEX4 + __HTML_IMG_ONLY + (__KAM_VIAGRA6A + __KAM_VIAGRA6E + __KAM_VIAGRA7A >= 1) >= 2)
+meta		KAM_SEX		(__KAM_SEX1 + __KAM_SEX2 + __KAM_SEX3 + __KAM_SEX4 + __HTML_IMG_ONLY + (__KAM_VIAGRA6A + __KAM_VIAGRA6E + __KAM_VIAGRA7A >= 1 && !__KAM_VIAGRA_FPS) >= 2)
 
 #STUPID PICTURE SPAMS
 body		__KAM_PIC1      /(tired|bored) (this )?(today|tonight|evening|morning|afternoon)|saw your email address|online right now|can name me|found you on this site|I am alone|my next boyfriend|blonde with blue|like the girls|crush on you/is
@@ -1147,8 +1151,8 @@ body		__KAM_LIST1	/((Hospital|MD) directory|Nursing Home (List|directory)|doctor
 body		__KAM_LIST2	/(?:hospital|dentist|chiropractor|physician|medical doctors|nursing directors|medical marketing|\d sortable fields|records all with emails|business director(y|ies)|direct marketing data)|nursing assistant/is
 body		__KAM_LIST3	/price\:|prices for our director/is
 body		__KAM_LIST4	/(?:database|list|[\d,]+ (total records|e-?mails))/is
-body		__KAM_LIST5	/(reply with "stop" as a subject|Send an email with "rem" in the subject to discontinue|put "cease" in the subject of an email|for termination of this e?mail|reply with .{1,8} in the subject)|you will have your email taken off|for the datacard/is
-header		__KAM_LIST6	Subject =~ /Database of (neurological|surgeons|doctors|nurses|mds)|MD Database|looking for list|email database|we have that list|marketing database/i
+body		__KAM_LIST5	/(reply with "stop" as a subject|Send an email with "rem" in the subject to discontinue|put "cease" in the subject of an email|for termination of this e?mail|reply with .{1,8} in the subject)|you will have your email taken off|for the datacard|send.a.reply/is
+header		__KAM_LIST6	Subject =~ /Database of (neurological|surgeons|doctors|nurses|mds)|MD Database|looking for list|email database|we have that list|marketing database|list.of.\d/i
 
 describe	KAM_LIST	Mailing List Database SPAM
 score		KAM_LIST	3.0
@@ -1434,9 +1438,9 @@ describe	KAM_ALT		Requests use of an alternate email which may indicate spam
 
 #Right vs Left
 header		__KAM_POLITICS1	From =~ /Right vs Left|Minuteman|Senator|Pennsylvania Transportation Partners|Americans for Limited Government|special election|conservative|liberal|congress|judge|usa.?net|senate|fedup|sen\. |tea.party|the.right.to/i
-body		__KAM_POLITICS2	/Minuteman Civil Defense Corps|National Campaign Fund|Right vs Left|Restore America PAC|penntransportation.com|getliberty.org|Americans for Limited Government|radical|true.conservative|true.liberal|job.killing|wasteful.spending|senate.takeover|liberal.agenda|smear.campaign|america.s future|liberty|obama|governor|election.day|v-o-t-e|sign.the.petition|paid.for.by|dear.conservative|dear.liberal|winning.the.senate|election.cycle|return.power|failed.policy|(left|right).is.claiming|bigwigs/i
+body		__KAM_POLITICS2	/Minuteman Civil Defense Corps|National Campaign Fund|Right vs Left|Restore America PAC|penntransportation.com|getliberty.org|Americans for Limited Government|radical|true.conservative|true.liberal|job.killing|wasteful.spending|senate.takeover|liberal.agenda|smear.campaign|america.s future|liberty|obama|governor|election.day|v-o-t-e|sign.the.petition|paid.for.by|dear.conservative|dear.liberal|winning.the.senate|election.cycle|return.power|failed.policy|(left|right).is.claiming|bigwigs|favorable.voters/i
 header		__KAM_POLITICS3 Received =~ /\.politicalsystems.net|republican.com|democrat.com|inboxfirst.com/i
-header          __KAM_POLITICS4 Subject =~ /alert:?.?election|^elect|(republican|democratic).party|and.vote|impeach|insanity|for.america|election.ad|liberals|conservatives|back.?room.deal|urgent.obama|social.security.mistake|big.social/i
+header          __KAM_POLITICS4 Subject =~ /alert:?.?election|^elect|(republican|democratic).party|and.vote|impeach|insanity|for.america|election.ad|liberals|conservatives|back.?room.deal|urgent.obama|social.security.mistake|big.social|absentee.info/i
 
 meta		KAM_POLITICS	(__KAM_POLITICS1 + __KAM_POLITICS2 + (__KAM_POLITICS3 + __KAM_POLITICS4 >= 1) >= 2)
 score		KAM_POLITICS	9.0
@@ -1588,7 +1592,7 @@ describe	KAM_MX4			MX Record and dot info domains associated with FAKERBL Spamme
 #BAD ADDRESS / COMPANY NAMES 
 #FINISHED URL CLEANUP BUT MOST URLS MOVED TO PCCC URIBL
 #removed ultimaterxhere|insanerx|speedymed4u|mightymeds1|coolestrxhere|hotrxmedspot|topshoprx|mightyrxhere|qualityrxmedz|legitrxlife|dealsformeds|simplyrxdeals|bestrxlight|ezprescriptz|reliablerxsource1|freetrusted-rx|hotmedsourcehere|CabinetOfMeds|mytrusted-rx|sexywebdating|RxwarehouseHere|WarehouseofRxMeds|GreatrxMedsRus|rxmedsrus
-body            __KAM_ADDRESS1          /204 N. El Camino Real|CocoMedia|17 Patchogue Road|1128-274 Royal Palm Beach|(848|500) N. Rainbow Dr. Ste \#?(2511|300)|CMI Free Stuff|Vista Del Mar Productions|by SuperClub|Buil tech Services|eMarketing Alliance|aSHARPi Media|Plaza Neptuno|Satell Center for Executive Education|Pacific Shores Investments|Cascio Interstate Music|R. Allen Media|The Only Virginia Team|Ban Amnesty Now|Intrust Domains|8001 Irvine Center Dr|American Arbitration Association, 1633 Broadway|\+962 79 668 2974|7025 County Rd. 46A|1001 E.Hillsdale Blvd|New Heights Development and Research|Red Base Interactive|RateMarketplace|WORLD COMPANY REGISTER|WhatsApp Inc|Streetdirectory Pte Ltd|4399 Church Street, Brooklyn|Mobie Concepts, Inc.|Clickingz IT Research Lab|Leadz[,\.].?Co|DLF Cyber City Gurgaon India|4447 N Central Expressway, Office \#110|Two Allen Center|5401 Hangar Court|Pimsleur Approach|1600 JFK Boulevard, 3rd|Business Who's Who|Who's Who Among Executives|Buena Vista Catalogue|10620 Southern Highlands|Ashray Medical Center|Bethany Christian Services|Ashland.Avenue.{0,4}95761|Preston Energy|SteelCityAds|Beyond Human, LLC|Research Promo Center|OmegaK, Inc|320 S. Lemon Blvd \# 1803|1063 (suite.)?([\#\d]+.)?King St|8 White Ln. Mansfield|Momentum.Ads|PO Box 29502 \#24912 Las Vegas|2383.Mystic Dr..Sarasota.FL|1107 Valeria Dr, Marion|321 N Central Expressway Suite 341|PO Box 540488 Houston|Post Office Box 4668 NY|9100 Wilshire Blvd. East Tower Penthouse|Headquarters, 18 True Tower Building|111 Customer Way, Irving|B a y t o w n, TX|adilizer..?com Post.Office.Box 540488|353 Chadwick Pl Fairborn|PO.?Box.295[O0]2.Las.?Vegas|1103 St. Michel|Suite 115-243, San Diego|100 E. Campus View|P.O. Box 3640, Santa Monica|(3.?2.?0.?5|three two zero five)..?L.?a.?k.?e.S.?a.?r.?a.?h|100 RITCHIE ROAD|M i n n e s o t a|3801 D..?o..?w..?n..?s..?W..?a..?y|515 Oaklane McPherson|74.Lancaster..?RD|202.Albion|One Kimeric Ln|302 Washington St|One.One.Eight.Jason.Ln|PO.Box.227.Moran|V a l e r i a|Dove Lighting Co|BrandRoot SEO|Team TPW|WEB ANALYTICS MEDIA LLC|Scott Walker Inc. Testing the Waters|CARLY for America|Scott Walker for America|Jeb 2016, Inc/i
+body            __KAM_ADDRESS1          /204 N. El Camino Real|CocoMedia|17 Patchogue Road|1128-274 Royal Palm Beach|(848|500) N. Rainbow Dr. Ste \#?(2511|300)|CMI Free Stuff|Vista Del Mar Productions|by SuperClub|Buil tech Services|eMarketing Alliance|aSHARPi Media|Plaza Neptuno|Satell Center for Executive Education|Pacific Shores Investments|Cascio Interstate Music|R. Allen Media|The Only Virginia Team|Ban Amnesty Now|Intrust Domains|8001 Irvine Center Dr|American Arbitration Association, 1633 Broadway|\+962 79 668 2974|7025 County Rd. 46A|1001 E.Hillsdale Blvd|New Heights Development and Research|Red Base Interactive|RateMarketplace|WORLD COMPANY REGISTER|WhatsApp Inc|Streetdirectory Pte Ltd|4399 Church Street, Brooklyn|Mobie Concepts, Inc.|Clickingz IT Research Lab|Leadz[,\.].?Co|DLF Cyber City Gurgaon India|4447 N Central Expressway, Office \#110|Two Allen Center|5401 Hangar Court|Pimsleur Approach|1600 JFK Boulevard, 3rd|Business Who's Who|Who's Who Among Executives|Buena Vista Catalogue|10620 Southern Highlands|Ashray Medical Center|Bethany Christian Services|Ashland.Avenue.{0,4}95761|Preston Energy|SteelCityAds|Beyond Human, LLC|Research Promo Center|OmegaK, Inc|320 S. Lemon Blvd \# 1803|1063 (suite.)?([\#\d]+.)?King St|8 White Ln. Mansfield|Momentum.Ads|PO Box 29502 \#24912 Las Vegas|2383.Mystic Dr..Sarasota.FL|1107 Valeria Dr, Marion|321 N Central Expressway Suite 341|PO Box 540488 Houston|Post Office Box 4668 NY|9100 Wilshire Blvd. East Tower Penthouse|Headquarters, 18 True Tower Building|111 Customer Way, Irving|B a y t o w n, TX|adilizer..?com Post.Office.Box 540488|353 Chadwick Pl Fairborn|PO.?Box.295[O0]2.Las.?Vegas|1103 St. Michel|Suite 115-243, San Diego|100 E. Campus View|(3.?2.?0.?5|three two zero five)..?L.?a.?k.?e.S.?a.?r.?a.?h|100 RITCHIE ROAD|M i n n e s o t a|3801 D..?o..?w..?n..?s..?W..?a..?y|515 Oaklane McPherson|74.Lancaster..?RD|202.Albion|One Kimeric Ln|302 Washington St|One.One.Eight.Jason.Ln|PO.Box.227.Moran|V a l e r i a|Dove Lighting Co|BrandRoot SEO|Team TPW|WEB ANALYTICS MEDIA LLC|Scott Walker Inc. Testing the Waters|CARLY for America|Scott Walker for America|Jeb 2016, Inc/i
 
 header		__KAM_ADDRESS2		From =~ /CMI Free Stuff|Vista Del Mar Productions|SuperClub|Buil tech Services|eMarketing Alliance|aSHARPi Media|Plaza Neptuno|Satell Center for Executive Education|Pacific Shores Investments|rx ?unit|Cascio Interstate Music|R. Allen Media|The Only Virginia Team|Intrust Domains|American Arbitration Association|Rate\.?Marketplace|Health.Quote.Direct|Pimsleur|Ethika Politika|Disney Movie Club/i
 
@@ -1686,11 +1690,11 @@ describe	KAM_COLLECT	Spammers hawking debt collection
 
 
 #SEARCH ENGINE SPAM
-header		__KAM_SEARCH1	Subject =~ /be seen first on (google|msn|yahoo)|get ranked high|rank high|(no cost|free) website (analysis|search engine)|WEBSITE PROMOTION|social media|blog leads|infotech|(first|1st)(.page)?.result|seo.service|seo.{1,30}expert|on.your.website|organic.seo|site.ranking/i
+header		__KAM_SEARCH1	Subject =~ /be seen first on (google|msn|yahoo)|get ranked high|rank high|(no cost|free) website (analysis|search engine)|WEBSITE PROMOTION|social media|blog leads|infotech|(first|1st)(.page)?.result|seo.service|seo.{1,30}expert|on.your.website|organic.seo|site.ranking|website.health/i
 body		__KAM_SEARCH2	/search engine|SEO|bring.traffic|business.development/i
 body		__KAM_SEARCH3	/(first on|all of) the major search|not ranked number one|Website promotion|popular keywords|mobile.website|complete.solution|back.link|india.based|surfing|not.ranking.on/i
 body		__KAM_SEARCH4	/guaranteed type of exposure|free website search engine optimi|increase your revenue|improve your website traffice|website rank higher|marketing service|popular.keyword|media.presence|media.portal|brand.awareness|analytics.certified|optimized.content|white.label|website.optimization|digital.marketing|in.your.industry/i
-rawbody		__KAM_SEARCH5   /Click2Call|a1-solutions|fast-response.net|action-pros.net|tops-1.com|vividinfotech.com|internet.marketing|web.solutions/i
+rawbody		__KAM_SEARCH5   /Click2Call|a1-solutions|fast-response.net|action-pros.net|tops-1.com|vividinfotech.com|internet.marketing|web.solution/i
 
 meta 		KAM_SEARCH	(__KAM_SEARCH1 + __KAM_SEARCH2 + __KAM_SEARCH3 + __KAM_SEARCH4 + __KAM_SEARCH5 >= 4)
 score		KAM_SEARCH	5.0
@@ -1734,7 +1738,7 @@ score		KAM_WEB		4.0
 describe	KAM_WEB		Web design spams
 
 #DOMAIN NAME AND OTHER RELATED SPAMS
-body		__KAM_DOMAIN1	/Domain (opportunity|notification|release|Availability|club)|Notification for Domain|availability.notice|time.draws.near|submit.a.bid|your.business|exclusive.rights|free.registration|the.domain.provider|website.wizard|increase.your.{0,50}.traffic|domain.extension|brand.can.leverage/i
+body		__KAM_DOMAIN1	/Domain (opportunity|notification|release|Availability|club)|Notification for Domain|availability.notice|time.draws.near|submit.a.bid|your.business|exclusive.rights|free.registration|the.domain.provider|website.wizard|increase.your.{0,50}.traffic|domain.extension|brand.can.leverage|like.to.obtain|buy(ing)?.this.domain/i
 body		__KAM_DOMAIN2	/(?:available|listed) (?:by|for|at|in) auction|confirm interest in (this domain|owning)|capturing this domain|proposal.on.the.domain|exclusive.owner|online.search|web.form|counting.down|potential.buyer|interested.parties|secure.{1,50}.today|drive.more.leads|targeted.traffic|similar.domain|exclusive.regis/i
 body		__KAM_DOMAIN3	/(?:have|own) a domain (that is )?.{0,5}similar|(have|own) a similar domain|offer on the Domain|similar to your (current )?domain|Domain Division|all.domains|main.webpage|visibility.platform|solicitation|potential.owner|your.offer|domain.match|domain.notification|domain.will.be|interest.{1,20}.domain.name|fully.responsive|website.included|list.your.website|opportt?unity.regarding|courtesy.notification/i
 header		__KAM_DOMAIN4	From =~ /domain|sales|submit.site|support|inquiries/i
@@ -2130,7 +2134,7 @@ header		__KAM_DRUG2_2	Subject =~ /ambien|Percocet|vicod[i1]n|Meridia|look slim|P
 
 body		__KAM_DRUG2_3	/Medi?cati[o0]ns|desired meds|favou?red (rx)?med|buy remedies|drug store|medicants|medicaments|sexual stim|sex stim|pain killer|(purchase|loved|preferred|favou?rite) (?:rx.?)?(deal|med)[sz]|rx.?Meds?.?deal|buy your meds|choice of meds|Rx.?(deal|Med|Sale)|v[i1]agra|medz.special|loved meds|(rx|medication) ?discount|Get the edge|joint.pain.relief|neuropathy|nerve.pain/i
 
-body            __KAM_DRUG2_4   /Purchase|grab hold|at[_ ~]your[_ ~]finger[_ ~]?tip|placing your order|questions about drugs|prescription is not|don't care about prescription|without a doctor|no need for a doctor|affor[df]able.prices|best daily rx|Fav.Prescript|unmatched.prices|rx.med|millions.are.praising/i
+body            __KAM_DRUG2_4   /grab hold|at[_ ~]your[_ ~]finger[_ ~]?tip|placing your order|questions about drugs|prescription is not|don't care about prescription|without a doctor|no need for a doctor|affor[df]able.prices|best daily rx|Fav.Prescript|unmatched.prices|rx.med|millions.are.praising/i
 
 body            __KAM_DRUG2_5   /0nline|hassle[~-]free|favored rx|branded solutions|branded remedies|v[1i]cod[!i]n|Penhtremine|prxpills|ultimaterxhere|insanerx|speedymed4u|mightymeds1|coolestrxhere|hotrxmedspot|topshoprx|mightyrxhere|qualityrxmedz|legitrxlife|dealsformeds|simplyrxdeals|bestrxlight|ezprescriptz|reliablerxsource1|freetrusted-rx|hotmedsourcehere|CabinetOfMeds|mytrusted-rx|RxwarehouseHere|WarehouseofRxMeds|GreatrxMedsRus|rxmedsrus|(come by|Come to|Check Out) our web site|browse [0o]ur (website|selection)|Visit_0ur Web|Order_Now|available_this week|(buy|order) (n[0o]w|today|right.now|instantly|at [0o]nce|immediately)|check it out today|ord3r|0rder|0rd3r|browseour|rx ?unit/i
 
@@ -2645,8 +2649,8 @@ describe	KAM_COMPROMISED	Compromised Accounts Sending Spam
 score		KAM_COMPROMISED	9.0
 
 #GROUPS THAT ARE BAD - RENAMED TO AVOID COLLISSION - THANKS TO DAVID FUNK
-header		__KAM_LIST2A	List-ID =~ /^<?(wareeed\d*|ArabBusinessmen-and-DecisionMakers-Network|MediaJO\d*|arabjo\d*|prime\-?media\d*|mediajoshoot\d*|bareedw\d*|mghadeh\d*|tawzeef-online|jordanianadd\d*|ssjo\d*|jaracast|ads-shooter-j\d*|jomarketing\d*|jomedia\d*|jobird\d*info|uhrda-\d*|mohanndahad\d*|caragcom\d*|marwahr\d*|sonjobonjo\d*|golrozz\d*)\.googlegroups.com>?$/i
-header		__KAM_LIST2B	Sender =~ /(mediajo\d*|aloulaonline\d*|jomedia\d*)\@googlegroups\.com/i
+header		__KAM_LIST2A	List-ID =~ /^<?(wareeed\d*|ArabBusinessmen-and-DecisionMakers-Network|MediaJO\d*|arabjo\d*|prime\-?media\d*|mediajoshoot\d*|bareedw\d*|mghadeh\d*|tawzeef-online|jordanianadd\d*|ssjo\d*|jaracast|ads-shooter-j\d*|jomarketing\d*|jomedia\d*|jobird\d*info|uhrda-\d*|mohanndahad\d*|caragcom\d*|marwahr\d*|sonjobonjo\d*|golrozz\d*|golbanoo\d*)\.googlegroups.com>?$/i
+header		__KAM_LIST2B	Sender =~ /(mediajo\d*|aloulaonline\d*|jomedia\d*|golbanoo\d*)\@googlegroups\.com/i
 
 meta		KAM_LIST2	(__KAM_LIST2A + __KAM_LIST2B >= 1)
 describe	KAM_LIST2	Known Bad Groups
@@ -2665,7 +2669,7 @@ body		__KAM_BACK1	/backgrounds in seconds|Instant..?Checkmate|federal.record|bac
 body		__KAM_BACK2	/(Property & Personal history|Asset & Background) (Investigation|Search)|check anyone|know.anything|registered.offense|their.name|publicly.available/is
 body		__KAM_BACK3	/(background check|detective|investigator|investigate backgrounds|arrest.record|public.record)|remain.anonymous|anonymous.report|says.about.you|instant.database|the.truth|reveal.the.information|screening.services/is
 header		__KAM_BACK4	Subject =~ /background..?check|date-smart|detective|finding people|instant checkmate|pedophile|who.lives.next.?door|reports.are.now.posted|screening.results|police.record|confirm.identity|records.enclosed|local.report|criminal|public.record|complete.record|arrest|posted.online|information.posted|info.updated|who.they.are|uncover.any|public.records|private.eye|investigate.background/i
-header		__KAM_BACK5	From =~ /Background.?check|instant.?check|arrest.record|pedophile|trust|criminal|urgent.info|find.out|who.is.s?he|trouble|shady|report|public.record|private.?eye/i
+header		__KAM_BACK5	From =~ /Background.?check|instant.?check|arrest.record|pedophile|trust|criminal|urgent.info|find.out|who.is.s?he|trouble|shady|public.record|private.?eye/i
 
 describe	KAM_BACK	Background Check SPAM
 meta		KAM_BACK	(__KAM_BACK1 + __KAM_BACK2 + __KAM_BACK3 + __KAM_BACK4 + __KAM_BACK5 >=3)
@@ -2976,11 +2980,11 @@ body		__KAM_SOLAR3	/power bill in half|go solar|approved for solar|solar system 
 
 meta		KAM_SOLAR	(__KAM_SOLAR1 + __KAM_SOLAR2 + __KAM_SOLAR3 >=2)
 describe	KAM_SOLAR	Solar Power Spams
-score		KAM_SOLAR	4.5
+score		KAM_SOLAR	2.0
 
 meta		KAM_SOLAR2      (__KAM_SOLAR1 + __KAM_SOLAR2 + __KAM_SOLAR3 >=3)
 describe	KAM_SOLAR2      Definite Solar Power Spams
-score		KAM_SOLAR2      4.0
+score		KAM_SOLAR2      2.0
 
 #ASIAN BRIDE
 header		__KAM_ASIAN1	Subject =~ /Asian Bride/i
@@ -3472,9 +3476,9 @@ describe KAM_VOICEMAIL Common malware that tricks the user into opening a fake V
 score    KAM_VOICEMAIL 5.0
 
 #SPAM ADVERTISING SPAM - HAS SCIENCE GONE TOO FAR?
-header   __KAM_SPAMFORSPAM1 Subject =~ /email marketing|marketing solution|connect with your audience|reaching your customers|marketing ideas/i
-header   __KAM_SPAMFORSPAM2 From =~ /email marketing|mailing lists/i
-rawbody  __KAM_SPAMFORSPAM3 /email marketing|Keep your customers informed|expand your brand|(grow|improve) your business|Acquire New Customers|business reach/i
+header   __KAM_SPAMFORSPAM1 Subject =~ /email marketing|marketing solution|connect with your audience|reaching your customers|marketing ideas|business.contacts/i
+header   __KAM_SPAMFORSPAM2 From =~ /email marketing|mailing lists|listz/i
+rawbody  __KAM_SPAMFORSPAM3 /email marketing|Keep your customers informed|expand your brand|(grow|improve) your business|Acquire New Customers|business reach|your.customer.base|demand.generation/i
 
 meta     KAM_SPAMFORSPAM (__KAM_SPAMFORSPAM1 + __KAM_SPAMFORSPAM2 + __KAM_SPAMFORSPAM3 + KAM_INFOUSMEBIZ >= 3)
 describe KAM_SPAMFORSPAM Spam advertising spam services
@@ -3498,7 +3502,7 @@ describe KAM_LOTSOFHASH Emails with lots of hash-like gibberish
 score    KAM_LOTSOFHASH 0.25
 
 #SPAM THAT SHOWS SEVERAL QUESTIONABLE BEHAVIORS IN COMBINATION
-meta     KAM_GRABBAG1 (__KAM_THIRD + __KAM_DOMAINDOTCOM + __KAM_TILDEFROM + HTML_FONT_LOW_CONTRAST + T_REMOTE_IMAGE + __KAM_EPISODE + __KAM_LOTSOFNBSP + __KAM_IPUNSUB + (__KAM_LOTSOFHASH >= 6) >= 3)
+meta     KAM_GRABBAG1 (__KAM_THIRD + __KAM_DOMAINDOTCOM + __KAM_TILDEFROM + HTML_FONT_LOW_CONTRAST + T_REMOTE_IMAGE + __KAM_EPISODE + __KAM_LOTSOFNBSP + __KAM_IPUNSUB + (__KAM_LOTSOFHASH >= 6) >= 4)
 describe KAM_GRABBAG1 A combination of tricks that when combined indicate spam
 score    KAM_GRABBAG1 3.5
 
@@ -3596,7 +3600,7 @@ score    KAM_MOTHER 4.5
 
 # WHO'S WHO
 header   __KAM_WHOSWHO1 From =~ /whos_who|who.?s.who/i
-header   __KAM_WHOSWHO2 Subject =~ /your exclusive invitation|who.s.who|your invitation|you have been selected/i
+header   __KAM_WHOSWHO2 Subject =~ /your exclusive invitation|who.?s.who|your invitation|you have been selected/i
 body     __KAM_WHOSWHO3 /(global|executive) who.s who|represent your community|you have been selected|complete your listing|prominent registry|accomplished individuals/i
 uri      __KAM_WHOSWHO4 /whoswho/i
 
@@ -3770,9 +3774,9 @@ describe KAM_TUPPERWARE Ads for tupperware
 score    KAM_TUPPERWARE 3.5
 
 # PATRIOT SURVIVAL AND OTHER DISASTER / NATIONALISM / CONSPIRACY SPAM
-header   __KAM_PATRIOT1 From =~ /patriot|disaster|emergency|USAF|shocking|for.truth|nwo|expat|special.op/i
-header   __KAM_PATRIOT2 Subject =~ /the truth about|financial collapse|your guns|hidden (agenda|truth)|unprecedented.crisis|worst.crisis|obama.?care|do not ignore|get a lot worse|coffins.ordered.by.fema|depression|prepared.for.war|free.our.marine|survival.guide|beloved.usa|civil war|shocking.footage|cia.economist|collapse.is.imminent|attack.on|wants.war|disturbing.issue|plane.crash|nuke.deal|extortion/i
-body     __KAM_PATRIOT3 /the truth about|financial collapse|your guns|hidden agenda|unprecedented.crisis|disaster|fema (stock.?piling|storing)|Gor?vernment Not Telling|survival.plan|nation.gone.under|blind.with.patriotism|government shutdown|only chance|civil.unrest|high.crimes|behind.our.back|know.the.truth|PatriotNewsNet|second civil war|for.the.cia|market.crash|american.meltdown|concerned.american|military force|we.were.right|our.suspicions|vindicated|abuse.of.power/i
+header   __KAM_PATRIOT1 From =~ /patriot|disaster|emergency|USAF|shocking|for.truth|nwo|expat|special.op|christianmedia/i
+header   __KAM_PATRIOT2 Subject =~ /the truth about|financial collapse|your guns|hidden (agenda|truth)|unprecedented.crisis|worst.crisis|obama.?care|do not ignore|get a lot worse|coffins.ordered.by.fema|depression|prepared.for.war|free.our.marine|survival.guide|beloved.usa|civil war|shocking.footage|cia.economist|collapse.is.imminent|attack.on|wants.war|disturbing.issue|plane.crash|nuke.deal|extortion|prophecy/i
+body     __KAM_PATRIOT3 /the truth about|financial collapse|your guns|hidden agenda|unprecedented.crisis|disaster|fema (stock.?piling|storing)|Gor?vernment Not Telling|survival.plan|nation.gone.under|blind.with.patriotism|government shutdown|only chance|civil.unrest|high.crimes|behind.our.back|know.the.truth|PatriotNewsNet|second civil war|for.the.cia|market.crash|american.meltdown|concerned.american|military force|we.were.right|our.suspicions|vindicated|abuse.of.power|american.empire/i
 body     __KAM_PATRIOT4 /projectprophet|financial.threat|nuke.deal/i
 
 meta     KAM_PATRIOT (__KAM_PATRIOT1 + __KAM_PATRIOT2 + __KAM_PATRIOT3 + __KAM_PATRIOT4 >= 3)
@@ -4145,7 +4149,7 @@ describe KAM_PASSWORD Message tries to phish for password
 
 # SEMINARS AND WORKSHOPS SPAM
 header   __KAM_WEBINAR1 From =~ /education|career|manage|learning|webinar|project|efolder/i
-header   __KAM_WEBINAR2 Subject =~ /last chance|increase productivity|workplace morale|payroll dept|trauma.training|case.study|issues|follow.up|service.desk|vip.(lunch|breakfast)|manage.your|private.business|professional.checklist|customers.safer|great.timesaver|prep.course|crash.course|hunger.to.learn/i
+header   __KAM_WEBINAR2 Subject =~ /last chance|increase productivity|workplace morale|payroll dept|trauma.training|case.study|issues|follow.up|service.desk|vip.(lunch|breakfast)|manage.your|private.business|professional.checklist|customers.safer|great.timesaver|prep.course|crash.course|hunger.to.learn|(keys|tips).(to|for).smarter/i
 header   __KAM_WEBINAR3 Subject =~ /webinar|strateg|seminar|owners.meeting|webcast|our.\d.new|sales.video/i
 body     __KAM_WEBINAR4 /executive.education|contactid|register now|\d+.minute webinar|management.position|supervising.skills|discover.tips|register.early|take.control|marketing.capabilit|drive.more.sales|leveraging.cloud|solution.provider|have.a.handle|plan.to.divest|being.informed|upcoming.webinar|spearfishing.email|increase.revenue|industry.podcast|\d+.in.depth.tips|early.bird.offer|pmp.certified|lunch.briefing/i
 
@@ -4227,9 +4231,9 @@ score    KAM_KITCHEN 4.5
 describe KAM_KITCHEN Spam for kitchen improvement
 
 # ALL-ENCOMPASSING RULES FOR HEALTH RELATED SPAM, INCLUDING SKIN, WEIGHT, VISION, ETC
-header   __KAM_GENERICHEALTH1 From =~ /(dr.?|doc.?)[ -]?([o0]z|gupta)|skinny|\d+.?(pounds|[li1]bs?)|[o0]z.([a-z]+.)?(daily|tip|show|weight)|ellen|rapid|vision|20.20|perfect|mind.blowing|healthy|beaut|medical|wrinkle|miracle|energy|weight|as.seen.on|celeb|workout|inches.off|slim|overweight|skinny|trend|curve|stubborn|bikini|f-a-t|trim|youth|belly|unwanted.pounds|gone.easily|heavy|diabetes|oz.?report|years.younger|anti.?aging|look.\d|old.age|without.trying|annoying.pounds|fat.melt|women.?s.health|forskolin|phyto|garcinia|mayo.clinic|gain.mass|nuforia|miracle.cure|notify|champion|healthly|food.health|health.news|nutrisystem|doctor.s.choice|age..prevention|diet.{0,4}report|sharp..?mind/i
+header   __KAM_GENERICHEALTH1 From =~ /(dr.?|doc.?)[ -]?([o0]z|gupta)|skinny|\d+.?(pounds|[li1]bs?)|[o0]z.([a-z]+.)?(daily|tip|show|weight)|ellen|rapid|vision|20.20|perfect|mind.blowing|healthy|beaut|medical|wrinkle|miracle|energy|weight|as.seen.on|celeb|workout|inches.off|slim|overweight|skinny|trend|curve|stubborn|bikini|f-a-t|trim|youth|belly|unwanted.pounds|gone.easily|heavy|diabetes|oz.?report|years.younger|anti.?aging|look.\d|old.age|without.trying|annoying.pounds|fat.melt|women.?s.health|forskolin|phyto|garcinia|mayo.clinic|gain.mass|nuforia|miracle.cure|notify|champion|healthly|food.health|health.news|nutrisystem|doctor.s.choice|age..prevention|diet.{0,4}report|sharp..?mind|face.?lift/i
 
-header   __KAM_GENERICHEALTH2 Subject =~ /PSA|\[video\]|doctor|\d+.day|(zero|any).effort|oprah|(Dr|Doc).{0,2}[o0]z|[o0]z.([a-z]+.)?(daily|tip|show|weight|quick)|ellen|most.viewed|metabolism|danger|hormone|must.read|life.changing|healthy|perfect|younger|beautiful|hollywood|secret|aging|youth|flawless|as.seen.on|celeb|simple.way|workout|nutrition|shocking|detox|exercise|cleanse|diet|\d+(\+?).?(pounds|[li1]bs?)|images?.leaked|wow,|the.pics|don.t.tell|makeup|f-a-t|of.skin|on.(cnn|abc|cbs)|for.(summer|fall|autumn|winter|spring)|unwanted.fat|oz: |backfire|and.oz|and.racha?el|racha?el.talk|your.legs|slim.and.tone|fit.wom[ea]n|tummy|dress.size|wrinkle.reduc|younger.skin|solid.meds|belly.fat|your.calories|champion|is.it.possible|worse.than.smok|meds.online|jump-start.your.weightloss|cure.your.diabetes|weight.loss..?cure|magic.weight.loss|youth.and.vitality|get.thin.with|mental.decline|by.exercising|kidney.beans|drinking.this|treats?.the.(root.)?cause/i
+header   __KAM_GENERICHEALTH2 Subject =~ /PSA|\[video\]|doctor|\d+.day|(zero|any).effort|oprah|(Dr|Doc).{0,2}[o0]z|[o0]z.([a-z]+.)?(daily|tip|show|weight|quick)|ellen|most.viewed|metabolism|danger|hormone|must.read|life.changing|healthy|perfect|younger|beautiful|hollywood|secret|aging|youth|flawless|as.seen.on|celeb|simple.way|workout|nutrition|shocking|detox|exercise|cleanse|diet|\d+(\+?).?(pounds|[li1]bs?)|images?.leaked|wow,|the.pics|don.t.tell|makeup|f-a-t|of.skin|on.(cnn|abc|cbs)|for.(summer|fall|autumn|winter|spring)|unwanted.fat|oz: |backfire|and.oz|and.racha?el|racha?el.talk|your.legs|slim.and.tone|fit.wom[ea]n|tummy|dress.size|wrinkle.reduc|younger.skin|solid.meds|belly.fat|your.calories|champion|is.it.possible|worse.than.smok|meds.online|jump-start.your.weightloss|cure.your.diabetes|weight.loss..?cure|magic.weight.loss|youth.and.vitality|get.thin.with|mental.decline|by.exercising|kidney.beans|drinking.this|treats?.the.(root.)?cause|reverse.\d+.years/i
 
 body     __KAM_GENERICHEALTH3 /aging|clinical|dermatologist|aging|younger|wrinkle|omg|reduction|prevention|(body|your).fat|extra.pounds|perfect.skin|healthy|diet|gossip|\d+.years|facelift|(Dr|Doc).{0,2}[o0]z|weight|calories|metabolism|appetite|detox|unsightly|cholesterol|free.sample|\d+\s*[li]b|slimming|episode|tv.segment|oprah|colon|hollywood|shocking|celeb|workout|trend|starving|\d+%.?off|dress.size|flat.belly|silky|younger|free.trial|\d+.years|easy.trick|selfies|medical|\d+.?(lb|pounds)|exercise|the.mirror|fda.approved|slimmer|oz.blog|the.bulge|plant.based|online.store|respected.doctor|cure.your.diabete|with.forskolin|belly.fat|miracle.pill|burn.fat.fast|the.root.cause|drink(ing)?.this.shake/i
 
@@ -4471,10 +4475,6 @@ meta     KAM_NIGERIAN2 (__KAM_NIGERIAN2_1 + DEAR_SOMETHING + LOTS_OF_MONEY >= 3)
 score    KAM_NIGERIAN2 4.5
 describe KAM_NIGERIAN2 Nigerian scam variant
 
-body     KAM_DEAR_SOMEBODY /dear sir.madam/i
-score    KAM_DEAR_SOMEBODY 2.0
-describe KAM_DEAR_SOMEBODY Message that does not know who to address
-
 # FINGERHUT SPAMS
 header   __KAM_FINGERHUT1 From =~ /finger.?hut/i
 header   __KAM_FINGERHUT2 Subject =~ /your.budget|credit.account|qualify|finger.?hut|credit|your.account/i
@@ -4517,11 +4517,15 @@ ifplugin Mail::SpamAssassin::Plugin::MIMEHeader
   #score    KAM_ZERODAY 8.0
 
   # ANOTHER ONE
-  header   __KAM_ZERODAY3 Subject =~ /remittance advice/i
+  header   __KAM_ZERODAY3 Subject =~ /remittance advice|invoice|resume|the.open.message|please.the.open|visa.chip/i
 
-  meta     KAM_ZERODAY2 (__KAM_ZERODAY1 + __KAM_ZERODAY3 >= 2)
-  score    KAM_ZERODAY2 4.5
+  meta     KAM_ZERODAY2 (__KAM_ZERODAY1 + __KAM_ZERODAY3 + KAM_LAZY_DOMAIN_SECURITY >= 3)
+  score    KAM_ZERODAY2 1.5
   describe KAM_ZERODAY2 Another obvious zero-day malware
+
+  meta     KAM_ZERODAY3 (KAM_ZERODAY2 + T_OBFU_DOC_ATTACH >= 2)
+  score    KAM_ZERODAY3 3.5
+  describe KAM_ZERODAY3 Another obvious zero-day malware
 endif
 
 # FAMILY TREE SPAM
@@ -4572,8 +4576,8 @@ describe KAM_ENGINEER Spam for engineering contact information
 
 # SUNGLASSES
 header   __KAM_SUNGLASSES1 Subject =~ /rayban/i
-body     __KAM_SUNGLASSES2 /great ray/i
-body     __KAM_SUNGLASSES3 /style rocks/i
+body     __KAM_SUNGLASSES2 /great ray|hot.deal/i
+body     __KAM_SUNGLASSES3 /style rocks|today.only/i
 
 meta     KAM_SUNGLASSES (__KAM_SUNGLASSES1 + __KAM_SUNGLASSES2 + __KAM_SUNGLASSES3 >= 3)
 describe KAM_SUNGLASSES Spam for sunglasses
@@ -4597,13 +4601,13 @@ score    KAM_GRIPPY 4.5
 describe KAM_GRIPPY Spam for sticky grip products
 
 # LIMITED / DISABLED ACCOUNT, ACTIVATION, SECURITY ALERTS, AND OTHER ACCOUNT PHISHES
-header   __KAM_ACCOUNTPHISH1 From =~ /[il]tunes|account|costco|walgreen|amazon|ebay|internal|admin|gold/i
-header   __KAM_ACCOUNTPHISH2 Subject =~ /your.account|is.limited|activate|recover|acknowledgment|of.order|buying.from|order.(status|confirm)|help.?desk|your.order|update.your|security|document|(^secure$)|download.failed|click.to.activate|status.approved|notification.message/i
-body     __KAM_ACCOUNTPHISH3 /update.your.information|problems.with.your|billing.information|order.details|personal.data|detailed.order|order.information|for.activation|account.{1,30}.inactive|information.required|secure.browser|recently.compromised|classified.document|with.your.email|complete.your.account|account.confirmed|claim.your.order|free.money|forced.to.cancel|immediate.access|upgrading.all.staff/i
-body     __KAM_ACCOUNTPHISH4 /outlook|webmail|all.systems|coincide.with|storage.limit|get.back.into|update.your.account|kindly.click|very.private.message|this.is.honest|fill.the.form|click.on.send/i
+header   __KAM_ACCOUNTPHISH1 From =~ /[il]tunes|account|costco|walgreen|amazon|ebay|internal|admin|gold|webmail|provider|marketing/i
+header   __KAM_ACCOUNTPHISH2 Subject =~ /your.account|is.limited|activate|recover|acknowledgment|of.order|buying.from|order.(status|confirm)|help.?desk|your.order|update.your|security|document|(^secure$)|download.failed|click.to.activate|status.approved|notification.message|storage.exceeded|maintenance routine|storage.warning|size.notification/i
+body     __KAM_ACCOUNTPHISH3 /update.your.information|problems.with.your|billing.information|order.details|personal.data|detailed.order|order.information|for.activation|account.{1,30}.inactive|information.required|secure.browser|recently.compromised|classified.document|with.your.email|complete.your.account|account.confirmed|claim.your.order|free.money|forced.to.cancel|immediate.access|upgrading.all.staff|advice.to.update/i
+body     __KAM_ACCOUNTPHISH4 /webmail|all.systems|coincide.with|storage.limit|get.back.into|update.your.account|kindly.click|very.private.message|this.is.honest|fill.the.form|click.on.send|follow.here|for.all.user|one.click.away|mail.desk/i
 
-meta     KAM_ACCOUNTPHISH ((__KAM_ACCOUNTPHISH1 || FREEMAIL_FROM) + __KAM_ACCOUNTPHISH2 + __KAM_ACCOUNTPHISH3 + __KAM_ACCOUNTPHISH4 >= 3)
-score    KAM_ACCOUNTPHISH 4.5
+meta     KAM_ACCOUNTPHISH ((__KAM_ACCOUNTPHISH1 || FREEMAIL_FROM || KAM_LAZY_DOMAIN_SECURITY) + __KAM_ACCOUNTPHISH2 + __KAM_ACCOUNTPHISH3 + __KAM_ACCOUNTPHISH4 >= 3)
+score    KAM_ACCOUNTPHISH 4.0
 describe KAM_ACCOUNTPHISH Spam that tries to get account information
 
 # BUY PROPERTY
@@ -4698,11 +4702,12 @@ score    KAM_AQUARUG 3.5
 describe KAM_AQUARUG Spam for aqua rug product
 
 # FAKE ITC SPAM
-header   __KAM_ITC1 From !~ /thetradecouncil.com/i
+# Fixed FP thanks to j.marshall
+header   __KAM_ITC1 From =~ /thetradecouncil.com/i
 body     __KAM_ITC2 /International Trade Council/i
 body     __KAM_ITC3 /enclosed/i
 
-meta     KAM_ITC (__KAM_ITC1 + __KAM_ITC2 + __KAM_ITC3 + KAM_BADIPHTTP >= 3)
+meta     KAM_ITC (__KAM_ITC1 < 1) && (__KAM_ITC2 >= 1) && (__KAM_ITC3 + KAM_BADIPHTTP >= 1)
 score    KAM_ITC 4.5
 describe KAM_ITC Fake email from International Trade Council
 
@@ -5002,5 +5007,42 @@ header   __JMQ_PAYPAL2 From =~ /paypai/i
 meta     JMQ_PAYPAL2 (JMQ_IPINFROM + __JMQ_PAYPAL2 >= 2)
 score    JMQ_PAYPAL2 4.5
 describe JMQ_PAYPAL2 PayPal spam of the day
+
+# RESUME SPAM REDUX PART 2 (WOOHOO)
+meta     JMQ_RESUME3 (__JMQ_RESUME1 && __JMQ_RESUME2 && KAM_THEBAT)
+score    JMQ_RESUME3 3.5
+describe JMQ_RESUME3 Yet more resume spam
+
+# SPF THAT DOESN'T REALLY CARE IF EMAIL IS A FORGERY
+ifplugin Mail::SpamAssassin::Plugin::AskDNS
+  askdns   JMQ_SPF_NEUTRAL_ALL _SENDERDOMAIN_ TXT /^v=spf1 .+\?all$/
+  describe JMQ_SPF_NEUTRAL_ALL SPF set to ?all!
+  score    JMQ_SPF_NEUTRAL_ALL 0.5
+endif
+
+# IMPORTANT MESSAGE
+header   __JMQ_IMPORTANT1 Subject =~ /(fw|re):? important/i
+body     __JMQ_IMPORTANT2 /important message/i
+body     __JMQ_IMPORTANT3 /please visit/i
+
+meta     JMQ_IMPORTANT (__JMQ_IMPORTANT1 + __JMQ_IMPORTANT2 + __JMQ_IMPORTANT3 + KAM_LAZY_DOMAIN_SECURITY >= 4)
+score    JMQ_IMPORTANT 4.5
+describe JMQ_IMPORTANT Spam that thinks it is important
+
+# IMAGE TRACKERS
+uri      __JMQ_TRACKER1 /sidekickopen\d*\.com/i
+
+meta     JMQ_TRACKER (__JMQ_TRACKER1 >= 1)
+score    JMQ_TRACKER 0.5
+describe JMQ_TRACKER Message uses image-based tracker
+
+# WIRE TRANSFERS
+header   __JMQ_WIRE1 Subject =~ /wire.*fund|request.*wire|(fwd|re): request/i
+body     __JMQ_WIRE2 /medical.support|payment.sent/i
+body     __JMQ_WIRE3 /bank.wire|sent.out.asap/i
+
+meta     JMQ_WIRE (__JMQ_WIRE1 + __JMQ_WIRE2 + __JMQ_WIRE3 + (LOTS_OF_MONEY || KAM_LAZY_DOMAIN_SECURITY || HEADER_FROM_DIFFERENT_DOMAINS) >= 3)
+score    JMQ_WIRE 4.5
+describe JMQ_WIRE Attempt to steal money via wire transfer
 
 #EOF
