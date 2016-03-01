@@ -66,7 +66,7 @@ class Filter extends \Nethgui\Controller\AbstractController
         ));
 
         $this->declareParameter('BlockAttachmentCustomStatus', Validate::SERVICESTATUS, array('configuration', 'amavisd', 'BlockAttachmentCustomStatus'));
-        $this->declareParameter('BlockAttachmentCustomList', '/^[a-z]+(,[a-z]+)*$/', array('configuration', 'amavisd', 'BlockAttachmentCustomList'));
+        $this->declareParameter('BlockAttachmentCustomList', '/^[a-z0-9]+(,[a-z0-9]+)*$/', array('configuration', 'amavisd', 'BlockAttachmentCustomList'));
         $this->declareParameter('BlockAttachmentClassList', Validate::ANYTHING_COLLECTION, array('configuration', 'amavisd', 'BlockAttachmentClassList', ','));
     }
 

@@ -29,6 +29,8 @@ my @templates = qw(
     /etc/postfix/main.cf
     /etc/postfix/master.cf
     /etc/postfix/sender_access
+    /etc/cron.d/sa-update
+    /etc/sysconfig/sa-update
 );
 
 #
@@ -52,12 +54,7 @@ event_services('nethserver-mail-filter-update', qw(
 # nethserver-mail-filter-SAVE event
 #
 
-event_templates('nethserver-mail-filter-save', qw(
-    /etc/amavisd/amavisd.conf
-    /etc/postfix/main.cf
-    /etc/postfix/master.cf
-    /etc/postfix/sender_access
-));
+event_templates('nethserver-mail-filter-save', @templates);
 
 event_actions('nethserver-mail-filter-save', 
 	      'nethserver-mail-postmap-update' => '10');
