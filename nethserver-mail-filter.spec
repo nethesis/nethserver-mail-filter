@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.3.5
+Version: 1.3.6
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -63,6 +63,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Thu Mar 03 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.6-1
+- Email attachment block custom list too strict - Enhancement #3361 [NethServer]
+- sa-update without internet breaks spamd/amavisd - Bug #3359 [NethServer]
+
 * Thu Feb 18 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.5-1
 - Update KAM.cf spam sigs - Enhancement #3350 [NethServer]
 - Amavis virus+spam policy tweaks - Enhancement #3348 [NethServer]
