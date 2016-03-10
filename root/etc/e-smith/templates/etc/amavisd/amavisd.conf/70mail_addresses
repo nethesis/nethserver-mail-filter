@@ -7,7 +7,7 @@
 
 @virus_admin_maps = ( {
     if($amavisd{AdminNotificationStatus} eq 'enabled') {
-	%virus_admin_maps = map { $_ => 'virusalert@' . $_ } @domainList;
+	%virus_admin_maps = map { $_ => 'postmaster+virusalert@' . $_ } @domainList;
 	$OUT = Dumper(\%virus_admin_maps);
     } else {
 	$OUT = '';
@@ -18,7 +18,7 @@
 
 @spam_admin_maps = ( {
     if($amavisd{AdminNotificationStatus} eq 'enabled') {
-	%spam_admin_maps = map { $_ => 'spamalert@' . $_ } @domainList;
+	%spam_admin_maps = map { $_ => 'postmaster+spamalert@' . $_ } @domainList;
 	$OUT = Dumper(\%spam_admin_maps);
     } else {
 	$OUT = '';
