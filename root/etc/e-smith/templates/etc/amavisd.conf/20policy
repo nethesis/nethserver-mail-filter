@@ -13,7 +13,7 @@ $MAX_EXPANSION_QUOTA = 300*1024*1024;  # bytes  (default undef, not enforced)
 #
 {
     if($content_inspection_type eq 'before-queue') {
-	$OUT = q($final_virus_destiny      = D_DISCARD;
+	$OUT = q($final_virus_destiny      = D_REJECT;
 $final_spam_destiny       = D_REJECT;
 $final_banned_destiny     = D_REJECT;
 $final_bad_header_destiny = D_PASS;
