@@ -56,6 +56,7 @@ echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
 %doc COPYING
+%doc README.rst
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
