@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.3.6
+Version: 1.3.7
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -63,6 +63,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Fri May 20 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.7-1
+- mail-server: no feedback for user if a virus is detected on submission port - Bug #3383 [NethServer]
+
 * Thu Mar 03 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.6-1
 - Email attachment block custom list too strict - Enhancement #3361 [NethServer]
 - sa-update without internet breaks spamd/amavisd - Bug #3359 [NethServer]
