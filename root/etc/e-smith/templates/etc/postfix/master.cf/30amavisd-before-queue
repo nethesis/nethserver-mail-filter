@@ -38,9 +38,10 @@
 
     $OUT .= '127.0.0.1:10025 inet n  -       n       -        -      smtpd' . $smtpdAfterFilterOptions;
 
-    # Filter for submission listeners:
-    if(defined @submission_smtpd_options) {
-	push @submission_smtpd_options, 'smtpd_proxy_filter=127.0.0.1:10587';
+    # submission listeners talk directly to the backend instance (queue)
+    # if disclaimers are not defined (See #3411):
+    if(@submission_smtpd_options) {
+        push @submission_smtpd_options, 'smtpd_proxy_filter=127.0.0.1:' . ($hasDisclaimers ? 10587 : 10025);
     }
 
     return $OUT;
