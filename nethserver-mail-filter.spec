@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.3.6
+Version: 1.4.0
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -60,6 +60,9 @@ echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Thu Jul 07 2016 Stefano Fancello <stefano.fancello@nethesis.it> - 1.4.0-1
+- First NS7 release
+
 * Thu Mar 03 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.3.6-1
 - Email attachment block custom list too strict - Enhancement #3361 [NethServer]
 - sa-update without internet breaks spamd/amavisd - Bug #3359 [NethServer]
