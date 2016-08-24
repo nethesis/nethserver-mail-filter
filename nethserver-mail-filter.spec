@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.4.1
+Version: 1.4.2
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -60,6 +60,9 @@ echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Wed Aug 24 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.4.2-1
+- Mail disclaimer is not added #5080
+
 * Thu Jul 21 2016 Davide Principi <davide.principi@nethesis.it> - 1.4.1-1
 - SMTP mail reception delayed in receive only systems - NethServer/dev#5050
 
