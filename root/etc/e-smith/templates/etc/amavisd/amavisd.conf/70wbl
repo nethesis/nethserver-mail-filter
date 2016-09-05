@@ -9,7 +9,7 @@
     if(@senderWhiteList) {
         Dumper(\@senderWhiteList);
     } else {
-	'';
+        '[]';
     }
 });
    
@@ -20,7 +20,7 @@
     if(@senderBlackList) {
 	Dumper(\@senderBlackList);
     } else {
-	'';
+        '[]';
     }
 });
 
