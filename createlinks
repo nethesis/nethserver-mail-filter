@@ -30,6 +30,7 @@ my @templates = qw(
     /etc/postfix/master.cf
     /etc/postfix/sender_access
     /etc/sysconfig/sa-update
+    /etc/mail/spamassassin/backscatter.cf
 );
 
 #
