@@ -1,6 +1,6 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.4.4
+Version: 1.4.5
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
@@ -60,6 +60,9 @@ echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Fri Oct 06 2017 Davide Principi <davide.principi@nethesis.it> - 1.4.5-1
+- Sieve errors prevent mail forwarding - Bug NethServer/dev#5351
+
 * Mon May 22 2017 Davide Principi <davide.principi@nethesis.it> - 1.4.4-1
 - mail-filter: enable spamassassin anti-backscatter rules - NethServer/dev#5280
 
