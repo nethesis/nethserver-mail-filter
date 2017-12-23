@@ -1,63 +1,51 @@
 Summary: Enforces anti-spam and anti-virus checks on any message entering the mail system.
 Name: nethserver-mail-filter
-Version: 1.4.5
+Version: 2.0.0
 Release: 1%{?dist}
 License: GPL
 URL: %{url_prefix}/%{name} 
 Source0: %{name}-%{version}.tar.gz
 BuildArch: noarch
-%define policyd_spf_dir postfix-policyd-spf-perl-2.010
-
-Requires: nethserver-mail-common, nethserver-antivirus
+Requires: rspamd
+Requires: nethserver-antivirus
+Requires: nethserver-mail-server
 Requires: nethserver-dnsmasq, nethserver-unbound
-Requires: perl-Mail-SPF >= 2.007
-Requires: perl-Sys-Hostname-Long
-
-# Additional archive formats support for amavis (EPEL) Refs #2093:
-# optional packages: lha, unrar, ripole
-
-# required by amavis
-Requires: cronie, pax
+Requires: nethserver-redis
 
 BuildRequires: perl
-BuildRequires: nethserver-devtools
+BuildRequires: nethserver-devtools 
 
 %description
-Configures postfix to filter SMTP sessions and mail messages through 
-- amavisd-new (spamassassin, clamav)
-- Mail::SPF (optional)
+Rspamd is an advanced spam filtering system that allows evaluation of messages
+by a number of rules including regular expressions, statistical analysis and
+custom services such as URL black lists. Each message is analysed by Rspamd
+and given a spam score.
 
 %prep
 %setup
 
 %build
-POLICYD_SPF_DIR=%{policyd_spf_dir}
 perl createlinks
-mkdir -p root/usr/libexec/nethserver
-mv -v $POLICYD_SPF_DIR/postfix-policyd-spf-perl root/usr/libexec/nethserver/
-mkdir -p root${RPM_DOC_DIR}
-mv -v $POLICYD_SPF_DIR root${RPM_DOC_DIR}
-
-%pre
-# ensure spfd user exists:
-for FILTER_USER in spfd; do
-    if ! id $FILTER_USER >/dev/null 2>&1 ; then
-       useradd -r $FILTER_USER
-    fi
-done
 
 %install
-POLICYD_SPF_DIR=%{policyd_spf_dir}
 rm -rf %{buildroot}
+mkdir -p root/var/run/clamd.rspamd
 (cd root; find . -depth -print | cpio -dump %{buildroot})
-%{genfilelist} %{buildroot} > %{name}-%{version}-filelist
-echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
+%{genfilelist} %{buildroot} \
+  --dir /var/run/clamd.rspamd 'attr(0750,_rspamd,_rspamd)' \
+> %{name}-%{version}-filelist
+echo "%doc COPYING" >> %{name}-%{version}-filelist
+
+%post
+/usr/bin/systemctl enable rspamd
+/usr/bin/systemctl start rspamd
+%preun
 
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
-%doc COPYING
-%doc README.rst
 %dir %{_nseventsdir}/%{name}-update
+
+%changelog
 
 %changelog
 * Fri Oct 06 2017 Davide Principi <davide.principi@nethesis.it> - 1.4.5-1
@@ -137,5 +125,6 @@ echo "%docdir $RPM_DOC_DIR/${POLICYD_SPF_DIR}" >> %{name}-%{version}-filelist
 - White/Black lists migration #1796
 
 * Tue Mar 19 2013 Davide Principi <davide.principi@nethesis.it> - 1.0.1-1.ns6
-- spam-training.sh: fixed wrong bash syntax to close stdout descriptor. Refs #1656 
+- spam-training.sh: fixed wrong bash syntax to close stdout descriptor. Refs #1656
 - *.spec: use url_prefix macro in URL tag; removed nethserver-devtools specific version requirement; fixed Release tag expansion. Refs #1654
+

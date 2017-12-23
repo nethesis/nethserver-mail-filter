@@ -1,0 +1,111 @@
+# local.d/multimap.conf
+
+{
+if ($rspamd{SpamCheckStatus} eq 'enabled') {
+
+$OUT .= << 'EOF' 
+# whitelist the senders
+FROM_WHITELIST {
+    type = "from";
+    map = [
+    "${CONFDIR}/local_wl_from.map",
+    "${DBDIR}/local_wl_from.map.local"
+    ];
+    prefilter = true;
+    filter = "email:addr";
+    action = "accept";
+    description = "Accepted list of FROM email address";
+    symbol = "FROM_WHITELIST";
+}
+
+#whitelist the domains of senders
+FROM_DOMAINS_WHITELIST {
+
+    map = [
+    "${CONFDIR}/local_wl_from_domains.map",
+    "${DBDIR}/local_wl_from_domains.map.local"
+    ];
+    type = "from";
+    prefilter = true;
+    action = "accept";
+    filter = "email:domain:tld";
+    description = "Accepted list of FROM domains";
+    symbol = "FROM_DOMAINS_WHITELIST";
+}
+
+#blacklist the senders
+FROM_BLACKLIST {
+    type = "from";
+    map = [
+    "${CONFDIR}/local_bl_from.map",
+    "${DBDIR}/local_bl_from.map.local"
+    ];
+    action = "reject";
+    prefilter = true;
+    filter = "email:addr";
+    symbol = "FROM_BLACKLIST";
+    description = "Refused list of FROM email address";
+}
+
+#blacklist the domains of senders
+FROM_DOMAINS_BLACKLIST {
+    map = [
+    "${CONFDIR}/local_bl_from_domains.map",
+    "${DBDIR}/local_bl_from_domains.map.local"
+    ];
+    type = "from";
+    filter = "email:domain:tld";
+    description = "Refused list of FROM domains";
+    symbol = "FROM_DOMAINS_BLACKLIST";
+    score = 300;
+}
+
+#whitelist the domain of recipients
+TO_DOMAINS_WHITELIST {
+    map = [
+    "${CONFDIR}/local_wl_to_domains.map",
+    "${DBDIR}/local_wl_to_domains.map.local"
+    ];
+    type = "rcpt";
+    prefilter = true;
+    action = "accept";
+    filter = "email:domain:tld";
+    description = "Accepted list SMTP TO domain";
+    symbol = "TO_DOMAINS_WHITELIST";
+}
+
+#whitelist the email address of recipients
+TO_WHITELIST {
+    type = "rcpt";
+    map = [
+    "${CONFDIR}/local_wl_to.map",
+    "${DBDIR}/local_wl_to.map.local"
+    ];
+    prefilter = true;
+    filter = "email:addr";
+    action = "accept";
+    description = "Accepted list of SMTP TO email address";
+    symbol = "TO_WHITELIST";
+}
+EOF
+
+}
+
+if ($rspamd{BlockAttachmentStatus} eq 'enabled') {
+$OUT .= << 'EOF'
+
+#reject email when the file extension is found
+    FORBIDDEN_FILE_EXTENSION {
+    type = "filename";
+    filter = "extension";
+    map = [
+    "${CONFDIR}/local_forbidden_file_extension.map",
+    "${DBDIR}/local_forbidden_file_extension.map.local"
+    ];
+    action = "reject";
+    symbol = "FORBIDDEN_FILE_EXTENSION";
+    description = "List of forbidden file extensions";
+}
+EOF
+}
+}

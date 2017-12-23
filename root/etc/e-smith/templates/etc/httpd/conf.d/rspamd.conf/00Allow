@@ -1,0 +1,22 @@
+{
+use esmith::NetworksDB;
+
+my $ndb = esmith::NetworksDB->open_ro();
+my @localAccessSpec = $ndb->local_access_spec();
+
+if ($rspamd{rspamdWebUI} eq 'green'){
+        $localAccess = join(' ',@localAccessSpec);
+    }
+
+elsif ($rspamd{rspamdWebUI} eq 'red'){
+    $localAccess = 'all';
+    }
+
+else {
+    $validFrom = $rspamd{'rspamdWebUI'};
+    $validFrom =~ s/,/ /g;
+    $localAccess = '';
+    }
+
+$OUT = "";
+}

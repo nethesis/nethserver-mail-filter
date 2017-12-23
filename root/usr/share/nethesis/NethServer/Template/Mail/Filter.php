@@ -23,6 +23,12 @@ $view->includeFile('NethServer/Css/nethserver.collectioneditor.filter.css');
 
 $spamCheckbox = $view->fieldsetSwitch('SpamCheckStatus', 'enabled', $view::FIELDSETSWITCH_CHECKBOX | $view::FIELDSETSWITCH_EXPANDABLE)
     ->setAttribute('uncheckedValue', 'disabled')
+    ->insert($view->slider('SpamGreyLevel', $view::LABEL_ABOVE)
+        ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
+        ->setAttribute('max', $view->getModule()->spamDsnLevel - 0.1)
+        ->setAttribute('step', 0.1)
+        ->setAttribute('label', $T('SpamGreyLevel ${0}'))
+    )
     ->insert($view->slider('SpamTag2Level', $view::LABEL_ABOVE)
         ->setAttribute('min', $view->getModule()->spamTagLevel + 0.1)
         ->setAttribute('max', $view->getModule()->spamDsnLevel - 0.1)
@@ -63,5 +69,16 @@ echo $view->panel()
     ->insert($virusCheckbox)
     ->insert($spamCheckbox)
 ;
+
+//retrieve the name property and password
+$db = $view->getModule()->getPlatform()->getDatabase('configuration');
+$app = $db->getProp('rspamd','Name');
+$password = $db->getProp('rspamd','password');
+
+//display the url property
+$host = explode(':',$_SERVER['HTTP_HOST']);
+$url = "http://".$host[0]."/".$app."/";
+echo $view->panel()->insert($view->literal("Rspamd URL: <a href='$url' target='_blank'>$url</a>")->setAttribute('hsc', FALSE));
+echo $view->panel()->insert($view->literal("<br>Rspamd Password: $password"));
 
 echo $view->buttonList($view::BUTTON_SUBMIT | $view::BUTTON_HELP);

@@ -1,0 +1,19 @@
+<Location /{$rspamd{'Name'}}>
+    Order allow,deny
+    Allow from {{$localAccess}} {{$validFrom}}
+    ProxyPass  http://localhost:11334
+    ProxyPassReverse http://localhost:11334
+    ProxyPreserveHost On
+</Location>
+
+#waiting that the bug 
+#https://github.com/vstakhov/rspamd/issues/1943
+#is resolved
+<Location /savemap>
+    Order allow,deny
+    Allow from {{$localAccess}} {{$validFrom}}
+    ProxyPass  http://localhost:11334/savemap
+    ProxyPassReverse http://localhost:11334/savemap
+    ProxyPreserveHost On
+</Location>
+
