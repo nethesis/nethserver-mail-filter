@@ -1,0 +1,13 @@
+#
+# List of email domain name on localhost
+#
+
+{
+    use esmith::DomainsDB;
+    my $domainsDb = esmith::DomainsDB->open_ro();
+    my @domains =  $domainsDb->domains();
+
+    foreach my $domain (map { $_->key } @domains) {
+    $OUT .= "$domain\n";
+    }
+}

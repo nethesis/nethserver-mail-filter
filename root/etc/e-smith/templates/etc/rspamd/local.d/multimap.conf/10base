@@ -87,6 +87,18 @@ TO_WHITELIST {
     description = "Accepted list of SMTP TO email address";
     symbol = "TO_WHITELIST";
 }
+
+#Give a -5 score to emails from domains on localhost
+FROM_LOCAL_DOMAIN {
+    type = "from";
+    map = [
+    "${CONFDIR}/localhost_email_domain.map"
+    ];
+    filter = "email:domain:tld";
+    score = -5;
+    description = "List of email domain on localhost";
+    symbol = "FROM_LOCALHOST_DOMAIN";
+}
 EOF
 
 }
