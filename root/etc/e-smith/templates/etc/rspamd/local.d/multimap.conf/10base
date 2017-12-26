@@ -8,8 +8,8 @@ $OUT .= << 'EOF'
 FROM_WHITELIST {
     type = "from";
     map = [
-    "${CONFDIR}/local_wl_from.map",
-    "${DBDIR}/local_wl_from.map.local"
+    "${CONFDIR}/whitelist_from.map",
+    "${DBDIR}/whitelist_from.map.local"
     ];
     prefilter = true;
     filter = "email:addr";
@@ -22,8 +22,8 @@ FROM_WHITELIST {
 FROM_DOMAINS_WHITELIST {
 
     map = [
-    "${CONFDIR}/local_wl_from_domains.map",
-    "${DBDIR}/local_wl_from_domains.map.local"
+    "${CONFDIR}/whitelist_from_domains.map",
+    "${DBDIR}/whitelist_from_domains.map.local"
     ];
     type = "from";
     prefilter = true;
@@ -37,8 +37,8 @@ FROM_DOMAINS_WHITELIST {
 FROM_BLACKLIST {
     type = "from";
     map = [
-    "${CONFDIR}/local_bl_from.map",
-    "${DBDIR}/local_bl_from.map.local"
+    "${CONFDIR}/blacklist_from.map",
+    "${DBDIR}/blacklist_from.map.local"
     ];
     action = "reject";
     prefilter = true;
@@ -50,8 +50,8 @@ FROM_BLACKLIST {
 #blacklist the domains of senders
 FROM_DOMAINS_BLACKLIST {
     map = [
-    "${CONFDIR}/local_bl_from_domains.map",
-    "${DBDIR}/local_bl_from_domains.map.local"
+    "${CONFDIR}/blacklist_from_domains.map",
+    "${DBDIR}/blacklist_from_domains.map.local"
     ];
     type = "from";
     filter = "email:domain:tld";
@@ -63,8 +63,8 @@ FROM_DOMAINS_BLACKLIST {
 #whitelist the domain of recipients
 TO_DOMAINS_WHITELIST {
     map = [
-    "${CONFDIR}/local_wl_to_domains.map",
-    "${DBDIR}/local_wl_to_domains.map.local"
+    "${CONFDIR}/whitelist_to_domains.map",
+    "${DBDIR}/whitelist_to_domains.map.local"
     ];
     type = "rcpt";
     prefilter = true;
@@ -78,8 +78,8 @@ TO_DOMAINS_WHITELIST {
 TO_WHITELIST {
     type = "rcpt";
     map = [
-    "${CONFDIR}/local_wl_to.map",
-    "${DBDIR}/local_wl_to.map.local"
+    "${CONFDIR}/whitelist_to.map",
+    "${DBDIR}/whitelist_to.map.local"
     ];
     prefilter = true;
     filter = "email:addr";
@@ -99,8 +99,8 @@ $OUT .= << 'EOF'
     type = "filename";
     filter = "extension";
     map = [
-    "${CONFDIR}/local_forbidden_file_extension.map",
-    "${DBDIR}/local_forbidden_file_extension.map.local"
+    "${CONFDIR}/forbidden_file_extension.map",
+    "${DBDIR}/forbidden_file_extension.map.local"
     ];
     action = "reject";
     symbol = "FORBIDDEN_FILE_EXTENSION";
