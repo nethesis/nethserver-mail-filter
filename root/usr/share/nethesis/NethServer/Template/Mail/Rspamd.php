@@ -5,6 +5,6 @@
 </script>
 <?php
 
-echo '<iframe src="'.$view['url'].'" frameborder="0" width="100%" height="100%" style="min-height: 300px" onload="resizeIframe(this)">';
+echo '<iframe src="'.$view['url'].'" frameborder="0" width="100%" height="100%" style="min-height: 900px" onload="resizeIframe(this)">';
 echo '<p>Your browser does not support iframes.</p>';
 echo '</iframe>';
