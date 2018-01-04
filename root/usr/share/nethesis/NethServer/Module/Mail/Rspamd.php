@@ -28,8 +28,6 @@ class Rspamd extends \Nethgui\Controller\AbstractController
     public function prepareView(\Nethgui\View\ViewInterface $view)
     {
         parent::prepareView($view);
-        $hostname = $this->getPlatform()->getDatabase('configuration')->getType('SystemName');
-        $domain = $this->getPlatform()->getDatabase('configuration')->getType('DomainName');
         $rspamd = $this->getPlatform()->getDatabase('configuration')->getKey('rspamd');
         $host = explode(':',$_SERVER['HTTP_HOST']);
         $view['url'] = "/".$rspamd['alias']."/";
