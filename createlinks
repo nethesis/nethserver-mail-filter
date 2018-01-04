@@ -46,6 +46,8 @@ my @templates = qw (
     /etc/rspamd/local.d/fann_redis.conf
     /etc/rspamd/local.d/options.inc
     /etc/rspamd/local.d/multimap.conf
+    /etc/rspamd/local.d/arc.conf
+    /etc/rspamd/local.d/dkim_signing.conf
     /etc/rspamd/rspamd.conf.local
     /etc/rspamd/whitelist_from.map
     /etc/rspamd/whitelist_from_domains.map
