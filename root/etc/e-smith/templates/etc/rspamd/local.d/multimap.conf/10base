@@ -9,7 +9,6 @@ FROM_WHITELIST {
     type = "from";
     map = [
     "${CONFDIR}/whitelist_from.map",
-    "${DBDIR}/whitelist_from.map.local"
     ];
     prefilter = true;
     filter = "email:addr";
@@ -23,7 +22,6 @@ FROM_DOMAINS_WHITELIST {
 
     map = [
     "${CONFDIR}/whitelist_from_domains.map",
-    "${DBDIR}/whitelist_from_domains.map.local"
     ];
     type = "from";
     prefilter = true;
@@ -38,7 +36,6 @@ FROM_BLACKLIST {
     type = "from";
     map = [
     "${CONFDIR}/blacklist_from.map",
-    "${DBDIR}/blacklist_from.map.local"
     ];
     action = "reject";
     prefilter = true;
@@ -51,7 +48,6 @@ FROM_BLACKLIST {
 FROM_DOMAINS_BLACKLIST {
     map = [
     "${CONFDIR}/blacklist_from_domains.map",
-    "${DBDIR}/blacklist_from_domains.map.local"
     ];
     type = "from";
     filter = "email:domain:tld";
@@ -64,7 +60,6 @@ FROM_DOMAINS_BLACKLIST {
 TO_DOMAINS_WHITELIST {
     map = [
     "${CONFDIR}/whitelist_to_domains.map",
-    "${DBDIR}/whitelist_to_domains.map.local"
     ];
     type = "rcpt";
     prefilter = true;
@@ -79,7 +74,6 @@ TO_WHITELIST {
     type = "rcpt";
     map = [
     "${CONFDIR}/whitelist_to.map",
-    "${DBDIR}/whitelist_to.map.local"
     ];
     prefilter = true;
     filter = "email:addr";
@@ -112,7 +106,6 @@ $OUT .= << 'EOF'
     filter = "extension";
     map = [
     "${CONFDIR}/forbidden_file_extension.map",
-    "${DBDIR}/forbidden_file_extension.map.local"
     ];
     action = "reject";
     symbol = "FORBIDDEN_FILE_EXTENSION";
