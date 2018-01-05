@@ -7,7 +7,8 @@
     my $domainsDb = esmith::DomainsDB->open_ro();
     my @domains =  $domainsDb->domains();
 
-    foreach my $domain (map { $_->key } @domains) {
+    foreach my $domain (map { ($_->prop('TransportType') || '')  eq 'LocalDelivery' ? $_->key : ()
+        } @domains) {
     $OUT .= "$domain\n";
     }
 }
