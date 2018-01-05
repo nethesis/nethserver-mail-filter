@@ -7,6 +7,7 @@ my $add     = $rspamd{SpamTag2Level} || '6';
 my $rewrite = $rspamd{SpamTag2Level} || '6';
 my $grey    = $rspamd{SpamGreyLevel} || '4';
 my $subject = $rspamd{SpamSubjectPrefixString} . ' %s' || '***SPAM*** %s';
+my $status  = $rspamd{SpamSubjectPrefixStatus} || 'disabled';
 
 $OUT .= qq(
 actions {
@@ -14,12 +15,7 @@ actions {
     add_header = $add;
     greylist = $grey;
 );
-
-if ($rspamd{'SpamSubjectPrefixStatus'} eq 'enabled') {
-    $OUT .= qq(
-    rewrite_subject = $rewrite;
-    subject = "$subject";
-)
-}
+$OUT .= "    rewrite_subject = $rewrite;" if ($status eq 'enabled');
 $OUT .= "\n}";
+$OUT.= "\n    subject = '$subject';" if ($status eq 'enabled');
 }
