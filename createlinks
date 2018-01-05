@@ -59,6 +59,7 @@ my @templates = qw (
     /etc/rspamd/localhost_email_domain.map
     /etc/httpd/conf.d/rspamd.conf
     /etc/httpd/conf.d/default-virtualhost.inc
+    /var/lib/nethserver/sieve-scripts/before.sieve
 );
 
 #
