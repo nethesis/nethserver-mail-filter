@@ -18,6 +18,9 @@ worker "fuzzy" \{
 
   # Synchronize updates to the storage each minute
   sync = 1min;
+
+  #Access control setup
+  allow_update = ["127.0.0.1"];
 \}
 
 
