@@ -22,7 +22,7 @@ first \{
   max_size = $scanSize;
 
   # symbol to add (add it to metric if you want non-zero weight)
-  symbol = "CLAM_VIRUS";
+  symbol = "CLAMAV_VIRUS";
 
   # type of scanner: "clamav", "fprot", "sophos" or "savapi"
   type = "clamav";
@@ -39,7 +39,7 @@ first \{
   # symbol will be yielded if a match is found. If no match is found, default symbol is yielded.
   patterns \{
     # symbol_name = "pattern";
-    JUST_EICAR = "^Eicar-Test-Signature\$";
+    CLAMAV_VIRUS = "^Eicar-Test-Signature\$";
   \}
 
   # In version 1.7.0+ patterns could be a list for ordered matching
