@@ -37,8 +37,7 @@ mkdir -p root/var/run/clamd.rspamd
 echo "%doc COPYING" >> %{name}-%{version}-filelist
 
 %post
-/usr/bin/systemctl enable rspamd
-/usr/bin/systemctl start rspamd
+/usr/bin/systemctl daemon-reload
 %preun
 
 %files -f %{name}-%{version}-filelist
