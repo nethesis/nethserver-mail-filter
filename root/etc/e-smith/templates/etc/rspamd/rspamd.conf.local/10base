@@ -1,11 +1,25 @@
 # Local fuzzy storage
 
-worker \{
-    bind_socket = "localhost:11335";
-    .include "$CONFDIR/worker-fuzzy.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-fuzzy.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-fuzzy.inc"
+worker "fuzzy" \{
+  # Socket to listen on (UDP and TCP from rspamd 1.3)
+  bind_socket = "localhost:11335";
+
+  # Number of processes to serve this storage (useful for read scaling)
+  count = {$rspamd{MaxProcesses} || '2'};
+
+  # Backend ("sqlite" or "redis" - default "sqlite")
+  backend = "redis";
+
+  # sqlite: Where data file is stored (must be owned by rspamd user)
+  database = "${DBDIR}/fuzzy.db";
+
+  # Hashes storage time (3 months)
+  expire = 90d;
+
+  # Synchronize updates to the storage each minute
+  sync = 1min;
 \}
+
 
 #init log_helper for fan module https://rspamd.com/doc/modules/fann.html#configuration
 worker "log_helper" \{
