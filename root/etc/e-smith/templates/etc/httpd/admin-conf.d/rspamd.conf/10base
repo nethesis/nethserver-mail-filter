@@ -11,7 +11,20 @@
         $confdb->set_prop('rspamd','alias',$alias);
     }
 
-    $OUT .= "ProxyPass /$alias http://localhost:11334\n";
-    $OUT .= "ProxyPassReverse /$alias http://localhost:11334\n";
-}
+$OUT .= qq(
+<Location /$alias>
+    ProxyPass  http://localhost:11334
+    ProxyPassReverse http://localhost:11334
+    ProxyPreserveHost On
+</Location>
 
+#waiting that the bug 
+#https://github.com/vstakhov/rspamd/issues/1943
+#is resolved
+<Location /savemap>
+    ProxyPass  http://localhost:11334/savemap
+    ProxyPassReverse http://localhost:11334/savemap
+    ProxyPreserveHost On
+</Location>
+);
+}
