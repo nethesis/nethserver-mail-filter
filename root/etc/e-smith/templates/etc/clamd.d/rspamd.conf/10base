@@ -17,4 +17,4 @@ FixStaleSocket yes
 User _rspamd
 
 # Path to a local socket file the daemon will listen on.
-LocalSocket /var/run/clamd.rspamd/rspamd.sock
+LocalSocket /var/run/clamd.rspamd/clamav
