@@ -23,7 +23,7 @@ namespace NethServer\Module\Mail;
  *
  * @author Stephane de Labrusse <stephdl@de-labrusse.fr>
  */
-class Rspamd extends \Nethgui\Controller\AbstractController
+class AntiSpam extends \Nethgui\Controller\AbstractController
 {   
     public function prepareView(\Nethgui\View\ViewInterface $view)
     {
