@@ -1,2 +1,0 @@
-#milter mail macro for rspamd
-milter_mail_macros = i \{mail_addr\} \{client_addr\} \{client_name\} \{auth_authen\}
