@@ -2,6 +2,6 @@
     # Smtpd_milters
     # Milter used by rspamd
     #
-    push @smtpd_milters, 'inet:localhost:11332' if $rspamd{'status'} eq 'enabled';
+    push @smtpd_milters, 'unix:/var/run/rspamd/worker-proxy' if $rspamd{'status'} eq 'enabled';
     '';
 }

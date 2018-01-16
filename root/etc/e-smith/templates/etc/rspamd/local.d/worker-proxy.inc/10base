@@ -1,7 +1,7 @@
 # local.d/worker-proxy.inc
 
 #restrict to localhost
-bind_socket = "localhost:11332";
+bind_socket = "/var/run/rspamd/worker-proxy mode=0770 owner=_rspamd group=mail";
 
 # enable the 'simple' proxy mode
 milter = yes; # Enable milter mode
