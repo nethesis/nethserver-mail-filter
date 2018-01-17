@@ -1,8 +1,8 @@
 # /etc/rspamd/local.d/redis.conf
-servers = "127.0.0.1";
+servers = "/var/run/redis/rspamd";
 
 # Servers to write data
-write_servers = "127.0.0.1";
+write_servers = "/var/run/redis/rspamd";
 
 # List of modules that should not use redis from this section
 #disabled_modules = ["ratelimit"];

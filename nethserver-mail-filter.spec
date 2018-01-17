@@ -10,7 +10,7 @@ Requires: rspamd
 Requires: nethserver-antivirus
 Requires: nethserver-mail-server
 Requires: nethserver-dnsmasq, nethserver-unbound
-Requires: nethserver-redis
+Requires: redis
 
 BuildRequires: perl
 BuildRequires: nethserver-devtools 
@@ -33,6 +33,7 @@ mkdir -p root/var/run/clamd.rspamd
 (cd root; find . -depth -print | cpio -dump %{buildroot})
 %{genfilelist} %{buildroot} \
   --dir /var/run/clamd.rspamd 'attr(0750,_rspamd,_rspamd)' \
+  --dir /var/lib/redis/rspamd 'attr(0750,redis,redis)' \
 > %{name}-%{version}-filelist
 echo "%doc COPYING" >> %{name}-%{version}-filelist
 
