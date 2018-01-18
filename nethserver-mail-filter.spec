@@ -11,6 +11,7 @@ Requires: nethserver-antivirus
 Requires: nethserver-mail-server
 Requires: nethserver-dnsmasq, nethserver-unbound
 Requires: redis
+Requires: zstd
 
 BuildRequires: perl
 BuildRequires: nethserver-devtools 
