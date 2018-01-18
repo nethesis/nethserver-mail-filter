@@ -1,4 +1,4 @@
-# /etc/rspamd/local.d/worker-normal.inc
+# socket for worker-normal
 bind_socket = "/var/run/rspamd/worker-normal mode=0770 owner=_rspamd group=mail";
 
 # number of worker

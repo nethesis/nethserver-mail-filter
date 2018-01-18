@@ -12,6 +12,7 @@ $db->set_prop('rspamd','password',"$password");
 
 $OUT .= qq (
 
+# socket for worker-controller
 #the port is controlled by the ns firewall
 bind_socket = "*:11334";
 
