@@ -1,5 +1,5 @@
 # Redis server to store history
-servers = 127.0.0.1:6379;
+servers = "/var/run/redis-rspamd/rspamd";
 
 # Default key name
 key_prefix = "rs_history";

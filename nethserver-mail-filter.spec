@@ -36,8 +36,8 @@ mkdir -p root/var/run/redis-rspamd
 (cd root; find . -depth -print | cpio -dump %{buildroot})
 %{genfilelist} %{buildroot} \
   --dir /var/run/clamd.rspamd 'attr(0750,_rspamd,_rspamd)' \
-  --dir /var/lib/redis/rspamd 'attr(0750,redis,redis)' \
-  --dir /var/run/redis-rspamd 'attr(0750,redis,redis)' \
+  --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
+  --dir /var/run/redis-rspamd 'attr(0755,redis,redis)' \
 > %{name}-%{version}-filelist
 echo "%doc COPYING" >> %{name}-%{version}-filelist
 
