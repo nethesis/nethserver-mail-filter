@@ -47,6 +47,7 @@ my @templates = qw (
     /etc/rspamd/local.d/multimap.conf
     /etc/rspamd/local.d/arc.conf
     /etc/rspamd/local.d/dkim_signing.conf
+    /etc/rspamd/local.d/fuzzy_check.conf
     /etc/rspamd/override.d/metrics.conf
     /etc/rspamd/rspamd.conf.local
     /etc/rspamd/whitelist_from.map
