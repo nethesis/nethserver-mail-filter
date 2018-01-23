@@ -6,10 +6,9 @@ License: GPL
 URL: %{url_prefix}/%{name} 
 Source0: %{name}-%{version}.tar.gz
 BuildArch: noarch
-Requires: rspamd
-Requires: nethserver-antivirus
-Requires: nethserver-mail-server
+Requires: nethserver-mail-common, nethserver-antivirus
 Requires: nethserver-dnsmasq, nethserver-unbound
+Requires: rspamd
 Requires: redis
 Requires: zstd
 
@@ -17,7 +16,7 @@ BuildRequires: perl
 BuildRequires: nethserver-devtools 
 
 %description
-Rspamd is an advanced spam filtering system that allows evaluation of messages
+Configures rspamd that is an advanced spam filtering system that allows evaluation of messages
 by a number of rules including regular expressions, statistical analysis and
 custom services such as URL black lists. Each message is analysed by Rspamd
 and given a spam score.
@@ -39,7 +38,6 @@ mkdir -p root/var/run/redis-rspamd
   --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
   --dir /var/run/redis-rspamd 'attr(0755,redis,redis)' \
 > %{name}-%{version}-filelist
-echo "%doc COPYING" >> %{name}-%{version}-filelist
 
 %post
 /usr/bin/systemctl daemon-reload
@@ -48,8 +46,8 @@ echo "%doc COPYING" >> %{name}-%{version}-filelist
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
 %dir %{_nseventsdir}/%{name}-update
-
-%changelog
+%doc COPYING
+%doc README.rst
 
 %changelog
 * Fri Oct 06 2017 Davide Principi <davide.principi@nethesis.it> - 1.4.5-1
