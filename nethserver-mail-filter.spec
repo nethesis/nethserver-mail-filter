@@ -13,7 +13,7 @@ Requires: redis
 Requires: zstd
 
 BuildRequires: perl
-BuildRequires: nethserver-devtools 
+BuildRequires: nethserver-devtools
 
 %description
 Configures rspamd that is an advanced spam filtering system that allows evaluation of messages
@@ -41,9 +41,9 @@ mkdir -p root/var/lib/redis/rspamd
 
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
-%dir %{_nseventsdir}/%{name}-update
 %doc COPYING
 %doc README.rst
+%dir %{_nseventsdir}/%{name}-update
 
 %changelog
 * Fri Oct 06 2017 Davide Principi <davide.principi@nethesis.it> - 1.4.5-1
