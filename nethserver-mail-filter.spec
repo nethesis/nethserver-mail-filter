@@ -31,12 +31,10 @@ perl createlinks
 rm -rf %{buildroot}
 mkdir -p root/var/run/clamd.rspamd
 mkdir -p root/var/lib/redis/rspamd
-mkdir -p root/var/run/redis-rspamd
 (cd root; find . -depth -print | cpio -dump %{buildroot})
 %{genfilelist} %{buildroot} \
   --dir /var/run/clamd.rspamd 'attr(0750,_rspamd,_rspamd)' \
   --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
-  --dir /var/run/redis-rspamd 'attr(0755,redis,redis)' \
 > %{name}-%{version}-filelist
 
 %post
