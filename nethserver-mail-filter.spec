@@ -35,10 +35,6 @@ mkdir -p root/var/lib/redis/rspamd
   --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
 > %{name}-%{version}-filelist
 
-%post
-/usr/bin/systemctl daemon-reload
-%preun
-
 %files -f %{name}-%{version}-filelist
 %defattr(-,root,root)
 %doc COPYING
