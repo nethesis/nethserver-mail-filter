@@ -4,7 +4,6 @@ classifier "bayes" \{
     \}
 
     backend = "redis";
-    servers = "127.0.0.1:6379";
     min_tokens = 11;
     min_learns = 200;
     autolearn = true;
