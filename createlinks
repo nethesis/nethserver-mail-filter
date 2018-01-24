@@ -53,7 +53,6 @@ my @templates = qw(
 my $event = 'nethserver-mail-filter-update';
 event_actions ( $event, qw (
     initialize-default-databases 00
-    nethserver-rspamd-unlink-modules-configuration 01
     nethserver-rspamd-disable-modules-configuration 10
     nethserver-mail-filter-conf 10
     nethserver-mail-postmap-update 10
@@ -75,7 +74,6 @@ event_services($event, qw(
 $event = 'nethserver-mail-filter-save';
 
 event_actions($event, qw(
-    nethserver-rspamd-unlink-modules-configuration 01
     nethserver-rspamd-disable-modules-configuration 10
     nethserver-mail-postmap-update 10
 ));
