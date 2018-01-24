@@ -15,53 +15,10 @@ options \{
         $CIDR .= sprintf("%s, ", $_);
     }
 
-    $OUT = "local_addrs = \"$CIDR ::1\";\n";
-
-    my $module = (($rspamd{'SpamCheckStatus'}||'enabled') eq 'enabled')?'chartable,dkim,spf,surbl,regexp,fuzzy_check':'';
-    $OUT.="    filters = '$module';";
+    $OUT = "local_addrs = \"$CIDR ::1\";";
 }
-    raw_mode = false;
-    one_shot = false;
-    cache_file = "$DBDIR/symbols.cache";
-    # How often maps are checked (
-    map_watch_interval = 5min;
-    # Multiplier for watch interval for files
-    map_file_watch_multiplier = 0.1;
-    dynamic_conf = "$DBDIR/rspamd_dynamic";
-    history_file = "$DBDIR/rspamd.history";
-    check_all_filters = false;
-    dns \{
-    timeout = 1s;
-    sockets = 16;
-    retransmits = 5;
-    \}
-    tempdir = "/tmp";
-    url_tld = "${PLUGINSDIR}/effective_tld_names.dat";
-    classify_headers = [
-	"User-Agent",
-	"X-Mailer",
-	"Content-Type",
-	"X-MimeOLE",
-    ];
 
-    control_socket = "$DBDIR/rspamd.sock mode=0600";
-    history_rows = 200;
-    explicit_modules = ["settings"];
-
-    # Scan messages even if they are not MIME
-    allow_raw_input = true;
-
-    # Start ignore words when reaching the following limit, so the total
-    # amount of words processed will not be *LIKELY more than the twice of that limit
-    words_decay = 200;
-
-    # Write statistics about rspamd usage to the round-robin database
-    rrd = "${DBDIR}/rspamd.rrd";
-
-    # Local networks
-    hs_cache_dir = "${DBDIR}/";
-
-
+    .include "$CONFDIR/options.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/options.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/options.inc"
 \}
@@ -79,10 +36,8 @@ worker \{
     bind_socket = "/var/run/rspamd/worker-normal mode=0770 owner=_rspamd group=mail";
     # number of worker
     count = {$rspamd{MaxProcesses} || '1'}
-    type = "normal";
-    mime = true;
-    task_timeout = 8s;
 
+    .include "$CONFDIR/worker-normal.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-normal.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-normal.inc"
 \}
@@ -105,17 +60,16 @@ $OUT .= qq (
     # socket for worker-controller
     #the port is controlled by the ns firewall
     bind_socket = "*:11334";
-    type = "controller";
+
     #password for the web UI
     password = "$password";
     enable_password = "$password";
-    #secure_ip = "127.0.0.1";
+
     # number of worker
     count = $worker;
 );
 }
-    static_dir = "${WWWDIR}";
-
+    .include "$CONFDIR/worker-controller.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-controller.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-controller.inc"
 \}
@@ -123,20 +77,20 @@ $OUT .= qq (
 worker "rspamd_proxy" \{
     # socket for worker-normal
     bind_socket = "/var/run/rspamd/worker-proxy mode=0770 owner=_rspamd group=mail";
-    type = "proxy";
+
     # enable the 'simple' proxy mode
     milter = yes; # Enable milter mode
     timeout = 120s; # Needed for Milter usually
     upstream "local" \{
     default = yes; # Self-scan upstreams are always default
     self_scan = yes; # Enable self-scan
-    default = yes;
-    hosts = "localhost";
-\}
+    \}
 
     # number of worker
     count = {$rspamd{MaxProcesses} || '1'}
 
+
+    .include "$CONFDIR/worker-proxy.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-proxy.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-proxy.inc"
 \}
@@ -146,18 +100,23 @@ worker \{
     # socket for worker-fuzzy
     #bind_socket = "/var/run/rspamd/worker-fuzzy mode=0770 owner=_rspamd group=mail";
     bind_socket = "localhost:11335";
-    type = "fuzzy";
+
     # Number of processes to serve this storage (useful for read scaling)
     count = {$rspamd{MaxProcesses} || '1'}
+
     # Backend
     backend = "redis";
+
     # Hashes storage time (3 months)
     expire = 90d;
+
     # Synchronize updates to the storage each minute
     sync = 1min;
+
     #Access control setup
     allow_update = ["127.0.0.1"];
 
+    .include "$CONFDIR/worker-fuzzy.inc"
     .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-fuzzy.inc"
     .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-fuzzy.inc"
 \}
