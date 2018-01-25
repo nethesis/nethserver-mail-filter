@@ -19,7 +19,8 @@ else {
     next if (($file eq '.') ||
         ($file eq '..') ||
         ($file eq 'antivirus.conf') ||
-        ($file eq 'multimap.conf'));
+        ($file eq 'multimap.conf')  ||
+        ($file eq 'redis.conf'));
 
     $file =~ s/\.conf$//;
     $OUT .= qq (
