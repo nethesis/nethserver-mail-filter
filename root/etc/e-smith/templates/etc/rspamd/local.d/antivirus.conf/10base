@@ -21,9 +21,6 @@ first \{
   # If `max_size` is set, messages > n bytes in size are not scanned
   max_size = $scanSize;
 
-  # symbol to add (add it to metric if you want non-zero weight)
-  symbol = "CLAMAV_VIRUS";
-
   # type of scanner: "clamav", "fprot", "sophos" or "savapi"
   type = "clamav";
 
