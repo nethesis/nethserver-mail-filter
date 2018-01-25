@@ -63,6 +63,8 @@ event_templates($event, @templates);
 event_services($event, qw(
     rspamd restart
     postfix restart
+    redis-rspamd restart
+    clamd@rspamd restart
     httpd-admin reload
     httpd reload
 ));
@@ -82,6 +84,8 @@ event_templates($event, @templates);
 event_services($event, qw(
     rspamd reload
     postfix reload
+    redis-rspamd reload
+    clamd@rspamd reload
     httpd reload
     httpd-admin reload
 ));
