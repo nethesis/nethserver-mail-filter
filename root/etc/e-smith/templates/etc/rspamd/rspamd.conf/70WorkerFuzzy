@@ -9,7 +9,7 @@ worker \{
     type = "fuzzy";
 
     # Number of processes to serve this storage (useful for read scaling)
-    count = {$rspamd{MaxProcesses} || '2'}
+    count = {$rspamd{MaxProcesses} || '1'}
 
     # Backend
     backend = "redis";
