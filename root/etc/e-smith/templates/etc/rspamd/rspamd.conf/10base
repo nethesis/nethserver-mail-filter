@@ -18,9 +18,7 @@ options \{
     $OUT = "local_addrs = \"$CIDR ::1\";";
 }
 
-    .include "$CONFDIR/options.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/options.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/options.inc"
+    .include(try=true; priority=1,duplicate=merge) "$CONFDIR/options.inc"
 \}
 
 logging \{
@@ -37,9 +35,7 @@ worker \{
     # number of worker
     count = {$rspamd{MaxProcesses} || '1'}
 
-    .include "$CONFDIR/worker-normal.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-normal.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-normal.inc"
+    .include(try=true; priority=1,duplicate=merge) "$CONFDIR/worker-normal.inc"
 \}
 
 worker \{
@@ -69,9 +65,7 @@ $OUT .= qq (
     count = $worker;
 );
 }
-    .include "$CONFDIR/worker-controller.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-controller.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-controller.inc"
+    .include(try=true; priority=1,duplicate=merge) "$CONFDIR/worker-controller.inc" 
 \}
 
 worker "rspamd_proxy" \{
@@ -90,9 +84,7 @@ worker "rspamd_proxy" \{
     count = {$rspamd{MaxProcesses} || '1'}
 
 
-    .include "$CONFDIR/worker-proxy.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-proxy.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-proxy.inc"
+    .include(try=true; priority=1,duplicate=merge) "$CONFDIR/worker-proxy.inc" 
 \}
 
 
@@ -116,9 +108,7 @@ worker \{
     #Access control setup
     allow_update = ["127.0.0.1"];
 
-    .include "$CONFDIR/worker-fuzzy.inc"
-    .include(try=true; priority=1,duplicate=merge) "$LOCAL_CONFDIR/local.d/worker-fuzzy.inc"
-    .include(try=true; priority=10) "$LOCAL_CONFDIR/override.d/worker-fuzzy.inc"
+    .include(try=true; priority=1,duplicate=merge) "$CONFDIR/worker-fuzzy.inc" 
 \}
 
 #init log_helper for fan module https://rspamd.com/doc/modules/fann.html#configuration
