@@ -1,3 +1,6 @@
+#
+# Rspamd Log
+#
 logging \{
     type = "file";
     filename = "$LOGDIR/rspamd.log";

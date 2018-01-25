@@ -1,3 +1,7 @@
+#
+# worker-controller
+#
+
 worker \{
 {
 use NethServer::Password;

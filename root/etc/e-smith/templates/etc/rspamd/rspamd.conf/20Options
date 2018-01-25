@@ -1,3 +1,6 @@
+#
+# Options
+#
 options \{
     pidfile = "$RUNDIR/rspamd.pid";
 {

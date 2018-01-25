@@ -1,4 +1,8 @@
-#init log_helper for fan module https://rspamd.com/doc/modules/fann.html#configuration
+#
+# worker-log-helper
+# init log_helper for fan module 
+# https://rspamd.com/doc/modules/fann.html#configuration
+
 worker "log_helper" \{
   count = 1;
 \}
