@@ -99,3 +99,10 @@ event_actions('migration-import', qw(
     nethserver-mail-filter-migrate       30
     nethserver-mail-migrate-wbl          30
 ));
+
+
+#
+# trusted-networks-modify event
+#
+
+event_templates( 'trusted-networks-modify', '/etc/httpd/conf.d/rspamd.conf');
