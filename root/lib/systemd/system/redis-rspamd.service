@@ -5,7 +5,7 @@ After=network.target
 [Service]
 ExecStart=/usr/bin/redis-server /etc/redis-rspamd.conf --daemonize no
 ExecStop=/usr/libexec/redis-shutdown redis-rspamd
-User=redis
+User=_rspamd
 Group=mail
 
 [Install]

@@ -29,10 +29,10 @@ perl createlinks
 
 %install
 rm -rf %{buildroot}
-mkdir -p root/var/lib/redis/rspamd
+mkdir -p root/var/lib/rspamd/redis
 (cd root; find . -depth -print | cpio -dump %{buildroot})
 %{genfilelist} %{buildroot} \
-  --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
+  --dir /var/lib/rspamd/redis 'attr(0755,_rspamd,mail)' \
 > %{name}-%{version}-filelist
 
 %files -f %{name}-%{version}-filelist
