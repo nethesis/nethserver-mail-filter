@@ -69,4 +69,3 @@ Enable RBL checks, by adding *zen.spamhaus.org* to the RBL server list: ::
 
     db configuration setprop postfix RblStatus enabled RblServers zen.spamhaus.org
     signal-event nethserver-mail-filter-save
-
