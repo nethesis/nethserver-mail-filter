@@ -29,5 +29,4 @@ $L['rspamdWebUI_green_label'] = 'Access from local network only';
 $L['rspamdWebUI_red_label'] = 'Access from external network';
 $L['RspamdURL'] = 'Web URL';
 $L['RspamdPassword_label'] = 'Password';
-$L['Rspamd_WebUI_Settings_label'] = 'Rspamd user interface settings';
-$L['Spam_Scores'] = 'Spam filter score';
+$L['Rspamd_WebUI_Settings_label'] = 'Rspamd user interface';
