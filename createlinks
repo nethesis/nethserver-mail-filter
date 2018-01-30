@@ -24,6 +24,7 @@ use strict;
 use esmith::Build::CreateLinks qw(:all);
 
 my @templates = qw(
+    /etc/clamd.d/rspamd.conf
     /etc/httpd/admin-conf.d/rspamd.conf
     /etc/dnsmasq.conf
     /etc/postfix/main.cf
