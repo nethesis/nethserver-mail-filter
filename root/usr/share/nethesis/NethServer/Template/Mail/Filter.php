@@ -66,15 +66,15 @@ $fileTypesCheckbox = $view->fieldsetSwitch('BlockAttachmentStatus', 'enabled', $
 
 //Retrieve the rspamd name and password
 $db = $view->getModule()->getPlatform()->getDatabase('configuration');
-$app = $db->getProp('rspamd','Name');
+$alias = $db->getProp('rspamd','alias');
 $password = $db->getProp('rspamd','password');
 
 //Retrieve the  rspamd URL
 $host = explode(':',$_SERVER['HTTP_HOST']);
-$url = "https://".$host[0]."/".$app."/";
+$url = "https://".$host[0].":980/".$alias."/";
 
 $webUI = $view->fieldset()->setAttribute('template', $T('Rspamd_WebUI_Settings_label'))
-    ->insert($view->literal($T('RspamdURL').": <a href='$url' target='_blank'>$url</a><br/>"))
+    ->insert($view->literal($T('RspamdURL').": <a href='$url' target='_blank'>Rspamd</a><br/>"))
     ->insert($view->literal("<br/>".$T('RspamdPassword_label') .": $password"."<br/>"));
 
 echo $view->panel()
