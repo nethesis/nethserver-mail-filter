@@ -33,9 +33,9 @@ mkdir -p root/var/lib/redis/rspamd
 (cd root; find . -depth -print | cpio -dump %{buildroot})
 %{genfilelist} %{buildroot} \
   --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
-  --file /etc/rspamd/dkim_whitelist.inc 'attr(0640,_rspamd,_rspamd)' \
-  --file /etc/rspamd/local.d/mid.inc 'attr(0640,_rspamd,_rspamd)' \
-  --file /etc/rspamd/spf_whitelist.inc 'attr(0640,_rspamd,_rspamd)' \
+  --file /etc/rspamd/dkim_whitelist.inc 'attr(0440,_rspamd,_rspamd)' \
+  --file /etc/rspamd/local.d/mid.inc 'attr(0440,_rspamd,_rspamd)' \
+  --file /etc/rspamd/spf_whitelist.inc 'attr(0440,_rspamd,_rspamd)' \
   --file /var/lib/rspamd/2tld.inc.local 'attr(0640,_rspamd,_rspamd)' \
   --file /var/lib/rspamd/dkim_whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
   --file /var/lib/rspamd/dmarc_whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
