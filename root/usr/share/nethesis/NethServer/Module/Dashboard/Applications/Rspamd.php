@@ -35,10 +35,10 @@ class Rspamd extends \Nethgui\Module\AbstractModule implements \NethServer\Modul
 
     public function getInfo()
     {
-        $webapp = $this->getPlatform()->getDatabase('configuration')->getProp('rspamd','Name');
+        $alias = $this->getPlatform()->getDatabase('configuration')->getProp('rspamd','alias');
         $host = explode(':',$_SERVER['HTTP_HOST']);
          return array(
-            'url' => "https://".$host[0]."/$webapp/",
+            'url' => "https://".$host[0].":980/$alias/",
          );
     }
 }

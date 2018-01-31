@@ -1,7 +1,0 @@
-
-#
-# 50Rspamd
-#
-RewriteEngine On
-RewriteCond %\{HTTPS\} !=on
-RewriteRule ^/{$rspamd{'Name'}}(/.*)?$ https://%\{HTTP_HOST\}/{$rspamd{'Name'}}$1 [L,R=301]

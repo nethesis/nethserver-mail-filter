@@ -60,7 +60,6 @@ class Filter extends \Nethgui\Controller\AbstractController
         $this->declareParameter('SpamGreyLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'rspamd', 'SpamGreyLevel'));
         $this->declareParameter('SpamTag2Level', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'rspamd', 'SpamTag2Level'));
         $this->declareParameter('SpamKillLevel', $this->createValidator()->lessThan($this->spamDsnLevel)->greatThan($this->spamTagLevel), array('configuration', 'rspamd', 'SpamKillLevel'));
-        $this->declareParameter('rspamdWebUI', $this->createValidator()->memberOf(array('red','green')), array('configuration', 'rspamd', 'rspamdWebUI'));
         $this->declareParameter('AddressAcl', Validate::ANYTHING, array(
             array('configuration', 'rspamd', 'RecipientWhiteList'),
             array('configuration', 'rspamd', 'SenderWhiteList'),

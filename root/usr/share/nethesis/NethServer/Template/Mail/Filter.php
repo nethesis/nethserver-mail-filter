@@ -74,8 +74,6 @@ $host = explode(':',$_SERVER['HTTP_HOST']);
 $url = "https://".$host[0]."/".$app."/";
 
 $webUI = $view->fieldset()->setAttribute('template', $T('Rspamd_WebUI_Settings_label'))
-    ->insert($view->radioButton('rspamdWebUI', 'red')->setAttribute('label', $T('rspamdWebUI_red_label')))
-    ->insert($view->radioButton('rspamdWebUI', 'green')->setAttribute('label', $T('rspamdWebUI_green_label')))
     ->insert($view->literal($T('RspamdURL').": <a href='$url' target='_blank'>$url</a><br/>"))
     ->insert($view->literal("<br/>".$T('RspamdPassword_label') .": $password"."<br/>"));
 
