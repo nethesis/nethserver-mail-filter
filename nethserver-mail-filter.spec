@@ -33,9 +33,31 @@ mkdir -p root/var/lib/redis/rspamd
 (cd root; find . -depth -print | cpio -dump %{buildroot})
 %{genfilelist} %{buildroot} \
   --dir /var/lib/redis/rspamd 'attr(0755,redis,redis)' \
+  --file /etc/rspamd/dkim_whitelist.inc 'attr(0640,_rspamd,_rspamd)' \
+  --file /etc/rspamd/local.d/mid.inc 'attr(0640,_rspamd,_rspamd)' \
+  --file /etc/rspamd/spf_whitelist.inc 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/2tld.inc.local 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/dkim_whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/dmarc_whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/mime_types.inc.local 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/rspamd_dynamic 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/spf_dkim_whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/spf_whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
+  --file /var/lib/rspamd/surbl-whitelist.inc.local 'attr(0640,_rspamd,_rspamd)' \
 > %{name}-%{version}-filelist
 
 %files -f %{name}-%{version}-filelist
+%config(noreplace) /etc/rspamd/dkim_whitelist.inc
+%config(noreplace) /etc/rspamd/local.d/mid.inc
+%config(noreplace) /etc/rspamd/spf_whitelist.inc
+%config(noreplace) /var/lib/rspamd/2tld.inc.local
+%config(noreplace) /var/lib/rspamd/dkim_whitelist.inc.local
+%config(noreplace) /var/lib/rspamd/dmarc_whitelist.inc.local
+%config(noreplace) /var/lib/rspamd/mime_types.inc.local
+%config(noreplace) /var/lib/rspamd/rspamd_dynamic
+%config(noreplace) /var/lib/rspamd/spf_dkim_whitelist.inc.local
+%config(noreplace) /var/lib/rspamd/spf_whitelist.inc.local
+%config(noreplace) /var/lib/rspamd/surbl-whitelist.inc.local
 %defattr(-,root,root)
 %doc COPYING
 %doc README.rst
