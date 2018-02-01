@@ -74,8 +74,8 @@ $host = explode(':',$_SERVER['HTTP_HOST']);
 $url = "https://".$host[0].":980/".$alias."/";
 
 $webUI = $view->fieldset()->setAttribute('template', $T('Rspamd_WebUI_Settings_label'))
-    ->insert($view->literal($T('RspamdURL').": <a href='$url' target='_blank'>Rspamd</a><br/>"))
-    ->insert($view->literal("<br/>".$T('RspamdPassword_label') .": $password"."<br/>"));
+    ->insert($view->literal(htmlspecialchars($T('RspamdURL')) . ": <a href='$url' target='_blank'>Rspamd</a><br/>"))
+    ->insert($view->literal("<br/>" . htmlspecialchars($T('RspamdPassword_label') . ": " . $password) . "<br/>"));
 
 echo $view->panel()
     ->insert($fileTypesCheckbox)
